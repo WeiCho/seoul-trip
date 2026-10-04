@@ -7,7 +7,7 @@
   "購物": {"icon": "🛍", "cls": "t-shop"},
 } -%}
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-Hant"{% if trip.skin %} data-skin="{{ trip.skin }}"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -727,7 +727,8 @@ body.editing>#editor{display:block !important}
   body{background:#fff}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>
+</style>{% if trip.skin == "seoul" %}
+{% include "_skin_seoul.j2" %}{% endif %}
 </head>
 <body>
 <script id="trip-src" type="application/json">{{ data_json | safe }}</script>
@@ -760,7 +761,13 @@ body.editing>#editor{display:block !important}
 {%- endfor -%}
 {%- set cards = ns.live_cards + ns.note_cards -%}
 <header class="hero">
+  {%- if trip.skin == "seoul" %}
+  <div class="hero-top"><span>{{ trip.hero_en or "Seoul" }}</span><span>{{ trip.range_label }}</span></div>
+  <h1>{{ trip.hero_en or "Seoul" }}.</h1>
+  <p class="hero-ko">{{ trip.hero_ko or "서울" }} · {{ trip.title }}</p>
+  {%- else %}
   <h1>{{ trip.title }}</h1>
+  {%- endif %}
   {%- if days %}
   <p class="lead">{{ trip.num_days }} 天 {{ trip.travelers }} 人。每天去哪、怎麼去、花多少，都在這一頁。</p>
   {%- else %}
@@ -935,7 +942,29 @@ body.editing>#editor{display:block !important}
     <h2>口袋名單</h2>
     <p>想去、但還沒排進行程的地方。（共 {{ wishlist | length }} 處）</p>
   </div>
+  {% set CAT_EN = {"食物": "FOOD", "逛街": "SHOP", "景點": "SEE", "住宿": "STAY"} %}
   {% for g in wishlist_groups %}
+  {% if trip.skin == "seoul" %}
+  {% set gi = loop.index %}
+  <h3 class="wish-group">{{ "%02d" | format(gi) }} — {{ g.label }}{% if g.label in CAT_EN %} · {{ CAT_EN[g.label] }}{% endif %}</h3>
+  <ol class="wl">
+  {% for w in g["items"] %}
+    <li><details>
+      <summary>
+        <span class="no">{{ "%02d" | format(loop.index) }}</span>
+        <span class="nm">{{ w.name }}<span class="sub">{{ [w.area, w.tagline] | select | join(" · ") }}</span></span>
+        <span class="maps">{% if w.naver_url %}<a href="{{ w.naver_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} Naver 地圖">N</a>{% endif %}{% if w.naver_url and w.map_url %}<i>·</i>{% endif %}{% if w.map_url %}<a href="{{ w.map_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} Google 地圖">G</a>{% endif %}</span>
+      </summary>
+      <div class="body">
+        {% if w.note %}<p>{{ w.note }}</p>{% endif %}
+        {% if w.address %}<p class="addr">{{ w.address }}</p>{% endif %}
+        {% if w.hours %}<p>營業 {{ w.hours }}</p>{% endif %}
+        {% if w.url or w.links %}<p>{% if w.url %}<a href="{{ w.url }}" target="_blank" rel="noopener">官網 ↗</a> {% endif %}{% for lk in w.links %}<a href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.emoji }} {{ lk.label }}</a> {% endfor %}</p>{% endif %}
+      </div>
+    </details></li>
+  {% endfor %}
+  </ol>
+  {% else %}
   {% if wishlist_groups | length > 1 %}<h3 class="wish-group">{{ g.label }}<small>{{ g["items"] | length }}</small></h3>{% endif %}
   <ol class="timeline">
   {% for w in g["items"] %}
@@ -952,6 +981,7 @@ body.editing>#editor{display:block !important}
     </li>
   {% endfor %}
   </ol>
+  {% endif %}
   {% endfor %}
 </section>
 {% endif %}

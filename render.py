@@ -65,6 +65,8 @@ self.addEventListener("fetch", (e) => {
 """
 
 ITEM_TYPES = ("景點", "餐廳", "交通", "住宿", "購物")
+# 外觀主題（trip.skin）；沒填就是原本的手冊外觀
+SKINS = ("seoul",)
 TIME_RE = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")
 WEEKDAYS = ("週一", "週二", "週三", "週四", "週五", "週六", "週日")
 
@@ -119,6 +121,10 @@ def validate(data):
     trip = _require(data, "trip", "trip.json")
     for key in ("title", "destination", "currency"):
         _require(trip, key, "trip")
+    skin = trip.get("skin")
+    if skin is not None and skin not in SKINS:
+        raise TripError(f"trip.skin 必須是 {'/'.join(SKINS)}：{skin!r}")
+
     days = data.get("days")
     if not isinstance(days, list):
         raise TripError("trip.json 缺少必填欄位「days」（還沒排行程時給空陣列 []）")
