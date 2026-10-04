@@ -490,6 +490,8 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 /* 口袋名單：沿用時間軸的列，左欄放地區取代時間 */
 .wish .stop time{font-family:inherit;font-size:clamp(14px,1.3vw,16px);letter-spacing:.08em;color:var(--muted);min-width:5.5em}
 .wish .stop:last-child{border-bottom:0}
+.wish-group{margin-top:clamp(28px,4vh,48px);padding-bottom:10px;border-bottom:.8px solid var(--ink);font-size:clamp(19px,1.8vw,22px);letter-spacing:.12em}
+.wish-group small{margin-left:.6em;font-family:var(--latin);font-size:.7em;color:var(--muted);letter-spacing:.04em}
 
 /* 行程內的即時狀態區 */
 .live-status{
@@ -933,8 +935,10 @@ body.editing>#editor{display:block !important}
     <h2>口袋名單</h2>
     <p>想去、但還沒排進行程的地方。（共 {{ wishlist | length }} 處）</p>
   </div>
+  {% for g in wishlist_groups %}
+  {% if wishlist_groups | length > 1 %}<h3 class="wish-group">{{ g.label }}<small>{{ g["items"] | length }}</small></h3>{% endif %}
   <ol class="timeline">
-  {% for w in wishlist %}
+  {% for w in g["items"] %}
     <li class="stop {{ TYPE_META[w.type].cls if w.type in TYPE_META else '' }}">
       <time>{{ w.area or "" }}</time>
       <div>
@@ -948,6 +952,7 @@ body.editing>#editor{display:block !important}
     </li>
   {% endfor %}
   </ol>
+  {% endfor %}
 </section>
 {% endif %}
 

@@ -415,11 +415,22 @@ def enrich(data):
         if w.get("naver_query"):
             w["naver_url"] = naver_url(w["naver_query"])
         wishlist.append(w)
+    # 依 category 分組，組的順序照第一次出現的順序（食物、逛街…）
+    wishlist_groups = []
+    for w in wishlist:
+        cat = w.get("category") or "其他"
+        for g in wishlist_groups:
+            if g["label"] == cat:
+                g["items"].append(w)
+                break
+        else:
+            wishlist_groups.append({"label": cat, "items": [w]})
 
     return {
         "trip": trip,
         "days": days,
         "wishlist": wishlist,
+        "wishlist_groups": wishlist_groups,
         "bookings": bookings,
         "notes": data.get("notes") or [],
         "alerts": data.get("alerts") or [],
