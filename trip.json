@@ -11,11 +11,20 @@
       "type": "餐廳",
       "area": "鍾路3街",
       "address": "서울 종로구 삼일대로 385 1층, 2층（貫鐵洞 7-14）",
-      "note": "招牌是牛尾燉肉（꼬리수육），上面鋪滿韭菜；吃到一半加素麵拌著吃。也有解酲湯，適合愛喝酒的人。傍晚 5:30 就客滿、客人幾乎都是韓國人，要早點去。",
+      "note": "招牌是牛尾燉肉（꼬리수육），鋪滿韭菜，吃到一半加素麵拌著吃。解酲湯是熬 48 小時的牛骨湯，搭水煮牛肉鍋（수육）可一次吃到不同部位，肉很嫩；最後點芹菜粥收尾。傍晚 5:30 就客滿、幾乎都是韓國人，要早點去；早上也能吃，適合一家大小。",
       "map_query": "이복희해장 서울 종로구 삼일대로 385",
       "naver_query": "이복희해장",
       "links": [
-        {"emoji": "🎬", "label": "IG 介紹", "url": "https://www.instagram.com/reel/DUdcjJrkiuJ/"}
+        {
+          "emoji": "🎬",
+          "label": "IG 牛尾燉肉",
+          "url": "https://www.instagram.com/reel/DUdcjJrkiuJ/"
+        },
+        {
+          "emoji": "🎬",
+          "label": "IG 解酲湯",
+          "url": "https://www.instagram.com/reel/Dc56Z5myC4L/"
+        }
       ]
     }
   ]
