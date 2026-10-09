@@ -41,7 +41,10 @@ SW_JS = """/* 旅程手冊離線快取（PWA）。以 file:// 開啟時不會註
 const CACHE = "trip-%(version)s";
 const ASSETS = ["./", "./%(index)s", "./%(html)s", "./%(manifest)s", "./%(icon)s"];
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+  // cache: "reload" 跳過瀏覽器的 HTTP 快取（GitHub Pages 給 10 分鐘），不然新版 SW 可能存到舊頁
+  e.waitUntil(caches.open(CACHE)
+    .then((c) => c.addAll(ASSETS.map((u) => new Request(u, {cache: "reload"}))))
+    .then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", (e) => {
   e.waitUntil(
@@ -54,19 +57,25 @@ self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
   if (new URL(req.url).origin !== location.origin) return; // 外部連結（地圖等）走網路
+  const save = (res) => {
+    if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+    return res;
+  };
+  // 頁面本身網路優先：手冊每天自動更新天氣，快取優先會讓人一直看到前一版；
+  // 沒網路（山區、飛機上）才退回快取。圖示等靜態檔維持快取優先
+  if (req.mode === "navigate") {
+    e.respondWith(fetch(req, {cache: "no-cache"}).then(save)
+      .catch(() => caches.match(req).then((hit) => hit || caches.match("./%(html)s"))));
+    return;
+  }
   e.respondWith(
-    caches.match(req).then((hit) => hit || fetch(req).then((res) => {
-      const copy = res.clone();
-      caches.open(CACHE).then((c) => c.put(req, copy));
-      return res;
-    }).catch(() => caches.match("./%(html)s")))
+    caches.match(req).then((hit) => hit || fetch(req).then(save)
+      .catch(() => caches.match("./%(html)s")))
   );
 });
 """
 
 ITEM_TYPES = ("景點", "餐廳", "交通", "住宿", "購物")
-# 外觀主題（trip.skin）；沒填就是原本的手冊外觀
-SKINS = ("seoul",)
 TIME_RE = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")
 WEEKDAYS = ("週一", "週二", "週三", "週四", "週五", "週六", "週日")
 
@@ -119,27 +128,20 @@ def validate(data):
         raise TripError("trip.json 頂層必須是物件")
 
     trip = _require(data, "trip", "trip.json")
-    for key in ("title", "destination", "currency"):
+    # destination 是選用的：封面拿掉那一行之後，trip.json 可以整個不寫
+    for key in ("title", "currency"):
         _require(trip, key, "trip")
-    skin = trip.get("skin")
-    if skin is not None and skin not in SKINS:
-        raise TripError(f"trip.skin 必須是 {'/'.join(SKINS)}：{skin!r}")
-
-    days = data.get("days")
-    if not isinstance(days, list):
-        raise TripError("trip.json 缺少必填欄位「days」（還沒排行程時給空陣列 []）")
-    # 還在蒐集口袋名單、日期未定的旅程：days 給空陣列，日期與預算都可以先不填
-    planning = not days
-    if "budget" not in trip and not planning:
+    if "budget" not in trip:
         raise TripError("trip 缺少必填欄位「budget」")
-    _check_cost({"cost": trip.get("budget", 0)}, "trip.budget")
-    if planning and not trip.get("start_date") and not trip.get("end_date"):
-        start = end = None
-    else:
-        start = _parse_date(_require(trip, "start_date", "trip"), "trip.start_date")
-        end = _parse_date(_require(trip, "end_date", "trip"), "trip.end_date")
-        if end < start:
-            raise TripError(f"end_date（{end}）不得早於 start_date（{start}）")
+    _check_cost({"cost": trip["budget"]}, "trip.budget")
+    start = _parse_date(_require(trip, "start_date", "trip"), "trip.start_date")
+    end = _parse_date(_require(trip, "end_date", "trip"), "trip.end_date")
+    if end < start:
+        raise TripError(f"end_date（{end}）不得早於 start_date（{start}）")
+
+    days = _require(data, "days", "trip.json")
+    if not isinstance(days, list) or not days:
+        raise TripError("days 必須至少包含一天")
 
     prev_date = None
     for d_idx, day in enumerate(days, 1):
@@ -191,11 +193,25 @@ def validate(data):
     if not isinstance(alerts, list):
         raise TripError("alerts 必須是字串陣列")
 
-    highlights = data.get("highlights") or []
-    if not isinstance(highlights, list):
-        raise TripError("highlights 必須是陣列")
-    for h_idx, h in enumerate(highlights, 1):
-        _require(h, "title", f"highlights 第 {h_idx} 項")
+    transit = data.get("transit") or []
+    if not isinstance(transit, list):
+        raise TripError("transit 必須是陣列")
+    for t_idx, t in enumerate(transit, 1):
+        _require(t, "route", f"transit 第 {t_idx} 段")
+        # 交通區按天分頁，所以 day 是必填——沒填的話那一段不會出現在任何一頁上
+        day_no = _require(t, "day", f"transit 第 {t_idx} 段")
+        if not isinstance(day_no, int) or isinstance(day_no, bool)                 or not 1 <= day_no <= len(data["days"]):
+            raise TripError(
+                f"transit 第 {t_idx} 段的 day 必須是 1～{len(data['days'])} 的整數：{day_no!r}"
+            )
+
+    transit_links = data.get("transit_links") or []
+    if not isinstance(transit_links, list):
+        raise TripError("transit_links 必須是陣列")
+    for l_idx, link in enumerate(transit_links, 1):
+        ctx = f"transit_links 第 {l_idx} 項"
+        _require(link, "label", ctx)
+        _require(link, "url", ctx)
 
     wishlist = data.get("wishlist") or []
     if not isinstance(wishlist, list):
@@ -207,6 +223,12 @@ def validate(data):
             raise TripError(
                 f"wishlist「{name}」的 type 必須是 {'/'.join(ITEM_TYPES)}：{itype!r}"
             )
+
+    highlights = data.get("highlights") or []
+    if not isinstance(highlights, list):
+        raise TripError("highlights 必須是陣列")
+    for h_idx, h in enumerate(highlights, 1):
+        _require(h, "title", f"highlights 第 {h_idx} 項")
 
 
 def make_icon_svg(trip):
@@ -237,12 +259,12 @@ def make_manifest(trip):
     }
 
 
-def map_url(query):
-    return "https://www.google.com/maps/search/?api=1&query=" + quote(str(query))
-
-
 def naver_url(query):
     return "https://map.naver.com/p/search/" + quote(str(query))
+
+
+def map_url(query):
+    return "https://www.google.com/maps/search/?api=1&query=" + quote(str(query))
 
 
 def dir_url(query):
@@ -314,21 +336,18 @@ def enrich(data):
     """加上衍生欄位，回傳模板 context。不修改原始 data。"""
     trip = dict(data["trip"])
     trip.setdefault("travelers", 1)
-    trip.setdefault("budget", 0)
-    if trip.get("start_date"):
-        start = _parse_date(trip["start_date"], "start_date")
-        end = _parse_date(trip["end_date"], "end_date")
-        trip["num_days"] = (end - start).days + 1
-        end_label = f"{end.month:02d}.{end.day:02d}"
-        if end.year != start.year:
-            end_label = f"{end.year}.{end_label}"
-        trip["range_label"] = f"{start.year}.{start.month:02d}.{start.day:02d} – {end_label}"
-    else:
-        trip["num_days"] = None
-        trip["range_label"] = "日期未定"
+    start = _parse_date(trip["start_date"], "start_date")
+    end = _parse_date(trip["end_date"], "end_date")
+    trip["num_days"] = (end - start).days + 1
+    end_label = f"{end.month:02d}.{end.day:02d}"
+    if end.year != start.year:
+        end_label = f"{end.year}.{end_label}"
+    trip["range_label"] = f"{start.year}.{start.month:02d}.{start.day:02d} – {end_label}"
     if not trip.get("hero_word"):
-        # hero 浮水印：取目的地最後一段（「日本・東京」→「東京」），最多 4 字
-        segment = re.split(r"[・·,，/\s]+", str(trip["destination"]).strip())[-1]
+        # hero 浮水印：取目的地最後一段（「日本・東京」→「東京」），最多 4 字。
+        # 沒寫 destination 就退回標題
+        source = str(trip.get("destination") or trip["title"]).strip()
+        segment = re.split(r"[・·,，/\s]+", source)[-1]
         trip["hero_word"] = segment[:4] or str(trip["title"])[:4]
 
     days = []
@@ -372,6 +391,10 @@ def enrich(data):
             "items": items,
             "weekday": WEEKDAYS[d.weekday()],
             "date_label": f"{d.month}月{d.day}日",
+            # 跳日列的格子只有 55px 上下，塞不下「10月15日 · 週四」，
+            # 另備一組短寫：10/15 與單字的「四」
+            "date_short": f"{d.month}/{d.day}",
+            "weekday_short": WEEKDAYS[d.weekday()][-1],
             "subtotal": subtotal,
             "day_no": day_no,
             "route_url": route_url,
@@ -407,12 +430,13 @@ def enrich(data):
                     break
         bookings.append(booking)
 
-    budget = trip["budget"]
-    travelers = trip["travelers"] or 1
-    by_category = sorted(
-        ({"label": k, "amount": v} for k, v in by_cat.items() if v),
-        key=lambda x: -x["amount"],
-    )
+    # 交通按天分組：交通區跟行程一樣一次只顯示一天，但只列有要自己搭車的那幾天
+    # （包車或機場接送的日子沒有區間可寫，留一格空的只會讓人多點一次）
+    transit = data.get("transit") or []
+    for day in days:
+        day["transit"] = [t for t in transit if t.get("day") == day["day_no"]]
+    transit_days = [day for day in days if day["transit"]]
+
     wishlist = []
     for raw in data.get("wishlist") or []:
         w = dict(raw)
@@ -432,14 +456,25 @@ def enrich(data):
         else:
             wishlist_groups.append({"label": cat, "items": [w]})
 
+    budget = trip["budget"]
+    travelers = trip["travelers"] or 1
+    by_category = sorted(
+        ({"label": k, "amount": v} for k, v in by_cat.items() if v),
+        key=lambda x: -x["amount"],
+    )
     return {
         "trip": trip,
         "days": days,
-        "wishlist": wishlist,
-        "wishlist_groups": wishlist_groups,
         "bookings": bookings,
         "notes": data.get("notes") or [],
         "alerts": data.get("alerts") or [],
+        "transit": transit,
+        "transit_days": transit_days,
+        # 不綁哪一天的一句話（付款方式），放在交通大標下當說明
+        "transit_note": data.get("transit_note") or "",
+        "transit_links": data.get("transit_links") or [],
+        "wishlist": wishlist,
+        "wishlist_groups": wishlist_groups,
         "highlights": data.get("highlights") or [],
         "pending": pending,
         "totals": {

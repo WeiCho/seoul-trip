@@ -1,4 +1,25 @@
 {%- macro money(v) -%}{{ trip.currency }}{{ "{:,.0f}".format(v) }}{%- endmacro -%}
+{#- 緊急卡片的圖示。24×24、stroke 2、round cap/join、吃 currentColor，
+    所以深淺色與列印都自動跟著走，也不需要外部檔（單檔可攜）。
+    順序對應 trip.emergency：警察／救護／外交部／駐辦／包車／保險 -#}
+{%- macro em_icon(i) -%}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+{%- if i == 0 -%}<path d="M12 3 4 6v6c0 4.5 3.2 7.6 8 9 4.8-1.4 8-4.5 8-9V6z"/>
+{%- elif i == 1 -%}<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>
+{%- elif i == 2 -%}<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><ellipse cx="12" cy="12" rx="4" ry="9"/>
+{%- elif i == 3 -%}<path d="M3 21h18M4 10h16M12 3 3 8h18zM7 10v11M11 10v11M15 10v11M19 10v11"/>
+{%- elif i == 4 -%}<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>
+{%- else -%}<path d="M12 3a9 9 0 0 1 9 9H3a9 9 0 0 1 9-9z"/><path d="M12 12v6a3 3 0 0 0 6 0"/>
+{%- endif -%}
+</svg>
+{%- endmacro -%}
+{#- 銜接引子：交代下一區「為何是下一區」，整行可點。
+    只用在確實有邏輯關係的兩處；緊急→行程那一跳沒有邏輯關係，
+    刻意不放，交給該區既有的深→淺色彩轉場撐住 -#}
+{%- macro handoff(lead) -%}
+<div class="handoff"><span>{{ lead }}</span></div>
+{%- endmacro -%}
 {%- set TYPE_META = {
   "景點": {"icon": "🏛", "cls": "t-see"},
   "餐廳": {"icon": "🍜", "cls": "t-eat"},
@@ -7,7 +28,7 @@
   "購物": {"icon": "🛍", "cls": "t-shop"},
 } -%}
 <!doctype html>
-<html lang="zh-Hant"{% if trip.skin %} data-skin="{{ trip.skin }}"{% endif %}>
+<html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,7 +82,9 @@
 
   --w:600;              /* 實測全站字重 */
   --gut:clamp(18px,4.2vw,64px);
-  --sec:clamp(88px,15vh,200px);   /* 章節上下留白，也決定帶與帶之間的呼吸 */
+  --sec:clamp(72px,11vh,140px);   /* 章節上下留白，也決定帶與帶之間的呼吸 */
+  /* 緊急區下緣淡出的高度。刻意與 --sec 脫鉤：留白是節奏，漸層是質感，
+     兩者共用同一個變數的話，調節奏就會把那道轉場一起縮短、露出硬邊 */
   --ease:cubic-bezier(.16,1,.3,1);
 }
 
@@ -73,7 +96,6 @@
 }
 :root[data-theme="dark"] .cta .o,
 :root[data-theme="dark"] .now-go{background:var(--ink);color:var(--paper)}
-:root[data-theme="dark"] .sticky-nav.stuck{background:var(--paper)}
 :root[data-theme="dark"] .card-live{background:var(--card)}
 
 /* ── 長輩模式（放大關鍵閱讀文字 + 更高對比）── */
@@ -89,9 +111,20 @@
 [data-theme-size="large"] .day-weather,
 [data-theme-size="large"] .day-note{font-size:16px}
 [data-theme-size="large"] .check-grid>div,
+[data-theme-size="large"] .transit-row .tr-meta>div,
 [data-theme-size="large"] .emergency-grid p,
 [data-theme-size="large"] .pending-banner li{font-size:17px}
 [data-theme-size="large"] .emergency-grid a.tel{font-size:18px}
+/* 緊急卡片與彈窗也要跟著放大：會開大字模式的人，正是最需要看清電話的人。
+   卡片原本用固定 aspect-ratio 定高，字級一放大長名稱會折三行撐破，
+   所以大字模式改用 min-height 讓卡片自己長高 */
+[data-theme-size="large"] .em-card{aspect-ratio:auto;min-height:215px}
+[data-theme-size="large"] .em-name{font-size:17px}
+[data-theme-size="large"] .em-dlg h3{font-size:21px}
+[data-theme-size="large"] .em-dlg .em-desc{font-size:17px}
+[data-theme-size="large"] .em-meta{font-size:16px}
+[data-theme-size="large"] .em-tel{font-size:30px}
+[data-theme-size="large"] .em-todo-tag{font-size:15px}
 [data-theme-size="large"] .pack-items label{font-size:18px}
 /* 放大後行高照 1.8 會塞不下幾項，整體收緊一級 */
 [data-theme-size="large"] body{line-height:1.7}
@@ -113,31 +146,52 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 h1,h2,h3,h4{font-weight:var(--w);margin:0}
 .lat{font-family:var(--latin)}
 
+/* 跳過導覽：整頁 46 個焦點，原本前四個是封面浮卡（裝飾性浮層）。
+   平常收在畫面外，取得焦點才滑進來；外觀沿用全站既有的邊框與圓角 */
+.skip{
+  position:fixed;left:var(--gut);top:12px;z-index:60;
+  display:inline-flex;align-items:center;min-height:44px;padding:0 18px;
+  background:var(--card);border:.8px solid var(--line);border-radius:4px;
+  text-decoration:none;font-size:15px;letter-spacing:.06em;
+  transform:translateY(-200%);transition:transform .25s var(--ease);
+}
+.skip:focus{transform:none}
+
 .wrap{max-width:1440px;margin:0 auto;padding-inline:var(--gut)}
 
 /* ── 固定頂列（無字標，導覽靠右）── */
-/* 滿版一整行，不留左右空白；底色由 JS 取「此刻在頂列底下的那一帶」的顏色，
-   所以捲動時它會跟著背景走，不需要分隔線就融進畫面 */
+/* 照 sukima.tokyo.jp：導覽永遠固定在同一個位置、永遠透明、沒有底色 bar。
+   壓在深色塊上時只翻文字顏色（見 .over-dark），不做任何底色或版型切換 */
 .sticky-nav{
   position:fixed;inset:0 0 auto;z-index:40;width:100%;
-  transition:background-color .35s var(--ease),color .35s var(--ease);
+  pointer-events:none;   /* 透明的滿版容器不該擋住底下的內容 */
 }
+/* 面板也要收事件，否則點到它的內距會被當成「點外面」而關掉選單 */
+.sticky-nav a,.sticky-nav button,.sticky-nav .tools-menu{pointer-events:auto}
 .sticky-nav>.nav-inner{
   max-width:1440px;margin:0 auto;
   display:flex;justify-content:flex-end;align-items:center;gap:clamp(12px,2vw,28px);
   padding:clamp(12px,2.2vh,20px) var(--gut);
 }
-.sticky-nav.stuck{background-color:var(--nav-bg,var(--paper))}
-/* 進入深色花費區時整條反白 */
-.sticky-nav.stuck.on-dark{background-color:#241d13;color:#fff}
+/* 不用 mix-blend-mode：它只有掛在 .sticky-nav 本身才會對頁面生效（position:fixed
+   會建立堆疊脈絡、隔離子元素的混色），而掛在 nav 上會把工具選單那塊實心紙色面板
+   一起反相成灰藍、圖示消失。改成只在導覽真的壓到深色塊時翻文字顏色——
+   沒有底色、沒有 bar、位置完全不動 */
+.sticky-nav.over-dark{color:#fff}
+/* 選單面板有自己的紙色底，不能跟著翻白 */
+.sticky-nav.over-dark .tools-menu{color:var(--ink)}
 .nav-links{display:flex;gap:clamp(14px,2.2vw,30px);overflow-x:auto;scrollbar-width:none}
 .nav-links::-webkit-scrollbar{display:none}
 .sticky-nav a{
+  /* 點擊區撐足 44px：實測原本只有 32×27，是全頁最小的目標，
+     而且位在手機最難按的右上角。頂列左側大半是空的，加高不影響版面 */
+  display:inline-flex;align-items:center;min-height:44px;
   text-decoration:none;font-size:16px;letter-spacing:.06em;line-height:1.5;
-  white-space:nowrap;padding:2px 0;position:relative;
+  white-space:nowrap;padding:10px 0;position:relative;
 }
 .sticky-nav a::after{
-  content:"";position:absolute;left:0;right:100%;bottom:0;height:.8px;background:currentColor;
+  /* 底線跟著文字走，不要跟著加高後的點擊區跑到下緣 */
+  content:"";position:absolute;left:0;right:100%;bottom:9px;height:.8px;background:currentColor;
   transition:right .5s var(--ease);
 }
 .sticky-nav a:hover::after,.sticky-nav a:focus-visible::after,
@@ -168,50 +222,99 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
   box-shadow:0 2px 14px rgba(45,37,25,.09);
 }
 .js .tools-menu[hidden]{display:none}
-.sticky-nav.on-dark .tools-menu{background:#241d13;border-color:var(--hair-dark)}
 .nav-tool{
   min-width:38px;min-height:38px;border-radius:4px;border:.8px solid currentColor;
   background:transparent;color:inherit;font:inherit;font-size:14px;cursor:pointer;
   display:grid;place-items:center;opacity:.75;
 }
 .nav-tool:hover{opacity:1}
-@media (width<=760px){
+
+/* ── 垂直導覽：從頭到尾都是這個樣子，不隨捲動改變 ── */
+/* 對齊 1440 版心而不是視窗邊緣（sukima 是貼邊）：封面的構圖建立在版心上，
+   標語左緣、照片置中、導覽右緣是同一組對稱，貼邊會在寬螢幕上脫節 */
+@media (width>860px){
+  .sticky-nav>.nav-inner{
+    flex-direction:column;align-items:flex-end;gap:clamp(6px,1.2vh,14px);
+    padding-top:clamp(40px,7vh,64px);
+  }
+  .sticky-nav .nav-links{
+    flex-direction:column;align-items:flex-end;gap:clamp(2px,.6vh,8px);
+    overflow:visible;   /* 垂直排列時橫向捲動沒有意義，且會裁掉底線動畫 */
+  }
+  /* 垂直排時 44px 會把五條拉得太開，滑鼠操作收成 36px */
+  .sticky-nav a{min-height:36px;padding:6px 0}
+  .sticky-nav a::after{bottom:5px}
+  /* 但觸控裝置（例如寬度落在桌機版型的平板）要回到 44×44。
+     往左加內距而不是往右，文字的右緣對齊才不會被推走 */
+  @media (pointer:coarse){
+    .sticky-nav a{min-height:44px;padding:10px 0 10px 12px}
+    .sticky-nav a::after{bottom:9px;left:12px}
+  }
+}
+
+@media (width<=860px){
   .sticky-nav a{font-size:15px}
   .nav-links{gap:16px}
-  .nav-tool{min-width:34px;min-height:34px;font-size:13px}
+  .nav-tool{min-width:38px;min-height:38px;font-size:13px}
+  /* 手機：列上只留「緊急」，其餘四條移進抽屜（見 .drawer-links） */
+  .nav-links a:not(.nav-urgent){display:none}
+  .sticky-nav>.nav-inner{justify-content:flex-end;gap:14px}
+  .nav-links:empty{display:none}
+}
+/* 抽屜裡的導覽：桌機不存在（列上已經有了），手機才顯示，
+   和底下三顆工具鍵用一條細線分成「去哪裡」與「怎麼看」兩組 */
+.drawer-links{display:none}
+@media (width<=860px){
+  .js .drawer-links{
+    display:flex;flex-direction:column;align-items:stretch;
+    margin:0 0 8px;padding-bottom:8px;border-bottom:.8px solid var(--line);
+  }
+  .js .drawer-links a{font-size:15px;min-height:40px;padding:6px 4px;white-space:nowrap}
+  .js .drawer-links a::after{display:none}   /* 抽屜裡不需要底線動畫 */
+  /* 抽屜變寬一點，四條連結才不會擠成一條窄柱 */
+  .js .tools-menu{min-width:132px}
+  .js .tools-menu .nav-tool{width:100%}
 }
 
 /* ── Hero ── */
+/* 照 giftee.co.jp 的封面：三欄——標語靠左、照片水平置中、導覽疊在右上。
+   照片是唯一的視覺主角，標語刻意用小字＋極寬字距退到背景。
+   1fr auto 1fr 的兩側等寬，照片才會真的落在視窗正中，而不是版心正中 */
 .hero{
-  min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100svh;display:grid;align-content:center;align-items:center;
+  grid-template-columns:1fr auto 1fr;
+  max-width:1440px;margin-inline:auto;
   padding:clamp(96px,14vh,140px) var(--gut) clamp(56px,10vh,110px);
 }
-/* 手機：滿版高度＋大留白會讓標題被推到快一個畫面之後，改成貼著頂列開始 */
-@media (width<=560px){
-  /* 封面仍佔滿一個畫面（下一區的深色塊不該提前露出）。
-     上留白收窄、下留白加大，整組內容因此落在略高於正中的位置，
-     底部也留得下浮在右下角的即時小卡。垂直線維持原本的短線段 */
-  .hero{padding:clamp(76px,11vh,104px) var(--gut) clamp(150px,22vh,220px)}
+.hero-copy{grid-column:1;justify-self:start;text-align:left}
+.hero-figure{grid-column:2;margin:0}
+.hero-figure img{
+  /* 照 giftee：精確 2:3、無圓角。用視窗寬定尺寸（實測 giftee 約佔 22vw），
+     再用 svh 封頂，矮螢幕上照片才不會頂破封面的一個畫面 */
+  display:block;width:clamp(240px,23vw,340px);height:auto;
+  aspect-ratio:2/3;max-height:72svh;object-fit:cover;
+  /* 不加任何濾鏡：深色照片壓在米白紙上正是這個版面的特徵，不是缺陷 */
 }
 .hero h1{
-  text-align:center;font-size:clamp(40px,10vw,112px);line-height:1.12;letter-spacing:.02em;
-  font-weight:700;text-wrap:balance;
+  /* giftee 實測：字距 0.4em、字重 400（Regular）、字級只有 21px。
+     字級不照抄——它的主角是自家拍的照片，標語只是註腳；這裡的標題本身
+     才是記憶點，縮到 21px 會被一張借來的風景照壓掉 */
+  text-align:left;font-size:clamp(28px,3.2vw,44px);
+  letter-spacing:.4em;font-weight:400;line-height:1.7;
 }
-.hero .lead{
-  margin:clamp(18px,3.2vh,36px) auto 0;max-width:34em;text-align:center;
-  font-size:clamp(15.5px,1.2vw,19px);line-height:1.95;
-}
-.hero-pills{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
-  margin-top:clamp(20px,3.4vh,38px);
-}
-.hero-pills span{
-  display:inline-flex;align-items:center;height:34px;padding:0 15px;
-  border:.8px solid var(--line);border-radius:4px;font-size:14px;letter-spacing:.06em;
-}
-.hero .drop{
-  width:.8px;background:var(--ink);height:clamp(40px,7vh,90px);
-  margin-top:clamp(24px,4vh,52px);
+
+/* 沒有三欄空間就疊起來。giftee 手機版（≤991px）也是 flex-direction:column，
+   標語在上、照片在下，而且標語貼近頂部（實測距頂 77px）不置中 */
+@media (width<=860px){
+  .hero{
+    grid-template-columns:1fr;align-content:start;
+    gap:clamp(28px,5vh,48px);
+    padding:clamp(76px,11vh,104px) var(--gut) clamp(40px,6vh,72px);
+  }
+  .hero-copy,.hero-figure{grid-column:1;justify-self:start}
+  .hero h1{font-size:clamp(26px,6.4vw,40px);letter-spacing:.3em}
+  /* 標語靠上之後，剩下的高度全部給照片——照片成為手機封面的主體 */
+  .hero-figure img{width:auto;height:min(52svh,460px);max-height:none}
 }
 
 /* ── 封面浮卡（可疊多張，往左滑換下一張）── */
@@ -234,14 +337,16 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
   /* 右緣對齊內容區右緣：章節是 max-width 1440 置中再加左右留白，
      所以右邊要留「置中剩餘的一半 + 留白」，寬螢幕才不會比文字更靠邊 */
   position:fixed;right:calc((100% - min(100%,1440px)) / 2 + var(--gut));
-  bottom:24px;z-index:35;margin:0;display:block;
+  bottom:calc(24px + var(--nowbar-h, 0px));z-index:35;margin:0;
   width:min(var(--live-box),calc(100% - var(--gut)*2));
-  height:var(--live-h);
+  /* 卡片全部疊在同一個 grid 格子裡，容器高度就等於「最高的那張」。
+     早期寫死 height 讓卡片 position:absolute，內容多一行就會溢出卡片外 */
+  display:grid;grid-template:1fr/1fr;align-items:start;
   touch-action:pan-y;   /* 左右手勢留給換卡，上下仍可正常捲頁 */
 }
 /* 疊在一起：只有最上面那張完全顯示，後面的往上縮一點露出邊 */
 .js .card-deck .card-live{
-  position:absolute;inset:0;margin:0;
+  position:relative;grid-area:1/1;margin:0;
   box-shadow:0 2px 14px rgba(45,37,25,.09);
   transform:translate3d(0,var(--dy,0),0) scale(var(--sc,1));
   opacity:var(--op,1);z-index:var(--z,1);
@@ -258,14 +363,15 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
   display:grid;place-items:center;
 }
 .js .deck-dots button::before{
-  content:"";width:5px;height:5px;border-radius:50%;background:var(--line);
+  content:"";width:5px;height:5px;border-radius:50%;background:var(--muted);opacity:.7;
   transition:background .3s var(--ease);
 }
-.js .deck-dots button[aria-current="true"]::before{background:var(--muted)}
+.js .deck-dots button[aria-current="true"]::before{background:var(--ink);opacity:1}
 @media (prefers-reduced-motion:no-preference){
   .js .card-deck{
     opacity:0;transform:translateY(16px);
-    transition:opacity .55s var(--ease),transform .55s var(--ease);
+    /* height：換到文字較長的卡時，卡片高度平順長出來而不是瞬間跳 */
+    transition:opacity .55s var(--ease),transform .55s var(--ease),height .42s var(--ease);
   }
   .js .card-deck.is-in{opacity:1;transform:none}
   /* 開始往下捲就退場 */
@@ -282,7 +388,7 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
   white-space:nowrap;
 }
 .card-live .state{margin:9px 0 0;font-size:15.5px;line-height:1.65}
-/* 手動標記（如訂位開賣日），跟在日期後面，用暖色點出來 */
+/* 手動標記（如訂位開賣日），跟在狀態／日期後面，用暖色點出來 */
 .card-live .live-tag{
   margin-left:.5em;padding:1px 7px;border:.8px solid var(--warm);border-radius:4px;
   color:var(--warm);font-size:12px;letter-spacing:.04em;white-space:nowrap;
@@ -290,11 +396,114 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 .card-live .keys{
   /* 13.5 而非 14：iOS 的 PingFang 比桌機字寬，14 會讓摘要在 215 寬裡多折一行 */
   margin:4px 0 0;font-size:13.5px;line-height:1.75;color:var(--muted);
-  /* 不截字：內容由 scripts/update_takachiho.py 濃縮成兩行短句，這裡完整顯示 */
+  /* 不截字：內容由 scripts/update_takachiho.py 濃縮成一行短句，這裡完整顯示 */
   white-space:pre-line;
 }
 .card-live a.who{text-decoration:none;border-bottom:.8px solid var(--line)}
 .card-live a.who:hover{border-color:currentColor}
+
+/* ── 票根卡（card.variant = "hello"）──
+   出發前的問候卡做成一張登機票根：上半問候、打孔線、下半航線與倒數。
+   右上角蓋一枚會慢慢轉的環形印章；底色兩團極淡的暖紅／海藍光暈，
+   顏色只從既有的 --warm 與高千穗峽照片的水色取，不另立新色 */
+.card-live.card-hello,
+:root[data-theme="dark"] .card-live.card-hello{
+  position:relative;min-height:0;padding:20px 18px 0;
+  background:
+    radial-gradient(110% 80% at 100% 0%,var(--hello-a),transparent 62%),
+    radial-gradient(90% 75% at 0% 100%,var(--hello-b),transparent 66%),
+    var(--card);
+}
+{% include '_barlow_font.j2' %}
+.card-hello{
+  --hello-a:rgba(140,47,34,.09);--hello-b:rgba(58,110,122,.11);
+  /* 卡上的英文與數字用內嵌的 Barlow；--latin 的 DIN 多數裝置沒有，會一路掉到 Roboto／Arial */
+  --hello-latin:"Barlow",var(--latin);
+}
+:root[data-theme="dark"] .card-hello{--hello-a:rgba(224,138,114,.10);--hello-b:rgba(120,170,180,.09)}
+.hello-title{margin:0;font-size:13px;line-height:1.6;letter-spacing:.32em;color:var(--muted)}
+.hello-fun{
+  margin:2px 0 0;font-family:var(--hello-latin);font-weight:500;
+  font-size:38px;line-height:1.05;letter-spacing:-.01em;color:var(--ink);
+}
+/* 打孔線：虛線＋左右兩個半圓缺口。缺口是紙色圓，裁掉外半邊，
+   多留 1px 蓋住卡片自己的邊框，看起來才像真的被咬掉一口 */
+.hello-stub{
+  position:relative;margin-top:16px;padding:11px 0 13px;
+  border-top:1px dashed var(--line);
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+}
+.hello-stub::before,.hello-stub::after{
+  content:"";position:absolute;top:-8px;width:15px;height:15px;border-radius:50%;
+  background:var(--paper);border:.8px solid var(--line);
+}
+.hello-stub::before{left:-26.3px;clip-path:inset(0 0 0 calc(50% - 1px))}
+.hello-stub::after{right:-26.3px;clip-path:inset(0 calc(50% - 1px) 0 0)}
+.hello-route{
+  margin:0;display:flex;align-items:center;gap:6px;white-space:nowrap;
+  font-family:var(--hello-latin);font-weight:600;font-size:13px;letter-spacing:.16em;
+}
+.hello-route svg{width:22px;height:8px;fill:none;stroke:currentColor;stroke-width:1}
+.hello-count{
+  margin:0;display:flex;align-items:baseline;gap:5px;white-space:nowrap;
+  font-size:12px;letter-spacing:.06em;color:var(--muted);
+}
+.hello-n{
+  font-family:var(--hello-latin);font-weight:500;font-size:29px;line-height:1;
+  letter-spacing:0;color:var(--warm);font-variant-numeric:tabular-nums;
+}
+.hello-u{font-family:var(--hello-latin);font-size:12.5px}
+/* 沒有 JS（或還沒算好）時是「10.15 — 10.20」，破折號不該放大成倒數字級 */
+.card-hello:not(.is-counted) .hello-n{font-size:12px;color:inherit}
+.card-hello.is-home .hello-k{color:var(--ink)}
+
+.hello-stamp{
+  position:absolute;top:-34px;right:-8px;width:80px;height:80px;
+  border-radius:50%;background:var(--card);
+  box-shadow:0 2px 10px rgba(45,37,25,.10);
+  overflow:visible;pointer-events:none;
+}
+.hello-stamp text{
+  font-family:var(--hello-latin);font-size:10.5px;font-weight:600;letter-spacing:.08em;
+  fill:var(--warm);
+  transform-box:view-box;transform-origin:50% 50%;
+}
+.hello-plane{fill:var(--ink);transform:rotate(45deg);transform-box:view-box;transform-origin:50% 50%}
+@media (prefers-reduced-motion:no-preference){
+  .hello-stamp text{animation:hello-spin 32s linear infinite}
+  /* 卡片浮上來之後才「蓋章」：從大一圈、斜一點的位置壓下來。全卡唯一的登場動作 */
+  .js .card-hello .hello-stamp{
+    opacity:0;transform:scale(1.4) rotate(-14deg);
+    transition:opacity .35s var(--ease) .5s,transform .7s var(--ease) .5s;
+  }
+  .js .card-deck.is-in .card-hello .hello-stamp{opacity:1;transform:none}
+}
+@keyframes hello-spin{to{transform:rotate(360deg)}}
+/* 大字模式：卡片加寬，字級跟著其他區塊放大一級；
+   底列寬度不夠時讓倒數折到第二行，而不是把字擠小 */
+[data-theme-size="large"] .card-deck{--live-box:calc(280px + 32px + 1.6px)}
+[data-theme-size="large"] .hello-title{font-size:15px;letter-spacing:.26em}
+[data-theme-size="large"] .hello-fun{font-size:44px}
+[data-theme-size="large"] .hello-stub{flex-wrap:wrap;row-gap:4px}
+[data-theme-size="large"] .hello-route{font-size:15px}
+[data-theme-size="large"] .hello-count{font-size:15px}
+[data-theme-size="large"] .hello-u{font-size:15px}
+[data-theme-size="large"] .hello-n{font-size:34px}
+
+/* 手機封面：浮卡固定在右下，原本會壓住照片下緣（正好是小船的位置）。
+   改成讓照片只佔「標語之下、浮卡之上」的高度：底部留出浮卡實高
+   （--deck-h，由 JS 量；含印章凸出的部分），照片在剩下的那格裡等比縮放。
+   只在有 JS（浮卡真的是浮層）時才這樣排；照片最矮保留 220px，再矮就讓它被蓋 */
+@media (width<=860px){
+  .js .hero:has(.card-deck){
+    /* 高度要是定值 1fr 才會吃「剩下的空間」；min-content 保底，矮螢幕內容放不下時照樣撐開 */
+    height:100svh;min-height:min-content;
+    grid-template-rows:auto minmax(220px,1fr);
+    padding-bottom:calc(var(--deck-h,190px) + 24px + var(--nowbar-h,0px) + 20px);
+  }
+  .js .hero:has(.card-deck) .hero-figure{align-self:stretch;min-height:0}
+  .js .hero:has(.card-deck) .hero-figure img{height:100%;max-height:460px}
+}
 
 /* ── 章節 ── */
 .section{max-width:1440px;margin:0 auto;padding:var(--sec) var(--gut) 0}
@@ -303,13 +512,49 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 .section-heading p{
   margin:6px 0 0;color:var(--muted);font-size:15px;letter-spacing:.04em;line-height:1.8;
 }
+/* ── 銜接引子（.handoff）與頁尾收束（.coda）──
+   不畫線也不鋪色塊：靠一段大留白把上下兩區斷開，捲到時大字才浮出來。
+   下一區的標題就在不到一屏之外，所以這裡只提問、不寫區名，也不做連結 */
+.handoff{
+  /* 留白綁「視窗寬度」而非 vh：綁 vh 的話手機（螢幕高）反而比桌機留得多。
+     這是全站唯一不綁 --sec/vh 的間距，刻意的例外 */
+  --pad:clamp(64px,12vw,220px);
+  /* 下一個章節自己有 --sec 的上留白。--pad 比它大就在下方補差額、比它小就用負 margin
+     把它拉回來，兩者一正一負只會有一個生效，效果是下方永遠剛好等於 --pad */
+  padding:var(--pad) 0 max(0px, calc(var(--pad) - var(--sec)));
+  margin-bottom:min(0px, calc(var(--pad) - var(--sec)));
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(8px,2.5vw,28px);
+  color:var(--ink);
+  font-size:clamp(26px,7vw,32px);letter-spacing:.06em;line-height:1.5;
+  /* 與各章節同一套 --fade：預設 1，所以沒有 JS 或要求減少動態時直接是實心 */
+  opacity:var(--fade,1);
+  transform:translateY(calc((1 - var(--fade,1)) * 12px));
+}
+/* 標題兩側的短線。用偽元素，螢幕閱讀器只會讀到那句話。
+   flex:1 讓線在窄螢幕自動縮短甚至歸零——版面吃緊時先犧牲裝飾，字永遠單行 */
+.handoff::before,.handoff::after{
+  content:"";flex:1 1 0;min-width:0;max-width:clamp(28px,6vw,72px);
+  height:.8px;background:var(--line);
+}
+.handoff span{flex:0 1 auto;text-align:center;text-wrap:balance}
+
+.coda{max-width:1440px;margin:0 auto;padding-inline:var(--gut)}
+.coda>div{
+  /* 收束同樣不用線，改以留白撐開 */
+  padding:clamp(64px,10vh,120px) 0 clamp(48px,8vh,96px);
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
+}
+.coda .d{font-size:14px;letter-spacing:.08em;color:var(--muted)}
+.coda .t{font-size:15.5px;letter-spacing:.1em}
+
 .heading-row{
   display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;
 }
 
 /* ── 區塊分帶 ──
    一個帶＝一種底色，相關的章節歸在同一帶：
-     A 緊急（深色）　B 行程　C 花費　E 提醒＋檢查
+     B 行程　C 交通　E 花費＋檢查＋緊急（深色圓角色塊，壓在 E 的底色上）
    帶與帶直接相接，不留空白段：換色在下一帶開頭的那一小段裡完成
    （--prev → --band 的漸層），所以既沒有硬邊，也不會出現一塊空的過場。 */
 /* 帶的底色不做左右展開：那會讓帶的第一個章節出現時露出兩側較窄的色塊，
@@ -328,9 +573,11 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 /* 上一帶的底色（--prev）就是上面那一帶的 --band，改色時兩處要一起改 */
 .band-b{--band:#f2f1ed; --prev:#f2f1ed}
 .band-c{--band:#eceae3; --prev:#f2f1ed}
+.band-c + .band-c{--prev:#eceae3}
 .band-e{--band:#eae7e0; --prev:#eceae3}
 :root[data-theme="dark"] .band-b{--band:#1b1610; --prev:#1b1610}
 :root[data-theme="dark"] .band-c{--band:#201a13; --prev:#1b1610}
+:root[data-theme="dark"] .band-c + .band-c{--prev:#201a13}
 :root[data-theme="dark"] .band-e{--band:#1e1913; --prev:#201a13}
 
 /* ── 待確認橫幅 ── */
@@ -353,42 +600,97 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
   --open:0%;
   --fade:1;
 }
-/* 上緣直接切齊，不做漸層（依指示）；只有下緣溶進下一帶的底色。
-   淡出色要用「與下一帶同色但 alpha 0」，用 transparent 會透出灰邊 */
-#emergency{--fade-to:#f2f1ed; --fade-to-0:rgba(242,241,237,0)}
-:root[data-theme="dark"] #emergency{--fade-to:#1b1610; --fade-to-0:rgba(27,22,16,0)}
+/* 底色改採 kobe-yakult.co.jp 頁尾「Contact Us」那種區塊：純色、圓角、四周內縮，
+   不再是滿版漸層。原本的三層漸層（下緣淡出＋左上放射光暈＋垂直深→淺）全部拿掉——
+   圓角色塊是「一塊放在紙上的東西」，有明確的邊，沒有溶進下一區這回事。
+   附帶好處：白字對比從漸層最亮端的 6.47:1 提升到 12.75:1。 */
+/* 內縮量：有上限的固定值。曾經試過綁在版心邊距上（讓導覽永遠避開色塊），
+   但那個值會隨視窗寬無上限成長——1920 下算出 371px，卡片被壓到 83px、
+   名稱折三行，整區崩掉。
+   改成相反的策略：導覽不閃避，而是永遠完整落在色塊「內」，重疊交給
+   .over-dark 翻文字顏色處理。3.4vw 恆小於 --gut 的 4.2vw，所以導覽的
+   左右緣都在色塊裡，不會發生「一半在深底一半在淺底」的半截字 */
+#emergency{--em-inset:clamp(16px,3.4vw,72px)}
 #emergency::before{
-  content:"";position:absolute;inset:0;z-index:0;
-  /* 比先前淡一階：整塊偏中性的暖褐，白字仍有足夠對比 */
-  background-color:#4a3f31;
-  background-image:
-    /* 下緣淡出的高度用固定長度（＝底部留白），不用百分比：
-       這一區內容多、整塊很高時，百分比會蓋到最後幾列 */
-    linear-gradient(0deg,var(--fade-to) 0%,var(--fade-to-0) calc(var(--sec) * .85)),
-    radial-gradient(120% 78% at 16% 4%,rgba(255,244,226,.12) 0%,rgba(255,244,226,0) 60%),
-    linear-gradient(180deg,#3a3126 0%,#4c4133 46%,#6b5c46 100%);
-  clip-path:inset(0 var(--open));
+  content:"";position:absolute;z-index:0;
+  /* 左右內縮成一塊，上下切齊區塊自身的留白 */
+  inset:0 var(--em-inset);
+  /* 純色，不疊任何漸層。#3a3126 是原漸層的最深端，等同 kobe-yakult 的
+     #303030 在這套暖色系裡的對應值（兩者對白字都是 13:1 上下） */
+  background-color:#3a3126;
+  /* 圓角要寫進 clip-path 而不是 border-radius：橫向展開動畫用的就是 clip-path，
+     兩者並用時 clip-path 會把 border-radius 切成方角 */
+  clip-path:inset(0 var(--open) round 20px);
 }
 #emergency>*{position:relative;z-index:1;opacity:var(--fade)}
-#emergency .ov-inner{max-width:1440px;margin:0 auto;padding-inline:var(--gut)}
+/* 色塊內縮後，內容的左右留白要從「視窗邊緣」改成「色塊邊緣」起算，
+   否則文字會貼著圓角邊。kobe-yakult 的作法也是色塊內縮 50 再加 50 內距 */
+#emergency .ov-inner{max-width:1440px;margin:0 auto;padding-inline:calc(var(--gut) + var(--em-inset))}
 /* 深色底上的欄位表：直線與次要文字都改白色系，否則會看不見 */
 #emergency .em-head h2,#emergency .emergency-grid p{color:#fff}
-#emergency .em-head p,#emergency .emergency-grid b{color:rgba(255,255,255,.72)}
+/* 底色改純色 #3a3126 後，.86 對它是 9.87:1，餘裕比先前的漸層大得多 */
+#emergency .em-head p,#emergency .emergency-grid b{color:rgba(255,255,255,.86)}
 #emergency .emergency-grid{border-left-color:var(--hair-dark)}
 #emergency .emergency-grid a.tel{color:#fff;border-bottom-color:var(--hair-dark)}
+/* 卡片：深底上「淺一階」，不用純白卡——這一區的深色是全頁唯一的，
+   捲動時靠它一眼認出「緊急在這裡」，壓六張白卡會把那個辨識度洗掉 */
+#emergency .em-card{color:#fff}
+/* .86 是這一區既有的次要文字濃度。底色改純色後對比大幅放寬（9.87:1），
+   但仍沿用 .86 與同區其他次要文字一致 */
+#emergency .em-sub{color:rgba(255,255,255,.86)}
+#emergency .em-name{border-top-color:var(--hair-dark)}
 
-/* ── 提醒（原本的提醒與備忘合併成這一區，可收合、預設收起）── */
-/* 區塊銜接不畫橫線，改用底色與進場動畫區分 */
-/* 不用 margin-top：這一區是帶裡的第一個元素，外邊距會被帶「擠」出去變成空白帶。
-   需要的上留白由 .alerts-summary 的 padding-top 負責 */
-.alerts-section{margin-top:0}
-.alerts-summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;
-  align-items:flex-start;gap:20px;padding-top:var(--sec)}
-.alerts-summary::-webkit-details-marker{display:none}
-.alerts-toggle{font-family:var(--latin);font-size:22px;color:var(--muted);flex:0 0 auto}
-.alerts-section[open] .alerts-toggle{transform:rotate(45deg)}
-.alerts-section .section-heading{margin-bottom:0}
-.alerts-body{padding-top:clamp(20px,3.4vh,40px)}
+
+/* ── 每日行程：跳日列 ── */
+/* 六格等分排一行，任何天數都不會有一格特別寬；天數多到擠不下才換行。
+   不用 grid-template-columns:repeat(6,...)：天數是資料決定的，寫死 6 會在
+   行程加減一天時破版 */
+.daypick{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-top:calc(clamp(28px,5vh,60px) * -.35);   /* 標題下方，比章節留白再靠近一點 */
+}
+.dp{
+  /* 上限 136px：桌機版心近 1400px，六格均分會變成 212px 的大方塊，
+     選中格那面墨色在這種留白很多的版面上太重。有上限之後整列往左收，
+     左緣跟「行程」大標與底下的大字日期切齊；手機寬度不夠時才回到均分 */
+  flex:1 1 0;min-width:52px;max-width:136px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  min-height:64px;padding:8px 4px;border-radius:4px;
+  /* 透明框先佔位，選中時才換色——不這樣的話選中會把格子撐大 1.6px，
+     整列跟著抖一下 */
+  border:.8px solid transparent;
+  text-decoration:none;color:var(--muted);
+  transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease);
+  position:relative;
+}
+.dp b{font-family:var(--latin);font-size:clamp(19px,2.2vw,26px);line-height:1;letter-spacing:.02em;font-weight:400}
+/* 日期小字不加 opacity：淡掉後 12px 的對比會掉到 4.5:1 以下。
+   靠字級和 currentColor 分層就夠 */
+.dp small{font-family:var(--latin);font-size:12px;letter-spacing:.06em;line-height:1;white-space:nowrap}
+.dp small i{font-style:normal;margin-left:.35em}
+.dp:hover{color:var(--ink);border-color:var(--line)}
+/* 選中：實心反白。六格一排時線框的粗細差在手機上幾乎看不出來，
+   要讓「現在在第幾天」用餘光就認得，只有翻色夠力 */
+.dp[aria-current]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* 今日：右上角一點。用「今日」兩個字會撐破等分的格寬 */
+.dp.is-today::after{
+  content:"";position:absolute;top:7px;right:7px;width:5px;height:5px;border-radius:50%;
+  background:var(--warm);
+}
+/* 反白格上 --warm 對墨底只有 1.9:1，非文字元件要 3:1，改用紙色 */
+.dp[aria-current].is-today::after{background:var(--paper)}
+/* 手機一律走緊縮尺寸。門檻壓在 460 而不是 400：430（Pro Max）、412（Pixel）
+   這一段用基準值算出來是 6×52+5×8=352，比扣掉版心留白後的可用寬還多，會掉成兩行。
+   320px（SE 一代、摺疊機外螢幕）則靠 40 的下限與 5 的間距守住一行六格 */
+@media (width<460px){
+  .daypick{gap:5px}
+  .dp{min-width:40px;min-height:58px;padding:6px 2px;gap:4px}
+  .dp small{font-size:11px;letter-spacing:.02em}
+}
+/* 400 以下連星期都塞不進去，先讓位——日期本身比較好認 */
+@media (width<400px){
+  .dp small i{display:none}
+}
 
 /* ── 每日行程：左右換日 ── */
 /* 換日列：放在當天內容之後，不畫上下線 */
@@ -403,7 +705,7 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
   transition:background .35s var(--ease),color .35s var(--ease),opacity .35s var(--ease);
 }
 .arw:hover:not(:disabled){background:var(--ink);color:var(--paper)}
-.arw:disabled{opacity:.26;cursor:default}
+.arw:disabled{opacity:.5;cursor:default}   /* .26 算出來 1.68:1，非文字元件要 3:1 */
 .daybar .th{
   flex:0 1 auto;min-width:0;text-align:center;
   font-size:clamp(16px,1.6vw,20px);line-height:1.6;letter-spacing:.06em;
@@ -426,18 +728,60 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
   .day-grid{grid-template-columns:minmax(280px,.95fr) minmax(0,1.85fr);gap:clamp(44px,6vw,120px)}
   .day-aside{border-right:.8px solid var(--line);padding-right:clamp(22px,2.8vw,52px)}
 }
-.day-no{
-  display:block;font-family:var(--latin);font-size:clamp(48px,7vw,100px);line-height:.95;
-  letter-spacing:.01em;
+/* 左欄的大字。字級刻意停在 31px、低於區塊大標的 38px：主題最長的一天有
+   24 個字，再大就會在窄欄裡疊成四五行，把天氣與導航鍵推到摺線以下 */
+.day-name{
+  font-size:clamp(23px,2.6vw,31px);line-height:1.45;letter-spacing:.04em;
+  text-wrap:balance;
 }
-.day-no small{
-  display:block;font-family:var(--latin);font-size:15px;letter-spacing:.1em;
-  margin-top:8px;color:var(--muted);
-}
-.day-aside h3{
-  font-size:clamp(17px,1.6vw,21px);line-height:1.7;letter-spacing:.06em;margin:16px 0 0;
+.day-date{
+  margin:12px 0 0;font-family:var(--latin);font-size:15px;letter-spacing:.1em;
+  color:var(--muted);
 }
 .day-weather{margin:14px 0 0;font-size:14px;line-height:1.8;color:var(--muted)}
+/* 預報來源：比天氣本身再淡一階，換行自己站一行，不跟氣溫擠在一起 */
+.wx-src{display:block;font-size:12px;letter-spacing:.04em;opacity:.72}
+/* 逐時氣溫：一格一個時段（時／氣溫／降雨），格子多於欄寬時橫向捲動。
+   降雨機率 50% 以上用暖色點出來——要回答的是「這個時段要不要帶傘」 */
+.wx-hours{margin:12px 0 0}
+/* 每個地點一條可點的列，外框跟 route-btn 同一套，看起來就是「可以按」；
+   右邊的 ▾ 點開後轉向 */
+.wx-hours{border:.8px solid var(--line);border-radius:4px}
+.wx-hours+.wx-hours{margin-top:8px}
+.wx-hours>summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  min-height:44px;padding:0 14px;font-size:15px;letter-spacing:.04em;
+}
+.wx-hours>summary::-webkit-details-marker{display:none}
+.wx-hours>summary b{font-family:var(--latin);font-weight:600;margin-left:.3em}
+.wx-more{font-size:12px;color:var(--muted);white-space:nowrap}
+.wx-more::after{content:"▾";display:inline-block;margin-left:.4em;font-size:14px;transition:transform .15s}
+.wx-hours[open] .wx-more::after{transform:rotate(180deg)}
+.wx-hours>ol,.wx-hours>.wx-spread,.wx-hours>.wx-src{padding-left:14px;padding-right:14px}
+.wx-hours>.wx-src{margin-top:4px}
+.wx-hours>.wx-windy{margin:10px 14px 14px}
+.wx-hours ol{
+  list-style:none;margin:6px 0 0;padding:0 0 6px;display:flex;gap:0;
+  overflow-x:auto;scrollbar-width:thin;scroll-snap-type:x proximity;
+}
+.wx-hours li{
+  flex:0 0 auto;min-width:3em;display:grid;justify-items:center;gap:1px;
+  padding:6px 4px;border-left:.8px solid var(--line);scroll-snap-align:start;
+  font-family:var(--latin);font-variant-numeric:tabular-nums;
+}
+.wx-hours li:first-child{border-left:0}
+.wx-hours .h{font-size:12px;color:var(--muted)}
+.wx-hours b{font-size:16px;font-weight:600}
+.wx-hours .p{font-size:12px;color:var(--muted)}
+.wx-hours .wet .p{color:var(--warm)}
+.wx-spread{margin:6px 0 0;font-size:13px;line-height:1.7;color:var(--warm)}
+[data-theme-size="large"] .wx-spread{font-size:15px}
+/* Windy 按鈕沿用 .route-btn 的外框，只調位置 */
+.wx-windy{margin:12px 8px 0 0}
+[data-theme-size="large"] .wx-hours b{font-size:19px}
+[data-theme-size="large"] .wx-hours>summary{font-size:17px}
+[data-theme-size="large"] .wx-more{font-size:14px}
+[data-theme-size="large"] .wx-hours .h,[data-theme-size="large"] .wx-hours .p{font-size:14px}
 /* 當日小提醒：跟天氣同一種灰，字級一樣，只用行距分開 */
 .day-note{margin:6px 0 0;font-size:14px;line-height:1.8;color:var(--muted)}
 .day-tools{margin-top:16px}
@@ -486,12 +830,11 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 }
 .stop .go span{border-bottom:.8px solid var(--line);margin-left:.4em}
 /* 今日模式：已過的行程壓低，但不隱藏 */
-.stop.past{opacity:.42}
-/* 口袋名單：沿用時間軸的列，左欄放地區取代時間 */
-.wish .stop time{font-family:inherit;font-size:clamp(14px,1.3vw,16px);letter-spacing:.08em;color:var(--muted);min-width:5.5em}
-.wish .stop:last-child{border-bottom:0}
-.wish-group{margin-top:clamp(28px,4vh,48px);padding-bottom:10px;border-bottom:.8px solid var(--ink);font-size:clamp(19px,1.8vw,22px);letter-spacing:.12em}
-.wish-group small{margin-left:.6em;font-family:var(--latin);font-size:.7em;color:var(--muted);letter-spacing:.04em}
+/* 已過行程：原本只用 opacity:.42 傳達，算出來只有 2.45:1，而且語意單靠明暗。
+   改成「時間加刪除線 + 名稱降為次要字」，兩個訊號、且都達 AA */
+.stop.past{opacity:1}
+.stop.past>time{text-decoration:line-through;text-decoration-thickness:.8px}
+.stop.past h4,.stop.past h4 a,.stop.past .desc,.stop.past .meta{color:var(--muted)}
 
 /* 行程內的即時狀態區 */
 .live-status{
@@ -514,22 +857,122 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 /* ── 緊急資訊 ── */
 /* 版式參考 3jigen.jp 的 Company：左側大標題、中間一條直線、右側欄位表。
    列與列之間刻意不畫橫線（依指示），改用行距分隔 */
-.em-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,4vh,44px)}
+/* max-width 1160 是反推出來的：右欄 = 183×3 + 20×2 間距 + 78 內距 = 667，
+   左欄 = 667 / 1.35 = 494，合計 1161。內容區有 1312 寬，不收窄的話卡片會被
+   撐成 238px——那就不是 c-morinosato 的卡了。收窄後置中，兩邊各留約 76px */
+.em-wrap{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,4vh,44px);
+  max-width:1160px;margin-inline:auto;
+}
 @media (width>=900px){
-  /* 左欄只放標題，右邊留給欄位表：欄名與內容都要能一行放完，
-     所以左欄壓窄、直線與右欄之間的留白也收斂 */
-  .em-wrap{grid-template-columns:minmax(200px,.55fr) minmax(0,2fr);gap:0}
-  .emergency-grid{border-left:.8px solid var(--line);padding-left:clamp(32px,5vw,86px)}
+  /* 照 c-morinosato 的左右比例（實測左 400／右 600）。左欄比原本寬得多，
+     因為它現在裝的是「標題＋副標＋說明」三層，而不只是一個標題；
+     右欄則剛好容得下三張 183px 卡片加間距 */
+    .em-wrap{grid-template-columns:minmax(260px,1fr) minmax(0,1.35fr);gap:0}
 }
 .em-head h2{font-size:clamp(30px,4.4vw,56px);line-height:1.2;letter-spacing:.04em}
+/* 羅馬拼音副標：c-morinosato 用它在標題下墊一層，字距拉開、字級很小 */
+.em-head .em-sub{
+  margin:6px 0 0;font-family:var(--latin);font-size:12px;letter-spacing:.28em;
+  color:var(--muted);
+}
 .em-head p{margin:12px 0 0;color:var(--muted);font-size:15px;line-height:1.8}
+
+/* ── 緊急卡片網格 ── */
+.em-cards{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,1.4vw,20px);
+}
+/* 三欄的門檻拉到 1150：900–1150 這段硬排三欄的話卡片只剩 133–160px、
+   名稱全部折兩行；改排兩欄可以拿到 240px 以上 */
+@media (width>=1150px){
+  .em-cards{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    /* 寫在 base 規則之後：同特異度時後者勝，寫在前面會被上面的 padding:0 蓋掉 */
+    border-left:.8px solid var(--line);padding-left:clamp(32px,5vw,86px);
+  }
+  #emergency .em-cards{border-left-color:var(--hair-dark)}
+}
+.em-card{
+  /* 183×215 是量 c-morinosato 的結果；用 aspect-ratio 讓它在窄欄自動等比縮 */
+  width:100%;aspect-ratio:183/215;min-height:150px;
+  display:grid;grid-template-rows:1fr auto;justify-items:stretch;
+  gap:10px;padding:18px 16px 14px;
+  background:rgba(255,255,255,.06);border:.8px solid var(--hair-dark);border-radius:10px;
+  color:inherit;font:inherit;cursor:pointer;text-align:center;
+  transition:background-color .3s var(--ease),transform .3s var(--ease);
+}
+/* 淺色區塊裡（例如列印預覽外的一般情境）用紙色系，深色區塊才用半透明白 */
+:root:not([data-theme="dark"]) .em-card{background:rgba(255,255,255,.06)}
+.em-card:hover{background:rgba(255,255,255,.11)}
+.em-card:active{transform:scale(.985)}
+.em-icn{
+  align-self:center;display:grid;place-items:center;
+  width:clamp(56px,7vw,74px);aspect-ratio:1;border-radius:50%;
+  background:rgba(255,255,255,.08);
+}
+.em-icn svg{width:52%;height:52%}
+.em-name{
+  /* 左對齊（照 c-morinosato），右邊留 22px 給箭頭。卡內可用寬因此是
+     183 − 32 內距 − 22 = 129px，而最長的「台北駐福岡辦事處」在 15px 下是
+     120px，剛好單行放得下；再大一級就會撞上箭頭 */
+  align-self:end;width:100%;padding:10px 22px 0 0;
+  border-top:.8px solid var(--hair-dark);
+  font-size:15px;letter-spacing:.04em;line-height:1.45;text-align:left;
+}
+/* 箭頭疊在名稱那一列的右端，不另外佔一列（卡片高度是固定比例，省得下的每一 px 都要省） */
+.em-card{position:relative}
+.em-go{position:absolute;right:14px;bottom:12px;font-size:13px;opacity:.6}
+
+/* ── 緊急彈窗 ── */
+.em-dlg{
+  width:min(420px,calc(100vw - 2*var(--gut)));padding:0;
+  background:var(--card);color:var(--ink);
+  border:.8px solid var(--line);border-radius:10px;
+}
+.em-dlg::backdrop{background:rgba(20,16,11,.55)}
+.em-dlg-in{padding:clamp(20px,3.4vw,28px)}
+.em-dlg h3{font-size:19px;line-height:1.5;letter-spacing:.03em}
+.em-dlg .em-desc{margin:10px 0 0;font-size:15px;line-height:1.85;color:var(--muted)}
+.em-meta{margin:14px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:14px}
+.em-meta dt{color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+.em-meta dd{margin:0;line-height:1.7}
+.em-tel{
+  display:flex;align-items:center;min-height:52px;margin-top:16px;
+  font-family:var(--latin);font-size:26px;letter-spacing:.06em;
+  text-decoration:none;border-bottom:.8px solid var(--line);
+}
+/* 待填：一條和號碼等寬的虛線，之後把號碼填進來版面不會跳 */
+.em-tel.is-todo{gap:12px;border-bottom-style:none;color:var(--muted);cursor:default}
+.em-todo-line{
+  flex:0 0 auto;width:9ch;border-bottom:1.4px dashed var(--line);
+  /* 9ch 約等於 13 碼號碼在 --latin 下的寬度 */
+}
+.em-todo-tag{font-family:var(--sans);font-size:13px;letter-spacing:.08em}
+.em-close{
+  margin-top:20px;width:100%;min-height:44px;
+  background:var(--pine);color:var(--paper);border:0;border-radius:4px;
+  font:inherit;font-size:15px;letter-spacing:.08em;cursor:pointer;
+}
+
+/* 沒有 JS 時 <dialog> 預設 display:none，緊急資訊會整份消失。
+   退回成一般區塊，直接顯示在卡片下方——這是全頁唯一不能沒有的內容 */
+.em-dlg:not([open]){display:block;position:static;margin:12px 0 0;width:auto}
+.js .em-dlg:not([open]){display:none}
+.em-close{display:none}
+.js .em-close{display:block}
+/* 沒有 JS 時卡片點了沒反應，把它降成純標示、不假裝可按 */
+.em-card{}
+html:not(.js) .em-card{cursor:default}
+
+.em-print{display:none}
+
+/* 保留原本的三欄文字列樣式：螢幕上不用，列印時整套接手 */
 .emergency-grid{display:grid;gap:clamp(14px,2.2vh,26px)}
 .em-row{display:grid;grid-template-columns:minmax(0,1fr);gap:2px}
 @media (width>=560px){
-  /* 欄名欄寬足夠放「外交部旅外急難救助專線」這種長標，避免折行 */
   .em-row{grid-template-columns:minmax(11.5em,13em) minmax(0,1fr);gap:clamp(16px,2.4vw,34px);align-items:baseline}
 }
-/* 欄名與內容都盡量一行：容不下時才折 */
 .emergency-grid b,.emergency-grid p{text-wrap:pretty}
 @media (width>=900px){ .emergency-grid b{white-space:nowrap} }
 .emergency-grid b{font-size:15.5px;letter-spacing:.06em;color:var(--muted)}
@@ -543,46 +986,94 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 
 /* ── 花費 ── */
 .recommendation{padding-top:clamp(22px,3.6vh,44px)}
-/* 每天一列的明細表：編號、名稱、金額靠右。金額同欄右對齊才好直向比較 */
-.pick-grid{display:grid;gap:0}
-.pick-row{
-  display:grid;grid-template-columns:auto minmax(0,1fr) auto;
-  gap:clamp(12px,2.4vw,36px);align-items:baseline;
-  border-top:.8px solid var(--line);padding-block:clamp(14px,2.2vh,22px);
+/* 自己的記帳（#ledger）：只存在這支手機的 localStorage，不上傳、不進 trip.json。
+   版面沿用全站語法：.8px 細線分列、金額用 --latin 靠右，合計放最上面當這一區的收束點 */
+.ledger-total{
+  display:flex;flex-wrap:wrap;align-items:baseline;column-gap:14px;row-gap:2px;
+  padding-bottom:clamp(14px,2.4vh,22px);
 }
-.pick-row:last-child{border-bottom:.8px solid var(--line)}
-.pick-no{
-  font-family:var(--latin);font-size:14px;letter-spacing:.1em;color:var(--muted);
-  white-space:nowrap;min-width:4.5em;
+.ledger-total .lbl{font-size:15px;letter-spacing:.04em;color:var(--muted);flex-basis:100%}
+.ledger-yen{font-family:var(--latin);font-size:clamp(34px,4.4vw,48px);line-height:1.15;
+  letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.ledger-twd{font-family:var(--latin);font-size:17px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ledger-rate{
+  flex-basis:100%;display:flex;align-items:center;gap:8px;margin-top:6px;
+  font-size:14px;color:var(--muted);letter-spacing:.04em;
 }
-.pick-name{font-size:16px;line-height:1.7;letter-spacing:.04em}
-.pick-amt{font-family:var(--latin);font-size:clamp(18px,1.8vw,22px);letter-spacing:.03em;
-  white-space:nowrap;text-align:right}
-.budget-stay{display:block;margin-top:2px;font-size:13.5px;color:var(--muted)}
+.ledger-rate button,.ledger-btn{
+  font:inherit;color:inherit;background:none;cursor:pointer;
+  border:0;border-bottom:.8px solid var(--line);padding:2px 0;min-height:32px;
+}
+.ledger-rate button:hover,.ledger-btn:hover{border-bottom-color:currentColor}
+.ledger-rate input{width:6.5em}
+.ledger input{
+  font:inherit;font-size:16px;   /* 16 以下 iOS 會在聚焦時自動放大整頁 */
+  color:var(--ink);background:var(--card);
+  border:.8px solid var(--line);border-radius:4px;padding:8px 10px;min-height:44px;min-width:0;
+}
+.ledger input:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.ledger input::placeholder{color:var(--muted);opacity:.75}
+.ledger-warn{margin:0 0 12px;font-size:14px;color:var(--warm)}
+/* 品項只比金額長一點，不撐滿整列：寬螢幕上一條長框反而不知道該打多少字 */
+.ledger-add{
+  display:grid;grid-template-columns:minmax(0,13em) minmax(0,10em) auto;
+  justify-content:start;gap:8px;
+  border-top:.8px solid var(--line);padding-block:clamp(14px,2.2vh,20px);
+}
+.ledger-yen-in{position:relative;display:block}
+.ledger-yen-in::before{
+  content:"₩";position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  font-family:var(--latin);color:var(--muted);pointer-events:none;
+}
+.ledger-yen-in input{width:100%;padding-left:24px;font-family:var(--latin);font-variant-numeric:tabular-nums}
+.ledger-go{
+  min-width:44px;min-height:44px;border:0;border-radius:4px;cursor:pointer;
+  background:var(--pine);color:var(--paper);font:inherit;font-size:20px;line-height:1;
+}
+:root[data-theme="dark"] .ledger-go{background:var(--ink);color:var(--paper)}
+.lg-day{border-top:.8px solid var(--line);padding-top:clamp(14px,2.2vh,20px);margin-top:clamp(10px,1.8vh,16px)}
+.lg-day h3{display:flex;align-items:baseline;gap:12px;margin:0 0 4px;font-size:15px}
+.lg-no{font-family:var(--latin);letter-spacing:.1em;color:var(--muted);white-space:nowrap}
+.lg-date{font-family:var(--latin);font-size:13.5px;color:var(--muted)}
+.lg-sub{margin-left:auto;font-family:var(--latin);font-size:17px;font-variant-numeric:tabular-nums}
+.lg-day ul{list-style:none;margin:0;padding:0}
+.lg-row{
+  display:flex;width:100%;align-items:baseline;justify-content:space-between;gap:16px;
+  font:inherit;color:inherit;text-align:left;background:none;border:0;cursor:pointer;
+  padding:10px 0;min-height:44px;border-bottom:.8px dashed var(--line);
+}
+.lg-day li:last-child .lg-row{border-bottom:0}
+.lg-row:hover .lg-name{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:.8px}
+.lg-name{font-size:16px;letter-spacing:.04em;overflow-wrap:anywhere}
+.lg-amt{font-family:var(--latin);font-size:17px;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* 點某一列就地變成編輯列：名稱、金額一行，下面是儲存／刪除／取消 */
+.lg-edit{display:grid;grid-template-columns:minmax(0,13em) minmax(0,10em);justify-content:start;gap:8px;padding:8px 0 12px}
+.lg-edit-acts{grid-column:1/-1;display:flex;gap:20px;align-items:center}
+.lg-edit-acts .del{color:var(--warm);margin-left:auto}
+.ledger-empty{margin:clamp(14px,2.4vh,26px) 0 0;font-size:15px;line-height:1.85;color:var(--muted)}
+/* 刪除後的「復原」提示：貼在畫面底部中間，幾秒後自己消失 */
+.ledger-undo{
+  position:fixed;left:50%;bottom:calc(20px + var(--nowbar-h,0px));z-index:45;
+  transform:translateX(-50%);display:flex;align-items:center;gap:16px;
+  background:var(--ink);color:var(--paper);border-radius:4px;
+  padding:6px 8px 6px 16px;font-size:15px;box-shadow:0 4px 18px rgba(45,37,25,.18);
+  max-width:calc(100% - var(--gut)*2);
+}
+.ledger-undo[hidden]{display:none}
+.ledger-undo button{
+  font:inherit;color:inherit;background:none;border:.8px solid currentColor;border-radius:4px;
+  padding:4px 12px;min-height:36px;cursor:pointer;white-space:nowrap;
+}
+.ledger-undo span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+[data-theme-size="large"] .lg-name,[data-theme-size="large"] .lg-amt{font-size:19px}
+[data-theme-size="large"] .lg-day h3{font-size:17px}
+[data-theme-size="large"] .ledger-rate{font-size:16px}
+[data-theme-size="large"] .ledger-twd{font-size:19px}
+/* 手機：三格擠在同一行，品項與金額按 1.3:1 分剩下的寬度 */
 @media (width<=560px){
-  .pick-row{grid-template-columns:auto minmax(0,1fr);row-gap:4px}
-  .pick-amt{grid-column:2;justify-self:end}
+  .ledger-add{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;justify-content:stretch}
+  .lg-edit{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);justify-content:stretch}
 }
-/* 合計：靠右、與明細拉開，是這一區的收束點。
-   兩列用同一個格線，標題與金額各自對齊成一欄，字級也一致 */
-.budget-lines{
-  display:grid;grid-template-columns:auto auto;justify-content:end;align-items:baseline;
-  column-gap:clamp(16px,3vw,40px);row-gap:clamp(6px,1.2vh,14px);
-  margin-top:clamp(18px,3vh,34px);padding-block:clamp(12px,2vh,20px);
-}
-.budget-lines span{font-size:15px;letter-spacing:.04em;color:var(--muted);justify-self:end}
-.budget-lines b{
-  font-family:var(--latin);font-size:clamp(22px,2.8vw,32px);letter-spacing:.03em;
-  justify-self:start;   /* 數字靠左起排，兩列的開頭才對得齊 */
-}
-/* 預算那行放進同一個格線的第二欄，開頭跟數字切齊 */
-.budget-lines .pick-note{grid-column:2;margin:clamp(6px,1.2vh,12px) 0 0;text-align:left}
-.over-tag{
-  margin-left:.6em;color:var(--warm);border:.8px solid var(--warm);border-radius:4px;
-  padding:1px 8px;font-size:13px;letter-spacing:.06em;
-}
-.pick-note{margin:clamp(10px,1.8vh,18px) 0 0;font-size:15px;line-height:1.85;color:var(--muted)}
-.budget-empty{margin:clamp(14px,2.4vh,26px) 0 0;font-size:15px;line-height:1.85;color:var(--muted)}
 
 /* ── 備忘 ── */
 .check-grid{display:grid;gap:0}
@@ -593,6 +1084,56 @@ h1,h2,h3,h4{font-weight:var(--w);margin:0}
 }
 .check-grid>div:last-child{border-bottom:.8px solid var(--line)}
 .check-grid span{font-family:var(--latin);font-size:14px;color:var(--muted);flex:0 0 auto}
+
+/* ── 交通 ── */
+/* 每段一列、欄位左對齊：站在月台上是用「方向」、「出口」這種標籤去找字，
+   不是把一整段說明讀完，所以不寫成段落 */
+.transit-list{display:grid;gap:0}
+.transit-row{border-top:.8px solid var(--line);padding-block:clamp(16px,2.6vh,28px)}
+.transit-row:last-child{border-bottom:.8px solid var(--line)}
+.tr-head{display:flex;flex-wrap:wrap;gap:4px clamp(12px,2vw,26px);align-items:baseline}
+.tr-when{font-family:var(--latin);font-size:14px;color:var(--muted);flex:0 0 auto}
+.tr-route{font-size:17px;line-height:1.6}
+a.tr-route{color:inherit;text-decoration:none;border-bottom:.8px solid var(--line)}
+a.tr-route:hover{border-color:currentColor}
+.tr-meta{margin:clamp(10px,1.6vh,16px) 0 0;display:grid;gap:5px}
+.tr-meta>div{display:flex;gap:clamp(10px,1.8vw,22px);align-items:baseline;
+  font-size:15px;line-height:1.8}
+.tr-meta dt{flex:0 0 auto;width:2.6em;color:var(--muted);font-size:13.5px}
+.tr-meta dd{margin:0;flex:1 1 auto;min-width:0}
+/* 口袋名單的分組標題（食物／逛街） */
+.wish-group{margin-top:clamp(28px,4vh,48px);padding-bottom:10px;border-bottom:.8px solid var(--ink);font-size:clamp(19px,1.8vw,22px);letter-spacing:.12em}
+.wish-group small{margin-left:.6em;font-family:var(--latin);font-size:.7em;color:var(--muted);letter-spacing:.04em}
+/* 口袋名單左欄放地區不是時間：字比較長，固定欄寬讓店名對齊，地區可換行 */
+@media (width>640px){
+  #wishlist .stop{grid-template-columns:6.5em minmax(0,1fr)}
+  #wishlist .stop time{white-space:normal;font-family:var(--sans);font-size:clamp(15px,1.3vw,17px);line-height:1.6;color:var(--muted);padding-top:.2em}
+}
+@media (width<=640px){
+  #wishlist .stop time{font-family:var(--sans);font-size:14px;color:var(--muted)}
+}
+/* 線色小圓點：福岡的站內指標就是拿線色在分路線的 */
+.tr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;
+  background:var(--lc,var(--muted));margin-right:.5em;vertical-align:1px}
+.tr-warn dd{color:var(--muted)}
+.transit-links{margin:clamp(20px,3vh,34px) 0 0;display:flex;flex-wrap:wrap;
+  gap:10px clamp(16px,2.6vw,32px);font-size:14.5px}
+.transit-links a{color:inherit;text-decoration:none;border-bottom:.8px solid var(--line)}
+.transit-links a:hover{border-color:currentColor}
+/* 交通按天分頁：跳日列沿用行程那一套，這裡只補分頁面板本身 */
+.tdays{overflow-anchor:none}
+.tday{padding-top:clamp(24px,4vh,48px)}
+/* 沒有 JS 時所有天照常顯示；有 JS 才切換（與 .day 同一個規則寫法） */
+.js .tday:not(.is-on){display:none}
+.tday-date{
+  margin:0 0 clamp(16px,2.4vh,26px);font-family:var(--latin);font-size:15px;
+  letter-spacing:.1em;color:var(--muted);
+}
+/* 主題那句是中文，跟著拉丁字級走會太小，另外給一階 */
+.tday-date span{font-family:inherit;font-size:14.5px;letter-spacing:.04em}
+/* 全程通用那句：跟在說明後面自己站一行。字級與顏色沿用說明，
+   只多推開一點行距——它和上一句是同一層資訊，不該看起來像註腳 */
+.tr-note{margin-top:10px}
 
 /* ── 檢查（出發前清單）── */
 /* 幾組並排，但不做成卡片：沿用全站的「無底色＋細線分隔」 */
@@ -700,14 +1241,18 @@ body.editing>#editor{display:block !important}
   :root[data-theme]{
     --paper:#fff;--ink:#2d2519;--line:#c9c7bf;--card:#fff;--muted:#5b554d;--warm:#8c2f22;
   }
-  .sticky-nav,.now-bar,.pending-banner,.day-tools,.daybar,.loc,.go{display:none}
+  .sticky-nav,.now-bar,.pending-banner,.day-tools,.daybar,.daypick,.loc,.go,.handoff,.skip{display:none}
   .band::before{background:#fff !important}
   .section{opacity:1 !important}
+  /* 紙本印的是「計畫」不是「進度」，不帶今日狀態 */
   .stop.past{opacity:1}
-  .hero{min-height:0;padding:24px 0}
-  .hero .drop,.card-deck{display:none}
+  .stop.past>time{text-decoration:none}
+  .stop.past h4,.stop.past h4 a{color:var(--ink)}
+  .hero{min-height:0;padding:24px 0;grid-template-columns:1fr}
+  /* 紙本不印封面照：整版滿版照片吃墨，而且紙上要的是資訊不是氣氛 */
+  .card-deck,.hero-figure{display:none}
   /* 換日是螢幕上的行為；紙本必須印出全部天數 */
-  .js .day:not(.is-on){display:block}
+  .js .day:not(.is-on),.js .tday:not(.is-on){display:block}
   .day{break-inside:auto;padding-top:18px}
   .day+.day{border-top:.8px solid var(--line);margin-top:18px}
   .stop{break-inside:avoid}
@@ -720,15 +1265,33 @@ body.editing>#editor{display:block !important}
   #emergency .em-head p,#emergency .emergency-grid b{color:var(--muted)}
   #emergency .emergency-grid{border-left-color:var(--line)}
   #emergency .emergency-grid a.tel{border-bottom-color:var(--line)}
-  /* 提醒螢幕上預設收起，紙本由 beforeprint 展開；這裡只收掉多餘留白與「＋」 */
-  .alerts-summary{padding-top:24px}
-  .alerts-toggle{display:none}
+  /* 紙上換成三欄文字列：卡片網格是為了掃視與點擊，這兩件事在紙上都不存在，
+     而六張卡各自展開五個欄位會把這一區從一頁撐成兩三頁 */
+  .em-cards,.em-dlg{display:none !important}
+  .em-print{display:block}
+  .em-wrap{grid-template-columns:minmax(0,1fr) !important;gap:16px}
+  .em-print .emergency-grid{border-left:0;padding-left:0}
+  /* 列印用的是完整全名（「外交部旅外國人急難救助全球免付費專線」18 字），
+     螢幕版的 nowrap 會讓它壓到右邊的說明欄，紙上必須允許折行 */
+  .em-print .emergency-grid b{white-space:normal}
+  /* 紙上沒得點，這句操作提示是廢話；後半句「境內撥號不需國碼」仍然有用所以留著 */
+  .em-hint{display:none}
+  .em-print-todo{color:var(--muted)}
+  .em-row{break-inside:avoid}
+  /* 紙上的帳只要清單與合計；輸入列、匯率按鈕、復原提示都是螢幕上的操作 */
+  .ledger-add,.ledger-rate button,.ledger-undo,.ledger-warn{display:none !important}
+  .wx-windy{display:none}
+  .lg-row{border-bottom-style:solid}
   a{text-decoration:none;color:inherit}
   body{background:#fff}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>{% if trip.skin == "seoul" %}
-{% include "_skin_seoul.j2" %}{% endif %}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  /* 只拿掉位移，保留底色變化：reduced-motion 要的是不要動，不是不要回饋 */
+  .em-card{transition:background-color .3s var(--ease)}
+  .em-card:active{transform:none}
+}
+</style>
 </head>
 <body>
 <script id="trip-src" type="application/json">{{ data_json | safe }}</script>
@@ -742,12 +1305,12 @@ body.editing>#editor{display:block !important}
   {%- for item in day["items"] -%}
     {%- if item.live_status -%}
       {%- set ls = item.live_status -%}
-      {#- 只留月日：卡片窄，時間對出發前查詢沒有幫助 -#}
-      {%- set upd = (ls.updated[5:10] if ls.updated and ls.updated[:2] == "20" and ls.updated[4] == "-" else ls.updated) -%}
+      {#- 不顯示抓取時間：狀態沒變就不覆寫 live_status，那個時間會停在上次變動那天，
+          擺在卡上只會讓人以為資料很舊。`updated` 仍留在 trip.json 裡備查 -#}
       {#- live_tag 放在 item 上（不是 live_status 裡）：每天自動更新會整包覆寫 live_status -#}
       {%- set _ = ns.live_cards.append({
         "title": ls.title_zh or item.name, "url": ls.source,
-        "state": ls.status_zh or ls.status, "date": upd,
+        "state": ls.status_zh or ls.status, "date": none,
         "tag": item.live_tag, "body": ls.summary_zh or ls.detail,
         "hours": none}) -%}
     {%- elif item.card -%}
@@ -755,34 +1318,58 @@ body.editing>#editor{display:block !important}
         "title": item.card.title or item.name, "url": item.card.url,
         "state": item.card.text, "date": item.card.date,
         "tag": item.card.tag, "body": item.card["body"],
-        "hours": item.card.hours}) -%}
+        "hours": item.card.hours, "variant": item.card.variant,
+        "route": item.card.route}) -%}
     {%- endif -%}
   {%- endfor -%}
 {%- endfor -%}
 {%- set cards = ns.live_cards + ns.note_cards -%}
+<a class="skip" href="#itinerary">跳至行程</a>
 <header class="hero">
-  {%- if trip.skin == "seoul" %}
-  <div class="hero-top"><span>{{ trip.hero_en or "Seoul" }}</span><span>{{ trip.range_label }}</span></div>
-  <h1>{{ trip.hero_en or "Seoul" }}.</h1>
-  <p class="hero-ko">{{ trip.hero_ko or "서울" }} · {{ trip.title }}</p>
-  {%- else %}
-  <h1>{{ trip.title }}</h1>
-  {%- endif %}
-  {%- if days %}
-  <p class="lead">{{ trip.num_days }} 天 {{ trip.travelers }} 人。每天去哪、怎麼去、花多少，都在這一頁。</p>
-  {%- else %}
-  <p class="lead">還在蒐集階段：先把想去的地方記下來，日期定了再排進每天的行程。</p>
-  {%- endif %}
-  <div class="hero-pills">
-    <span>{{ trip.range_label }}</span>
-    {%- if trip.num_days %}<span>{{ trip.num_days }} 天</span>{% endif %}
-    <span>{{ trip.travelers }} 人</span>
-    {%- if trip.budget %}<span>預算 {{ money(trip.budget) }}</span>{% endif %}
+  {#- 封面照 giftee.co.jp：左欄只有標語，沒有說明句、沒有 pills、沒有引導線。
+      標語用小字＋極寬字距＋Regular 字重，刻意退到背景、把視覺讓給照片 -#}
+  <div class="hero-copy">
+    <h1>{{ trip.title }}</h1>
   </div>
+
+  {# 照片內嵌成 data: URI，見 _hero_image.j2 的說明 #}
+  {#- 不放出處行：Pexels 授權不強制標註，而這份只有家人會看。
+      來源與授權記在 _hero_image.j2 的註解裡 -#}
+  <figure class="hero-figure">
+    <img src="{% include '_hero_image.j2' %}" width="800" height="1200"
+         alt="北村韓屋村的巷弄，遠方是 N 首爾塔">
+  </figure>
 
   {%- if cards %}
   <div class="card-deck" id="card-deck">
     {%- for c in cards %}
+    {%- if c.variant == "hello" %}
+    {#- 出發前的「票根」卡：上半是問候，打孔線下半是航線與倒數。
+        倒數由下方小段 JS 依今天日期換算（出發前／旅途中第幾天／回家後），
+        沒有 JS 時退回顯示旅程起訖日。環形印章只是裝飾，對讀屏隱藏 -#}
+    <article class="card-live card-hello" data-i="{{ loop.index0 }}"
+             data-start="{{ trip.start_date }}" data-end="{{ trip.end_date }}">
+      <svg class="hello-stamp" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <defs><path id="hello-ring" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
+        <text><textPath href="#hello-ring" textLength="230">BON VOYAGE · SEOUL 2026 ·</textPath></text>
+        <path class="hello-plane" d="M50 38 L53 47 L63 51 L63 54 L53 52 L52 60 L55 63 L55 65 L50 63.5 L45 65 L45 63 L48 60 L47 52 L37 54 L37 51 L47 47 Z"/>
+      </svg>
+      <p class="hello-title">{{ c.title }}</p>
+      <p class="hello-fun" lang="en">{{ c.state }}</p>
+      <div class="hello-stub">
+        {%- if c.route %}
+        <p class="hello-route" aria-label="{{ c.route[0] }} 飛往 {{ c.route[1] }}">
+          <span>{{ c.route[0] }}</span>
+          <svg viewBox="0 0 28 8" aria-hidden="true" focusable="false"><path d="M0 4h26M22 1l4 3-4 3"/></svg>
+          <span>{{ c.route[1] }}</span></p>
+        {%- endif %}
+        <p class="hello-count" aria-live="off">
+          <span class="hello-k">{{ trip.start_date[5:] | replace("-", ".") }}</span>
+          <span class="hello-n">—</span>
+          <span class="hello-u">{{ trip.end_date[5:] | replace("-", ".") }}</span></p>
+      </div>
+    </article>
+    {%- else %}
     <article class="card-live" data-i="{{ loop.index0 }}"{% if c.hours %} data-hours='{{ c.hours | tojson }}'{% endif %}>
       <div class="top">
         {%- if c.url %}
@@ -798,22 +1385,44 @@ body.editing>#editor{display:block !important}
       <p class="keys">{{ c.body }}</p>
       {%- endif %}
     </article>
+    {%- endif %}
     {%- endfor %}
   </div>
+  <script>
+  /* 票根卡的倒數：以裝置當地日期計（台灣／韓國只差一小時，不影響「第幾天」） */
+  (function(){
+    var card = document.querySelector(".card-hello");
+    if (!card) return;
+    function day(s){ var p = s.split("-"); return new Date(+p[0], p[1]-1, +p[2]); }
+    var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var start = day(card.dataset.start), end = day(card.dataset.end);
+    var toGo = Math.round((start - today) / 864e5);
+    var nth = Math.round((today - start) / 864e5) + 1;
+    var total = Math.round((end - start) / 864e5) + 1;
+    var k, n, u;
+    if (toGo > 0)        { k = "出發倒數"; n = toGo; u = toGo === 1 ? "day" : "days"; }
+    else if (nth <= total){ k = "旅途第";   n = nth;  u = "/ " + total + " 天"; }
+    else                 { k = "歡迎回家"; n = "";   u = ""; card.classList.add("is-home"); }
+    card.querySelector(".hello-k").textContent = k;
+    card.querySelector(".hello-n").textContent = n;
+    card.querySelector(".hello-u").textContent = u;
+    card.classList.add("is-counted");
+  })();
+  </script>
   {%- endif %}
-
-  <div class="drop"></div>
 </header>
 
 <nav class="sticky-nav" aria-label="快速跳轉">
   <div class="nav-inner">
+  {#- 「緊急」永遠留在列上、不收進抽屜：人在韓國出事時要立刻按到，
+      多一層漢堡就是多一次點擊。其餘四條在手機版收進抽屜 -#}
   <div class="nav-links">
-    {% if trip.emergency %}<a href="#emergency">緊急</a>{% endif %}
-    {%- if days %}<a href="#itinerary">行程</a>{% endif %}
+    <a href="#itinerary">行程</a>
+    {%- if transit %}<a href="#transit">交通</a>{% endif %}
     {%- if wishlist %}<a href="#wishlist">口袋</a>{% endif %}
-    {%- if days %}<a href="#budget">花費</a>{% endif %}
-    {%- if notes %}<a href="#notes">提醒</a>{% endif %}
+    <a href="#budget">花費</a>
     {%- if trip.packing %}<a href="#packing">檢查</a>{% endif %}
+    {%- if trip.emergency %}<a class="nav-urgent" href="#emergency">緊急</a>{% endif %}
   </div>
   <div class="nav-tools">
     <button class="tools-toggle" id="tools-toggle" type="button"
@@ -821,6 +1430,15 @@ body.editing>#editor{display:block !important}
       <i></i><i></i><i></i>
     </button>
     <div class="tools-menu" id="tools-menu">
+      {#- 手機版把導覽併進同一個抽屜，避免列上出現兩個一模一樣的漢堡鍵。
+          桌機 display:none，所以不會被 Tab 走到，焦點數不變 -#}
+      <div class="drawer-links">
+        <a href="#itinerary">行程</a>
+        {%- if transit %}<a href="#transit">交通</a>{% endif %}
+        {%- if wishlist %}<a href="#wishlist">口袋</a>{% endif %}
+        <a href="#budget">花費</a>
+        {%- if trip.packing %}<a href="#packing">檢查</a>{% endif %}
+      </div>
       <button class="nav-tool" type="button" data-toggle="edit" aria-label="編輯行程資料">✎</button>
       <button class="nav-tool" type="button" data-toggle="theme" aria-pressed="false" aria-label="切換深色模式">🌙</button>
       <button class="nav-tool" type="button" data-toggle="size" aria-pressed="false" aria-label="切換大字模式">A⁺</button>
@@ -843,53 +1461,105 @@ body.editing>#editor{display:block !important}
 </div>
 {% endif %}
 
-{# ── 區塊 A：緊急（深色，臨時要用時最好找） ── #}
-{% if trip.emergency %}
-<section id="emergency">
-  <div class="ov-inner">
-    {# 版式參考 3jigen.jp 的 Company：左側大標題、中間一條直線、右側欄位表，列間不畫橫線 #}
-    <div class="em-wrap">
-      <div class="em-head">
-        <h2>緊急</h2>
-        <p>手機點電話可直接撥號。</p>
-      </div>
-      <div class="emergency-grid">
-      {% for e in trip.emergency %}
-        <div class="em-row">
-          <b>{{ e.label }}</b>
-          <div class="em-val">
-            {% if e.value %}<p>{{ e.value }}</p>{% endif %}
-            {% if e.tel %}<a class="tel" href="tel:{{ e.tel }}">{{ e.tel }}</a>{% endif %}
-          </div>
-        </div>
-      {% endfor %}
-      </div>
-    </div>
-  </div>
-</section>
-{% endif %}
-
-{# ── 區塊 B：行程（還沒排日期時整區不出現） ── #}
+{# ── 區塊 B：行程 ── #}
 <div class="band band-b">
-{% if days %}
 <section class="section" id="itinerary">
   <div class="section-heading">
     <h2>行程</h2>
   </div>
 
+  {# 跳日列：六天一次攤在眼前，直接點到要看的那天。
+     底下的 .daybar 是「看完一天翻下一頁」，這裡是「我現在就要第四天」，
+     兩者服務的動作不同，所以並存。用 <a href="#day-N"> 而不是 tablist：
+     全域左右鍵已經綁在換日上，tab 的 roving 焦點會跟它搶按鍵；
+     而且錨點天生可分享、沒 JS 也還能跳。 #}
+  <nav class="daypick" aria-label="選擇日期">
+  {% for day in days %}
+    <a class="dp" href="#day-{{ day.day_no }}"
+       aria-label="Day {{ day.day_no }} {{ day.date_label }} {{ day.weekday }}">
+      <b>{{ "%02d" | format(day.day_no) }}</b>
+      <small>{{ day.date_short }}<i>{{ day.weekday_short }}</i></small>
+    </a>
+  {% endfor %}
+  </nav>
+
   <div class="days">
   {% for day in days %}
     <section class="day" id="day-{{ day.day_no }}" data-date="{{ day.date }}"
-             data-theme-text="{{ day.theme or '自由安排' }}"
+             {# 換日列上顯示的名字。主題那句在左欄已經有了，這裡只要「翻到第幾天」 #}
+             data-theme-text="DAY {{ day.day_no }}"
              aria-label="Day {{ day.day_no }} {{ day.date_label }}">
       <div class="day-grid">
         <div class="day-aside">
-          <b class="day-no">{{ "%02d" | format(day.day_no) }}
-            <small>{{ day.date_label }} · {{ day.weekday }}</small>
-          </b>
-          <h3>{{ day.theme or "自由安排" }}</h3>
-          {#- 左欄只留「當地氣候 + 當日小提醒」，整串景點鏈右邊的時間軸就看得到 -#}
-          {% if day.weather %}<p class="day-weather">{{ day.weather }}</p>{% endif %}
+          {#- 上方的跳日列已經把「現在是第幾天」講得很清楚，左欄的大字改讓給
+              當天在做什麼；日期退成標題下的一行小字 -#}
+          <h3 class="day-name">{{ day.theme or "自由安排" }}</h3>
+          <p class="day-date">{{ day.date_label }} · {{ day.weekday }}</p>
+          {#- 左欄只留「當地氣候 + 當日小提醒」，整串景點鏈右邊的時間軸就看得到。
+              天氣那一行的來源依序退：
+                weather_live 氣象廳（官方文字預報，7 天內才有，scripts/update_weather.py）
+                forecast     Open-Meteo（16 天內，scripts/update_forecast.py）
+                weather      trip.json 手寫的氣候描述
+              逐時那一列只來自 forecast；兩個來源同時有時，摘要用氣象廳、逐時用 Open-Meteo，
+              不在同一行並列兩組氣溫，免得長輩看到兩個數字不知道信哪個。
+              Open-Meteo 有逐時資料時就不再出摘要行：最低／最高溫和降雨都在逐時那列看得到。
+              forecast_extra 是同一天的其他地點（例如高千穗那天的草千里），各自一列逐時 -#}
+          {%- set fc = day.forecast -%}
+          {%- set wa = day.weather_area or {} -%}
+          {#- 有 Open-Meteo 逐時資料時，每天都只有同一種樣子：每個地點一個可點開的區塊
+              （標題列「地點 低–高°C」，點開是逐時、模式分歧提醒、來源、Windy 按鈕），
+              不再另出氣象廳或摘要行，免得同一天出現兩組對不上的氣溫。
+              逐時還沒進範圍（16 天外）才退回舊的一行摘要＋Windy 按鈕 -#}
+          {%- set spots = [] %}
+          {%- if fc and fc.hours %}{% set _ = spots.append((wa, fc)) %}{% endif %}
+          {%- for a in day.forecast_areas or [] %}
+            {%- for x in day.forecast_extra or [] %}{% if x.label == a.label and x.hours %}{% set _ = spots.append((a, x)) %}{% endif %}{% endfor %}
+          {%- endfor %}
+          {%- if spots %}
+          {%- for a, f in spots %}
+          <details class="wx-hours">
+            <summary><span>{{ a.label }} <b>{{ f.tmin }}–{{ f.tmax }}°C</b></span><span class="wx-more">{{ "每小時" if f.step == 1 else "每 3 小時" }}</span></summary>
+            <ol>
+              {%- for h in f.hours %}
+              <li{% if h.p is not none and h.p >= 50 %} class="wet"{% endif %}>
+                <span class="h">{{ h.h }}</span><b>{{ h.t }}°</b>
+                {%- if h.p is not none %}<span class="p">{{ h.p }}%</span>{% endif %}</li>
+              {%- endfor %}
+            </ol>
+            {%- if f.spread %}
+            {#- ECMWF 與 GFS 溫差 4°C 以上：數字還不可靠，提醒出發前再看 -#}
+            <p class="wx-spread">各模式差異大（{{ f.spread.what }} {{ f.spread.lo }}–{{ f.spread.hi }}°C），出發前再看一次</p>
+            {%- endif %}
+            <span class="wx-src">氣溫・降雨機率 · {{ f.model or "Open-Meteo" }} · {{ f.updated }} 更新</span>
+            {%- if a.lat is not none and a.lon is not none %}
+            <a class="route-btn wx-windy" href="https://www.windy.com/{{ a.lat }}/{{ a.lon }}?{{ a.lat }},{{ a.lon }},10"
+               target="_blank" rel="noopener">Windy 逐時預報・{{ a.label }}&nbsp;↗</a>
+            {%- endif %}
+          </details>
+          {%- endfor %}
+          {%- else %}
+          {% if day.weather_live %}
+          <p class="day-weather">{{ day.weather_live.text }}
+            <span class="wx-src">氣象廳{% if day.weather_live.scope %} {{ day.weather_live.scope }}{% endif %} · {{ day.weather_live.updated }} 發布</span>
+          </p>
+          {% elif fc %}
+          <p class="day-weather">{{ wa.label }} {{ fc.tmin }}–{{ fc.tmax }}°C
+            {%- if fc.text %}・{{ fc.text }}{% endif %}
+            {#- 用 fc["pop"]：fc.pop 在 Jinja 裡會先拿到 dict 的 .pop() 方法 -#}
+            {%- if fc["pop"] is not none %}・降雨 {{ fc["pop"] }}%{% endif %}
+            <span class="wx-src">{{ fc.model or "Open-Meteo" }} 預報 · {{ fc.updated }} 更新</span>
+          </p>
+          {% elif day.weather %}<p class="day-weather">{{ day.weather }}</p>{% endif %}
+          {%- if fc and fc.spread %}
+          <p class="wx-spread">各模式差異大（{{ fc.spread.what }} {{ fc.spread.lo }}–{{ fc.spread.hi }}°C），出發前再看一次</p>
+          {%- endif %}
+          {#- Windy 不分日子遠近一律顯示：自動抓的預報還沒進範圍時，Windy 已經看得到 -#}
+          {%- for a in [wa] + (day.forecast_areas or []) %}{% if a.lat is not none and a.lon is not none %}
+          <a class="route-btn wx-windy" href="https://www.windy.com/{{ a.lat }}/{{ a.lon }}?{{ a.lat }},{{ a.lon }},10"
+             target="_blank" rel="noopener">Windy 逐時預報・{{ a.label }}&nbsp;↗</a>
+          {%- endif %}{% endfor %}
+          {%- endif %}
+
           {% if day.note %}<p class="day-note">{{ day.note }}</p>{% endif %}
           {% if day.route_url %}
           <div class="day-tools">
@@ -932,39 +1602,93 @@ body.editing>#editor{display:block !important}
     <span class="th" id="day-theme"></span>
     <button class="arw" id="day-next" type="button" aria-label="後一天">→</button>
   </div>
-</section>
-{% endif %}
 
-{# 口袋名單：想去、但還沒排進哪一天的地方 #}
+  {% if transit %}{{ handoff("實際走一遍") }}{% else %}{{ handoff("這趟自己花了多少") }}{% endif %}
+</section>
+
+</div>{# /band-b #}
+{# ── 區塊 C：交通 ── #}
+{# 只列「要自己搭車」的市區區間；包車那幾天沒有這個問題所以不寫。
+   預設展開：出門當下最常看的就是這一區 #}
+{% if transit %}
+<div class="band band-c">
+<section class="section" id="transit">
+  <div class="section-heading">
+    <h2>交通</h2>
+    <p>要自己搭車的市區區間——哪條線、往哪個方向、幾號出口。跟行程一樣一次看一天，只列有要自己搭車的日期。（共 {{ transit | length }} 段）</p>
+    {#- 不綁哪一天的一句話：每天都適用，掛在大標下才六天都看得到 -#}
+    {% if transit_note %}<p class="tr-note">{{ transit_note }}</p>{% endif %}
+  </div>
+
+  {# 跳日列與行程那一列同一套（.daypick/.dp），只是換一組錨點，
+     而且只放有區間的那幾天——格數因此比行程少，日號不一定連號 #}
+  <nav class="daypick" aria-label="選擇交通日期">
+  {% for day in transit_days %}
+    <a class="dp" href="#transit-day-{{ day.day_no }}"
+       aria-label="Day {{ day.day_no }} {{ day.date_label }} {{ day.weekday }}">
+      <b>{{ "%02d" | format(day.day_no) }}</b>
+      <small>{{ day.date_short }}<i>{{ day.weekday_short }}</i></small>
+    </a>
+  {% endfor %}
+  </nav>
+
+  <div class="tdays">
+  {% for day in transit_days %}
+    <section class="tday" id="transit-day-{{ day.day_no }}" data-date="{{ day.date }}"
+             data-theme-text="DAY {{ day.day_no }}"
+             aria-label="Day {{ day.day_no }} {{ day.date_label }} 的交通">
+      <p class="tday-date">{{ day.date_label }} · {{ day.weekday }}　<span>{{ day.theme or "自由安排" }}</span></p>
+      <div class="transit-list">
+      {% for t in day.transit %}
+      <div class="transit-row">
+        <div class="tr-head">
+          {%- if t.when %}<span class="tr-when">{{ t.when }}</span>{% endif %}
+          {#- 有 url 的段落把標題本身做成連結（時刻表、官方說明頁），一律開新分頁 -#}
+          {%- if t.url %}
+          <a class="tr-route" href="{{ t.url }}" target="_blank" rel="noopener">{{ t.route }}&nbsp;↗</a>
+          {%- else %}
+          <b class="tr-route">{{ t.route }}</b>
+          {%- endif %}
+        </div>
+        <dl class="tr-meta">
+          {%- if t.line %}
+          <div><dt>路線</dt><dd>
+            {%- if t.line_color %}<i class="tr-dot" style="--lc:{{ t.line_color }}"></i>{% endif %}{{ t.line }}</dd></div>
+          {%- endif %}
+          {%- if t.platform %}<div><dt>方向</dt><dd>{{ t.platform }}</dd></div>{% endif %}
+          {%- if t.time %}<div><dt>時間</dt><dd>{{ t.time }}</dd></div>{% endif %}
+          {%- if t.fare %}<div><dt>票價</dt><dd>{{ t.fare }}</dd></div>{% endif %}
+          {%- if t.exit %}<div><dt>出口</dt><dd>{{ t.exit }}</dd></div>{% endif %}
+          {%- if t.warn %}<div class="tr-warn"><dt>注意</dt><dd>{{ t.warn }}</dd></div>{% endif %}
+        </dl>
+      </div>
+      {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+  </div>
+
+  {%- if transit_links %}
+  {# 路線圖與時刻表一律開新分頁：那些圖在這一頁裡展開只會又大又糊 #}
+  <div class="transit-links">
+    {%- for l in transit_links %}
+    <a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }}&nbsp;↗</a>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+  {% if wishlist %}{{ handoff("還想去哪裡") }}{% else %}{{ handoff("這趟自己花了多少") }}{% endif %}
+</section>
+</div>{# /band-c #}
+{% endif %}
+{# ── 口袋名單：想去、但還沒排進哪一天的地方 ── #}
 {% if wishlist %}
+<div class="band band-c">
 <section class="section wish" id="wishlist">
   <div class="section-heading">
     <h2>口袋名單</h2>
     <p>想去、但還沒排進行程的地方。（共 {{ wishlist | length }} 處）</p>
   </div>
-  {% set CAT_EN = {"食物": "FOOD", "逛街": "SHOP", "景點": "SEE", "住宿": "STAY"} %}
   {% for g in wishlist_groups %}
-  {% if trip.skin == "seoul" %}
-  {% set gi = loop.index %}
-  <h3 class="wish-group">{{ "%02d" | format(gi) }} — {{ g.label }}{% if g.label in CAT_EN %} · {{ CAT_EN[g.label] }}{% endif %}</h3>
-  <ol class="wl">
-  {% for w in g["items"] %}
-    <li><details>
-      <summary>
-        <span class="no">{{ "%02d" | format(loop.index) }}</span>
-        <span class="nm">{{ w.name }}<span class="sub">{{ [w.area, w.tagline] | select | join(" · ") }}</span></span>
-        <span class="maps">{% if w.naver_url %}<a href="{{ w.naver_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} Naver 地圖">N</a>{% endif %}{% if w.naver_url and w.map_url %}<i>·</i>{% endif %}{% if w.map_url %}<a href="{{ w.map_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} Google 地圖">G</a>{% endif %}</span>
-      </summary>
-      <div class="body">
-        {% if w.note %}<p>{{ w.note }}</p>{% endif %}
-        {% if w.address %}<p class="addr">{{ w.address }}</p>{% endif %}
-        {% if w.hours %}<p>營業 {{ w.hours }}</p>{% endif %}
-        {% if w.url or w.links %}<p>{% if w.url %}<a href="{{ w.url }}" target="_blank" rel="noopener">官網 ↗</a> {% endif %}{% for lk in w.links %}<a href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.emoji }} {{ lk.label }}</a> {% endfor %}</p>{% endif %}
-      </div>
-    </details></li>
-  {% endfor %}
-  </ol>
-  {% else %}
   {% if wishlist_groups | length > 1 %}<h3 class="wish-group">{{ g.label }}<small>{{ g["items"] | length }}</small></h3>{% endif %}
   <ol class="timeline">
   {% for w in g["items"] %}
@@ -972,6 +1696,7 @@ body.editing>#editor{display:block !important}
       <time>{{ w.area or "" }}</time>
       <div>
         <h4><span class="tico">{{ TYPE_META[w.type].icon if w.type in TYPE_META else '📍' }}</span>{% if w.url %}<a class="name" href="{{ w.url }}">{{ w.name }} ↗</a>{% else %}{{ w.name }}{% endif %}{% if w.map_url %} <a class="loc" href="{{ w.map_url }}">📍 Google</a>{% endif %}{% if w.naver_url %} <a class="loc" href="{{ w.naver_url }}">🟢 Naver</a>{% endif %}{% for lk in w.links %} <a class="loc" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.emoji }} {{ lk.label }}</a>{% endfor %}</h4>
+        {% if w.tagline %}<p class="meta">{{ w.tagline }}</p>{% endif %}
         {% if w.note %}<p class="desc">{{ w.note }}</p>{% endif %}
         {% set meta = [] %}
         {%- if w.address %}{% set _ = meta.append(w.address) %}{% endif %}
@@ -981,87 +1706,47 @@ body.editing>#editor{display:block !important}
     </li>
   {% endfor %}
   </ol>
-  {% endif %}
   {% endfor %}
+  {{ handoff("這趟自己花了多少") }}
 </section>
+</div>
 {% endif %}
-
-</div>{# /band-b #}
-{# ── 區塊 C：花費 ── #}
-{% if days %}
-<div class="band band-c">
+{# ── 區塊 E：花費 + 檢查（出發前要看的都在同一帶） ── #}
+{#- 花費：每個人自己的記帳，只存在這支手機（localStorage），不上傳、不寫回 trip.json。
+    韓元輸入，依 trip.fx 的匯率換算台幣（匯率可在頁面上自己改）。
+    清單依「記下當天」分組：出發前／DAY 01…／回國後，分組在顯示時用時間戳推算，不另外存。
+    trip.json 裡各項目的 cost 仍保留（編輯器還用得到），只是不再顯示在這裡 -#}
+<div class="band band-e">
 <section class="section" id="budget">
-  <div class="recommendation">
   <div class="section-heading">
     <h2>花費</h2>
-    <p>每天一列，右側為當日小計。</p>
+    <p>自己的記帳，只存在這支手機、不會上傳。</p>
   </div>
-  {% if totals.has_costs %}
-  {# 每天一列，像明細一樣橫向排開；金額靠右對齊便於直向比較 #}
-  <div class="pick-grid">
-  {% for day in days %}
-    <div class="pick-row">
-      <span class="pick-no">DAY {{ "%02d" | format(day.day_no) }}</span>
-      <span class="pick-name">{{ day.theme or "自由安排" }}
-        {%- set stay = day["items"] | selectattr("type", "equalto", "住宿") | map(attribute="cost") | sum -%}
-        {%- if stay %}<small class="budget-stay">住宿 {{ money(stay) }}</small>{% endif -%}
-      </span>
-      <b class="pick-amt">{{ money(day.subtotal) }}</b>
+  <div class="ledger" id="ledger" hidden
+       data-rate="{{ (trip.fx and trip.fx.rate) or 41 }}"
+       data-start="{{ trip.start_date }}" data-end="{{ trip.end_date }}">
+    <div class="ledger-total">
+      <span class="lbl">合計</span>
+      <b class="ledger-yen" id="ledger-yen">₩0</b>
+      <span class="ledger-twd" id="ledger-twd">≈ NT$0</span>
+      <div class="ledger-rate" id="ledger-rate"></div>
     </div>
-  {% endfor %}
-  {% set booking_cost = bookings | sum(attribute="cost") %}
-  {% if booking_cost %}
-    <div class="pick-row">
-      <span class="pick-no">預付</span>
-      <span class="pick-name">機票、住宿等預先付款項目</span>
-      <b class="pick-amt">{{ money(booking_cost) }}</b>
-    </div>
-  {% endif %}
+    <p class="ledger-warn" id="ledger-warn" hidden>這個瀏覽器不允許存資料（可能是無痕模式），關掉頁面記錄就會消失。</p>
+    <form class="ledger-add" id="ledger-add" autocomplete="off">
+      <input class="ledger-name-in" name="name" maxlength="40" placeholder="品項" aria-label="品項">
+      <span class="ledger-yen-in"><input name="yen" inputmode="numeric" placeholder="金額" aria-label="金額（韓元）"></span>
+      <button class="ledger-go" type="submit" aria-label="新增這筆">＋</button>
+    </form>
+    <div id="ledger-list"></div>
+    <p class="ledger-empty" id="ledger-empty">還沒有記錄。輸入品項與韓元金額按「＋」就會記下，依天自動分組。</p>
   </div>
-  <div class="budget-lines">
-    <span>總計{% if totals.over %} <span class="over-tag">超出預算 {{ money(totals.spent - totals.budget) }}</span>{% endif %}</span>
-    <b>{{ money(totals.spent) }}{{ fx_alt(totals.spent) }}</b>
-    <span>每人平均</span>
-    <b>{{ money(totals.per_person) }}{{ fx_alt(totals.per_person) }}</b>
-    {#- 大字只留合計與每人平均；類別占比那幾條移除，這裡用一行字交代預算餘裕 -#}
-    {% if totals.over %}
-    <p class="pick-note">預算 {{ money(totals.budget) }}，已超出 {{ money(totals.spent - totals.budget) }}，出發前再檢視一次大項花費。</p>
-    {% else %}
-    <p class="pick-note">預算 {{ money(totals.budget) }}，目前尚有 {{ money(totals.budget - totals.spent) }} 餘裕。</p>
-    {% endif %}
-  </div>
-  {% else %}
-  <div class="budget-lines">
-    <span>預算</span>
-    <b>{{ money(totals.budget) }}{{ fx_alt(totals.budget) }}</b>
-  </div>
-  <p class="budget-empty">花費尚未填入。待各項報價／確認金額後再逐筆補上，這裡會自動顯示合計與每人分攤。</p>
-  {% endif %}
-  </div>
+  <noscript><p class="ledger-empty">記帳需要開啟 JavaScript。</p></noscript>
+  <div class="ledger-undo" id="ledger-undo" role="status" aria-live="polite" hidden></div>
 </section>
-</div>{# /band-c #}
-{% endif %}
-{# ── 區塊 E：提醒 + 檢查（出發前要看的都在同一帶） ── #}
-{# 原本的「提醒」與「備忘」性質相同，合併成這一區；預設收起，點才展開 #}
-<div class="band band-e">
-{% if notes %}
-<details class="section alerts-section" id="notes">
-  <summary class="alerts-summary">
-    <div class="section-heading">
-      <h2>提醒</h2>
-      <p>出發前該注意、該確認的事——設施異動、季節限定、訂位期限與當地潛規則。（共 {{ notes | length }} 則，點右側展開）</p>
-    </div>
-    <span class="alerts-toggle" aria-hidden="true">＋</span>
-  </summary>
-  <div class="alerts-body">
-    <div class="check-grid">
-    {% for n in notes %}
-      <div><span>{{ "%02d" | format(loop.index) }}</span>{{ n }}</div>
-    {% endfor %}
-    </div>
-  </div>
-</details>
-{% endif %}
+{%- if trip.packing %}
+{{ handoff("出發前還有事要確認") }}
+{%- endif %}
+
 
 {% if trip.packing %}
 <section class="section" id="packing">
@@ -1093,6 +1778,92 @@ body.editing>#editor{display:block !important}
   </div>
 </section>
 {% endif %}
+
+{# ── 緊急（深色圓角色塊）：放在全頁最後、頁尾之前。平常用不到，要用時點頂列「緊急」直接跳過來 ── #}
+{% if trip.emergency %}
+<section id="emergency">
+  <div class="ov-inner">
+    {# 版式參考 c-morinosato.com 的「診療案內」：左欄標題＋副標＋說明，右欄圖示卡片網格。
+       卡片上只放名稱，說明與電話進彈窗——慌亂時網格要能一眼掃完，細節點開再看。
+       原本的文字列版型保留在下方，只在列印時出現（見 @media print 的說明）。 #}
+    <div class="em-wrap">
+      <div class="em-head">
+        <h2>緊急</h2>
+        <p class="em-sub">EMERGENCY</p>
+        <p><span class="em-hint">點任一項目看說明與電話。</span>韓國境內撥號不需國碼。</p>
+      </div>
+
+      <ul class="em-cards">
+      {% for e in trip.emergency %}
+        <li>
+          <button type="button" class="em-card" data-em="{{ loop.index0 }}"
+                  aria-haspopup="dialog" aria-controls="em-dlg-{{ loop.index0 }}">
+            <span class="em-icn">{{ em_icon(loop.index0) }}</span>
+            <span class="em-name">{{ e.label }}</span>
+            <span class="em-go" aria-hidden="true">→</span>
+          </button>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+
+    {# 彈窗：原生 <dialog>，焦點鎖定與 Escape 由瀏覽器負責。
+       沒有 JS 時 <dialog> 會被 CSS 改回一般區塊直接顯示——緊急資訊是全頁
+       唯一不能因為 JS 沒跑就消失的內容。 #}
+    {% for e in trip.emergency %}
+    <dialog class="em-dlg" id="em-dlg-{{ loop.index0 }}" aria-labelledby="em-dlg-t-{{ loop.index0 }}">
+      <div class="em-dlg-in">
+        <h3 id="em-dlg-t-{{ loop.index0 }}">{{ e.name or e.label }}</h3>
+        {% if e.desc %}<p class="em-desc">{{ e.desc }}</p>{% endif %}
+        {%- if e.address or e.hours %}
+        <dl class="em-meta">
+          {%- if e.address %}<dt>地址</dt><dd>{{ e.address }}</dd>{% endif %}
+          {%- if e.hours %}<dt>服務時間</dt><dd>{{ e.hours }}</dd>{% endif %}
+        </dl>
+        {%- endif %}
+        {% if e.tel %}
+        <a class="em-tel" href="tel:{{ e.tel }}">{{ e.tel }}</a>
+        {% else %}
+        {# 虛線佔位：保留 13 碼號碼的寬度，之後填進來版面不會跳 #}
+        <p class="em-tel is-todo"><span class="em-todo-line"></span><span class="em-todo-tag">待填</span></p>
+        {% endif %}
+        <button type="button" class="em-close" data-em-close aria-label="關閉">關閉</button>
+      </div>
+    </dialog>
+    {% endfor %}
+
+    {# 只在紙上出現：卡片網格是為了掃視與點擊而設計，這兩件事在紙上都不存在，
+       而六張卡各自展開五個欄位會把這一區撐成兩三頁。原本的三欄文字列最省紙。 #}
+    <div class="em-print">
+      <div class="emergency-grid">
+      {% for e in trip.emergency %}
+        <div class="em-row">
+          <b>{{ e.name or e.label }}</b>
+          <div class="em-val">
+            {% if e.desc %}<p>{{ e.desc }}</p>{% endif %}
+            {% if e.hours %}<p>服務時間：{{ e.hours }}</p>{% endif %}
+            {% if e.address %}<p>{{ e.address }}</p>{% endif %}
+            {% if e.tel %}<a class="tel" href="tel:{{ e.tel }}">{{ e.tel }}</a>
+            {% else %}<p class="em-print-todo">電話：＿＿＿＿＿＿＿＿＿＿（出發前補上）</p>{% endif %}
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+{#- 收尾：頁面原本在最後一個勾選框之後直接結束，像被裁掉。
+    留在帶內吃同一個底色，只靠細線與字級差異區隔——為了首尾呼應再切一次
+    底色，等於為了修辭犧牲連續性，而連續性正是要修的問題本身 -#}
+<div class="coda">
+  <div>
+    <span class="d lat">{{ trip.range_label }}</span>
+    <span class="t">{{ trip.title }}</span>
+  </div>
+</div>
 </div>{# /band-e #}
 </main>
 
@@ -1139,6 +1910,7 @@ body.editing>#editor{display:block !important}
   var prevBtn = document.getElementById("day-prev");
   var nextBtn = document.getElementById("day-next");
   var themeEl = document.getElementById("day-theme");
+  var pickEls = Array.prototype.slice.call(document.querySelectorAll("#itinerary .daypick .dp"));
   var cur = 0;
 
   function showDay(n, focus){
@@ -1156,6 +1928,13 @@ body.editing>#editor{display:block !important}
         themeEl.appendChild(badge);
       }
     }
+    // 跳日列跟著標出當前那天；今日的點也在這裡上（todayMode 會在標記
+    // 完 .today 之後再呼叫一次 showDay，所以順序不會漏）
+    pickEls.forEach(function(a, k){
+      if (k === cur) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+      a.classList.toggle("is-today", !!(daysEls[k] && daysEls[k].classList.contains("today")));
+    });
     if (prevBtn) prevBtn.disabled = (cur === 0);
     if (nextBtn) nextBtn.disabled = (cur === daysEls.length - 1);
     // 換日後回到「行程」章節的頂端。按鈕在頁面下方，不捲回去的話
@@ -1181,6 +1960,19 @@ body.editing>#editor{display:block !important}
     }
     return -1;
   }
+  pickEls.forEach(function(a, k){
+    a.addEventListener("click", function(e){
+      // 修飾鍵按著是「開新分頁」，別攔
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      // 不讓瀏覽器自己跳錨點：那個跳法是瞬移到 section 的位置，
+      // 跟 showDay 的捲動會互相打斷
+      e.preventDefault();
+      showDay(k, true);
+      // replaceState 不塞歷史。六格點來點去若每次都進歷史，
+      // 「上一頁」會變成要按六次才離得開這頁
+      if (history.replaceState) history.replaceState(null, "", "#day-" + (k + 1));
+    });
+  });
   if (prevBtn) prevBtn.addEventListener("click", function(){ showDay(cur - 1, true); });
   if (nextBtn) nextBtn.addEventListener("click", function(){ showDay(cur + 1, true); });
   document.addEventListener("keydown", function(e){
@@ -1208,19 +2000,64 @@ body.editing>#editor{display:block !important}
   window.addEventListener("hashchange", function(){ openHash(location.hash); });
   openHash(location.hash);
 
-  // 列印：紙本要印出全部天數（換日只是螢幕上的行為），提醒區也一併展開
+  // 列印：紙本要印出全部天數（換日只是螢幕上的行為）
   var printedAll = false;
   window.addEventListener("beforeprint", function(){
     printedAll = true;
     daysEls.forEach(function(d){ d.classList.add("is-on"); });
-    var al = document.getElementById("notes");
-    if (al && al.tagName === "DETAILS") al.open = true;
   });
   window.addEventListener("afterprint", function(){
     if (!printedAll) return;
     printedAll = false;
     showDay(cur);   // 列印完把畫面收回單日
   });
+
+  // ── 交通區的換日：只留跳日列，不做上下頁 ──
+  // 這一區一天最多四五段、六格全在眼前，直接點就到；再放一組左右鍵是重複的入口。
+  // 也各自記各自的那一天：兩區距離很遠，硬要同步反而會出現「在交通區翻到 Day 5、
+  // 捲回行程卻也被翻走」這種沒人要求的連動。
+  (function(){
+    var panes = [].slice.call(document.querySelectorAll("#transit .tday"));
+    if (!panes.length) return;
+    var picks = [].slice.call(document.querySelectorAll("#transit .daypick .dp"));
+
+    function show(n, focus){
+      var at = Math.max(0, Math.min(panes.length - 1, n));
+      panes.forEach(function(el, k){ el.classList.toggle("is-on", k === at); });
+      picks.forEach(function(a, k){
+        if (k === at) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+        a.classList.toggle("is-today", !!(panes[k] && panes[k].classList.contains("today")));
+      });
+      // 換完捲回交通區頂端，否則會停在下一天的中段
+      if (focus){
+        var sec = document.getElementById("transit");
+        var head = document.querySelector(".sticky-nav");
+        var off = head ? head.getBoundingClientRect().height : 0;
+        window.scrollTo({
+          top: Math.max(0, sec.getBoundingClientRect().top + window.scrollY - off - 8),
+          behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+        });
+      }
+    }
+    picks.forEach(function(a, k){
+      a.addEventListener("click", function(e){
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+        e.preventDefault();   // 錨點瞬移跟這裡的捲動會互相打斷
+        show(k, true);
+      });
+    });
+
+    // 開頁時直接停在今天那一格（行程區也是這個行為）
+    var start = 0;
+    var now = new Date();
+    var pad = function(n){ return String(n).padStart(2, "0"); };
+    var today = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+    panes.forEach(function(el, k){
+      if (el.getAttribute("data-date") === today){ el.classList.add("today"); start = k; }
+    });
+    show(start);
+  })();
 
   // ── 今日模式：依裝置時鐘標出今天、灰階已過行程、浮出「下一站」 ──
   function todayMode(now){
@@ -1261,9 +2098,12 @@ body.editing>#editor{display:block !important}
     try { if (localStorage.getItem(dismissKey) === "1") return; } catch (e) {}
     bar.hidden = false;
     document.body.style.paddingBottom = bar.offsetHeight + "px";
+    // 浮卡也要讓開：兩者都是 fixed 且都貼底，浮條 z-45 會蓋掉浮卡底部
+    document.documentElement.style.setProperty("--nowbar-h", bar.offsetHeight + "px");
     bar.querySelector(".now-dismiss").addEventListener("click", function(){
       bar.hidden = true;
       document.body.style.paddingBottom = "";
+      document.documentElement.style.removeProperty("--nowbar-h");
       Array.prototype.forEach.call(dayEl.querySelectorAll(".stop.past"), function(s){
         s.classList.remove("past");
       });
@@ -1342,6 +2182,28 @@ body.editing>#editor{display:block !important}
     });
   }
 
+  // ── 緊急卡片彈窗 ──
+  // 用原生 <dialog>.showModal()：焦點鎖定、Escape 關閉、背景 inert 都由瀏覽器負責，
+  // 不用自己寫 focus trap。舊瀏覽器沒有 showModal 就退回錨點行為（內容仍在頁面上）
+  [].slice.call(document.querySelectorAll(".em-card")).forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var dlg = document.getElementById(btn.getAttribute("aria-controls"));
+      if (!dlg) return;
+      if (typeof dlg.showModal === "function") { dlg.showModal(); }
+      else { dlg.setAttribute("open", ""); dlg.scrollIntoView({block: "nearest"}); }
+    });
+  });
+  [].slice.call(document.querySelectorAll("[data-em-close]")).forEach(function (b) {
+    b.addEventListener("click", function () {
+      var dlg = b.closest("dialog");
+      if (dlg) { if (typeof dlg.close === "function") dlg.close(); else dlg.removeAttribute("open"); }
+    });
+  });
+  // 點背景關閉：<dialog> 的點擊事件在 backdrop 上也會觸發，且 target 會是 dialog 本身
+  [].slice.call(document.querySelectorAll(".em-dlg")).forEach(function (dlg) {
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  });
+
   // ── 封面浮卡：載入時浮出，開始往下捲就退場；多張時疊成一疊，往左滑換下一張 ──
   var liveCard = document.getElementById("card-deck");
   if (liveCard) {
@@ -1350,22 +2212,34 @@ body.editing>#editor{display:block !important}
     });
     // 保險：rAF 在分頁未渲染時不會回呼，浮卡會永遠停在 opacity:0
     setTimeout(function(){ liveCard.classList.add("is-in"); }, 400);
+    // 手機封面要替浮卡在底部留位（見 .hero:has(.card-deck)）：量實高，
+    // 票根卡的印章凸出卡片上緣 34px，也要算進去。字級切換、換卡都會改變高度
+    var syncDeckH = function(){
+      var h = liveCard.offsetHeight + (liveCard.querySelector(".hello-stamp") ? 34 : 0);
+      if (h) document.documentElement.style.setProperty("--deck-h", h + "px");
+    };
+    syncDeckH();
+    if (window.ResizeObserver) new ResizeObserver(syncDeckH).observe(liveCard);
   }
 
   var deckCards = liveCard ? [].slice.call(liveCard.querySelectorAll(".card-live")) : [];
   if (deckCards.length > 1) {
-    var cur = 0, dots = [];
+    var deckCur = 0, dots = [];
     // 疊法：最上面那張正常顯示，後面的往上縮一階，只露出邊
     function layout(dx){
       var n = deckCards.length;
       deckCards.forEach(function(card, i){
-        var pos = (i - cur + n) % n;
+        var pos = (i - deckCur + n) % n;
         var depth = Math.min(pos, 2);
         card.style.setProperty("--dy", (-7 * depth) + "px");
         card.style.setProperty("--sc", (1 - 0.035 * depth).toFixed(3));
         card.style.setProperty("--op", pos === 0 ? "1" : (depth === 1 ? ".78" : ".5"));
         card.style.setProperty("--z", String(n - depth));
         card.setAttribute("aria-hidden", pos === 0 ? "false" : "true");
+        // aria-hidden 的卡片仍然可以 Tab 到，讀屏與鍵盤會不一致 —— 一併移出 Tab 序
+        Array.prototype.forEach.call(card.querySelectorAll("a"), function(lk){
+          if (pos === 0) lk.removeAttribute("tabindex"); else lk.setAttribute("tabindex","-1");
+        });
         // 拖曳中只有最上面那張跟著手指走
         if (pos === 0 && dx) {
           card.style.transform = "translate3d(" + dx + "px,0,0)";
@@ -1373,10 +2247,14 @@ body.editing>#editor{display:block !important}
           card.style.transform = "";
         }
       });
-      dots.forEach(function(d, i){ d.setAttribute("aria-current", i === cur ? "true" : "false"); });
+      dots.forEach(function(d, i){ d.setAttribute("aria-current", i === deckCur ? "true" : "false"); });
+      // 每張卡文字長短不同：容器高度跟著最上面那張走。
+      // 卡片是 align-items:start 的疊層，offsetHeight 讀到的就是它自己的內容高
+      var h = deckCards[deckCur].offsetHeight;
+      if (h) liveCard.style.height = h + "px";
     }
     function go(step){
-      cur = (cur + step + deckCards.length) % deckCards.length;
+      deckCur = (deckCur + step + deckCards.length) % deckCards.length;
       layout(0);
     }
 
@@ -1387,7 +2265,7 @@ body.editing>#editor{display:block !important}
       var b = document.createElement("button");
       b.type = "button";
       b.setAttribute("aria-label", "顯示第 " + (i + 1) + " 張卡");
-      b.addEventListener("click", function(){ cur = i; layout(0); });
+      b.addEventListener("click", function(){ deckCur = i; layout(0); });
       dotWrap.appendChild(b);
       dots.push(b);
     });
@@ -1423,9 +2301,14 @@ body.editing>#editor{display:block !important}
     liveCard.addEventListener("pointercancel", endDrag);
     liveCard.addEventListener("pointerleave", endDrag);
     layout(0);
+    // 換行數會隨寬度與字型載入而變，兩者都重量一次
+    window.addEventListener("resize", function(){ layout(0); });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function(){ layout(0); });
+    }
   }
 
-  // ── 有 data-hours 的卡片：看「今天（日本時間）有沒有營業」──
+  // ── 有 data-hours 的卡片：看「今天（韓國時間）有沒有營業」──
   // 只判斷當天，不管此刻幾點；靜態頁可能隔幾天才打開，所以在瀏覽器端算。
   deckCards.forEach(function(card){
     var raw = card.getAttribute("data-hours");
@@ -1436,8 +2319,8 @@ body.editing>#editor{display:block !important}
     if (!stateEl || !stateEl.firstChild || stateEl.firstChild.nodeType !== 3) return;
     var label = stateEl.firstChild;
     function openToday(){
-      // 取日本當地日期：把 toLocaleString 的結果再解析回 Date
-      var d = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Tokyo"}));
+      // 取韓國當地日期：把 toLocaleString 的結果再解析回 Date
+      var d = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Seoul"}));
       var mmdd = ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
       if ((spec.closed || []).indexOf(mmdd) > -1) return false;
       return ((spec.open || {})[String(d.getDay())] || []).length > 0;
@@ -1457,41 +2340,42 @@ body.editing>#editor{display:block !important}
   // 這樣同一帶裡的第二個章節（檢查）也會等捲到才出現，動畫一致
   var bands = [].slice.call(document.querySelectorAll(".band"));
   if (ov) bands.push(ov);
-  var fades = [].slice.call(document.querySelectorAll("main .section"));
+  var fades = [].slice.call(document.querySelectorAll("main .section, main .handoff"));
   if (ov) fades.push(ov);
-  // 依此刻位於頂列底下的那一帶，決定頂列底色
-  var navTinted = [].slice.call(document.querySelectorAll(".band"));
   // 使用者要求減少動態時完全不碰 --open/--fade，兩者的 CSS 預設值就是「已展開」
   var wantsMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+  // 緊急色塊左右內縮的實際 px。用 calc() 定義，讀不到數值，
+  // 所以量 ::before 的 used value，並只在載入與改變視窗大小時重算
+  var emInset = 0;
+  // 導覽實際佔位的兩個元素（連結群、工具鍵）
+  var navInk = head ? [head.querySelector(".nav-links"), head.querySelector(".nav-tools")] : null;
+  if (navInk && (!navInk[0] || !navInk[1])) navInk = null;
+  function measureInset(){
+    if (!ov) return;
+    emInset = parseFloat(getComputedStyle(ov, "::before").left) || 0;
+  }
+  measureInset();
+  window.addEventListener("resize", measureInset);
+
   function syncScroll(){
-    if (head) head.classList.toggle("stuck", window.scrollY > 40);
+    // 導覽改成永遠透明、位置固定之後，原本每次捲動都要跑一輪
+    // getBoundingClientRect + getComputedStyle 的「取背景色」迴圈整個不需要了，
+    // .stuck 這個 class 也沒有任何規則在用。
     if (liveCard) liveCard.classList.toggle("is-out", window.scrollY > 120);
-    if (head && ov){
-      var d0 = ov.getBoundingClientRect();
-      var line = head.getBoundingClientRect().bottom;
-      head.classList.toggle("on-dark", d0.top < line - 6 && d0.bottom > line);
-    }
-    // 頂列底色：取此刻壓在頂列底下的那一塊背景，讓它跟著背景走
-    if (head){
-      var line2 = head.getBoundingClientRect().bottom;
-      var tint = "";
-      for (var t = 0; t < navTinted.length; t++){
-        var el2 = navTinted[t], tr = el2.getBoundingClientRect();
-        if (tr.top <= line2 && tr.bottom > line2){
-          var st = getComputedStyle(el2);
-          // 帶的底色畫在 ::before 上（元素本身透明），且帶頭那一段是漸層，
-          // 讀 background-image 拿不到單一色值 —— 直接取 --band 這個變數
-          tint = st.getPropertyValue("--band").trim();
-          if (!tint) {
-            tint = getComputedStyle(el2, "::before").backgroundColor;
-            if (!tint || tint === "rgba(0, 0, 0, 0)") tint = st.backgroundColor;
-          }
-          break;
-        }
-      }
-      // 找不到就沿用上一個顏色，不要跳回預設值造成閃色
-      if (tint && tint !== "rgba(0, 0, 0, 0)") head.style.setProperty("--nav-bg", tint);
+    // 導覽壓在深色塊上時只翻文字顏色。桌機上色塊內縮量綁著導覽的版心，
+    // 兩者永遠分開、這裡一律 false；真正會用到的是手機版（色塊近乎滿版）。
+    // 寫成 rect 判斷而不是寫死斷點，之後版面再動也不會失效
+    if (head && ov && navInk){
+      var er = ov.getBoundingClientRect();
+      // 用實際看得見的連結與工具鍵，不能用 .sticky-nav——它是 width:100% 的
+      // 透明容器，橫向永遠和色塊重疊，判斷會恆為 true
+      var a = navInk[0].getBoundingClientRect(), b = navInk[1].getBoundingClientRect();
+      var nT = Math.min(a.top, b.top), nB = Math.max(a.bottom, b.bottom);
+      var nL = Math.min(a.left, b.left), nR = Math.max(a.right, b.right);
+      var overlap = er.top < nB && er.bottom > nT &&
+                    (er.left + emInset) < nR && (er.right - emInset) > nL;
+      head.classList.toggle("over-dark", overlap);
     }
 
     if (!wantsMotion) return;
@@ -1506,7 +2390,10 @@ body.editing>#editor{display:block !important}
     for (var j = 0; j < fades.length; j++){
       var fe = fades[j], fd = fe.getBoundingClientRect();
       var fp = clamp01((vh - fd.top) / (vh * 0.65));
-      fe.style.setProperty("--fade", clamp01((fp - 0.35) / 0.35).toFixed(3));
+      // 0.08 而非 0.35：章節頂端一進到畫面就開始亮（95%），72% 時全亮。
+      // 用 0.35 的話要等頂端降到 77% 才開始，畫面底部會固定有 22.75% 是
+      // 「有內容但看不見」，捲動時讀起來就是一段一段斷開的
+      fe.style.setProperty("--fade", clamp01((fp - 0.08) / 0.35).toFixed(3));
     }
   }
   // 直接同步，不繞 requestAnimationFrame：rAF 在分頁切到背景時不會回呼，
@@ -1530,6 +2417,206 @@ body.editing>#editor{display:block !important}
       try { localStorage.setItem(key, box.checked ? "1" : "0"); } catch (e) {}
     });
   });
+
+  // ── 花費：自己的記帳（只存 localStorage，依本頁路徑分隔；不發任何網路請求）──
+  // 存的是 {rate?, items:[{id, name, yen, ts}]}。rate 只有自己改過才存，沒改就跟 trip.fx 走
+  (function(){
+    var root = document.getElementById("ledger");
+    if (!root) return;
+    root.hidden = false;
+    var KEY = "ledger:" + location.pathname;
+    var DEF_RATE = parseFloat(root.dataset.rate) || 41;
+    var DAY = 864e5;
+    function ymd(s){ var p = s.split("-"); return new Date(+p[0], p[1]-1, +p[2]); }
+    var start = ymd(root.dataset.start), end = ymd(root.dataset.end);
+    var total = Math.round((end - start) / DAY) + 1;
+
+    var canStore = true;
+    try { localStorage.setItem(KEY + ":probe", "1"); localStorage.removeItem(KEY + ":probe"); }
+    catch (e) { canStore = false; }
+    document.getElementById("ledger-warn").hidden = canStore;
+
+    var state = { items: [] };
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { var d = JSON.parse(raw); if (d && Array.isArray(d.items)) state = d; }
+    } catch (e) {}
+    function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+    function rate(){ return state.rate > 0 ? state.rate : DEF_RATE; }
+
+    // 全形數字、逗號、₩／원、空白都收；只要正整數韓元
+    function parseYen(v){
+      v = String(v || "").replace(/[０-９]/g, function(c){ return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
+                         .replace(/[,，、₩￦원\s]/g, "");
+      if (!/^\d+$/.test(v)) return 0;
+      var n = parseInt(v, 10);
+      return n > 0 && n <= 1e8 ? n : 0;
+    }
+    function yen(n){ return "₩" + n.toLocaleString("en-US"); }
+    function twd(n){ return "NT$" + Math.round(n / rate()).toLocaleString("en-US"); }
+    function el(tag, cls, text){
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    }
+
+    // 用「記下那天」對照行程起訖，決定歸哪一組。排序值越大越新
+    function groupOf(ts){
+      var t = new Date(ts), d = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+      var n = Math.round((d - start) / DAY) + 1;
+      if (n < 1) return { key: "pre", order: 0, no: "出發前", date: "" };
+      if (n > total) return { key: "post", order: total + 1, no: "回國後", date: "" };
+      return { key: "d" + n, order: n, no: "DAY " + (n < 10 ? "0" : "") + n,
+               date: (d.getMonth() + 1) + "." + (d.getDate() < 10 ? "0" : "") + d.getDate() };
+    }
+
+    var listEl = document.getElementById("ledger-list");
+    var editing = null;   // 正在編輯的那筆 id
+
+    function render(){
+      var sum = state.items.reduce(function(a, it){ return a + it.yen; }, 0);
+      document.getElementById("ledger-yen").textContent = yen(sum);
+      document.getElementById("ledger-twd").textContent = "≈ " + twd(sum);
+      renderRate();
+      document.getElementById("ledger-empty").hidden = state.items.length > 0;
+
+      var groups = {};
+      state.items.forEach(function(it){
+        var g = groupOf(it.ts);
+        (groups[g.key] = groups[g.key] || { g: g, items: [], sum: 0 }).items.push(it);
+        groups[g.key].sum += it.yen;
+      });
+      var order = Object.keys(groups).map(function(k){ return groups[k]; })
+                        .sort(function(a, b){ return b.g.order - a.g.order; });
+      listEl.textContent = "";
+      order.forEach(function(grp){
+        var sec = el("section", "lg-day");
+        var h = el("h3");
+        h.appendChild(el("span", "lg-no", grp.g.no));
+        if (grp.g.date) h.appendChild(el("span", "lg-date", grp.g.date));
+        h.appendChild(el("b", "lg-sub", yen(grp.sum)));
+        sec.appendChild(h);
+        var ul = el("ul");
+        grp.items.sort(function(a, b){ return b.ts - a.ts; }).forEach(function(it){
+          var li = el("li");
+          if (editing === it.id) li.appendChild(editForm(it));
+          else {
+            var b = el("button", "lg-row");
+            b.type = "button";
+            b.setAttribute("aria-label", it.name + " " + yen(it.yen) + "，點一下修改");
+            b.appendChild(el("span", "lg-name", it.name));
+            b.appendChild(el("b", "lg-amt", yen(it.yen)));
+            b.addEventListener("click", function(){ editing = it.id; render(); });
+            li.appendChild(b);
+          }
+          ul.appendChild(li);
+        });
+        sec.appendChild(ul);
+        listEl.appendChild(sec);
+      });
+      var f = listEl.querySelector(".lg-edit input");
+      if (f) f.focus();
+    }
+
+    function editForm(it){
+      var f = el("form", "lg-edit");
+      f.setAttribute("autocomplete", "off");
+      var n = el("input"); n.value = it.name; n.maxLength = 40; n.setAttribute("aria-label", "品項");
+      var wrap = el("span", "ledger-yen-in");
+      var y = el("input"); y.value = it.yen; y.inputMode = "numeric"; y.setAttribute("aria-label", "金額（韓元）");
+      wrap.appendChild(y);
+      var acts = el("div", "lg-edit-acts");
+      var ok = el("button", "ledger-btn", "儲存"); ok.type = "submit";
+      var cancel = el("button", "ledger-btn", "取消"); cancel.type = "button";
+      var del = el("button", "ledger-btn del", "刪除"); del.type = "button";
+      acts.appendChild(ok); acts.appendChild(cancel); acts.appendChild(del);
+      f.appendChild(n); f.appendChild(wrap); f.appendChild(acts);
+      f.addEventListener("submit", function(e){
+        e.preventDefault();
+        var v = parseYen(y.value);
+        if (!v) { y.focus(); y.select(); return; }
+        it.name = n.value.trim() || "未命名"; it.yen = v;
+        editing = null; save(); render();
+      });
+      cancel.addEventListener("click", function(){ editing = null; render(); });
+      del.addEventListener("click", function(){ remove(it); });
+      f.addEventListener("keydown", function(e){ if (e.key === "Escape") { editing = null; render(); } });
+      return f;
+    }
+
+    // 刪除不跳確認框，改成幾秒內可以「復原」
+    var undoEl = document.getElementById("ledger-undo"), undoTimer = null;
+    function remove(it){
+      var idx = state.items.indexOf(it);
+      state.items.splice(idx, 1);
+      editing = null; save(); render();
+      undoEl.textContent = "";
+      undoEl.appendChild(el("span", "", "已刪除「" + it.name + "」"));
+      var b = el("button", "", "復原"); b.type = "button";
+      b.addEventListener("click", function(){
+        state.items.splice(Math.min(idx, state.items.length), 0, it);
+        save(); render(); hideUndo();
+      });
+      undoEl.appendChild(b);
+      undoEl.hidden = false;
+      clearTimeout(undoTimer);
+      undoTimer = setTimeout(hideUndo, 6000);
+    }
+    function hideUndo(){ undoEl.hidden = true; clearTimeout(undoTimer); }
+
+    // 匯率：平常是一行字＋「修改」，點了才變成輸入框；清空就回到 trip.json 的預設
+    var rateEl = document.getElementById("ledger-rate"), rateEditing = false;
+    function renderRate(){
+      rateEl.textContent = "";
+      if (!rateEditing) {
+        rateEl.appendChild(el("span", "", "匯率 1 台幣 = ₩" + rate() + (state.rate > 0 ? "" : "（預設）")));
+        var b = el("button", "", "修改"); b.type = "button";
+        b.addEventListener("click", function(){ rateEditing = true; renderRate(); rateEl.querySelector("input").focus(); });
+        rateEl.appendChild(b);
+        return;
+      }
+      var f = el("form");
+      f.style.display = "contents";
+      f.appendChild(el("span", "", "1 台幣 = ₩"));
+      var i = el("input"); i.inputMode = "decimal"; i.value = state.rate > 0 ? state.rate : "";
+      i.placeholder = String(DEF_RATE); i.setAttribute("aria-label", "匯率：1 台幣換多少韓元");
+      var ok = el("button", "", "確定"); ok.type = "submit";
+      f.appendChild(i); f.appendChild(ok);
+      f.addEventListener("submit", function(e){
+        e.preventDefault();
+        var v = parseFloat(String(i.value).replace(/[０-９．]/g, function(c){
+          return c === "．" ? "." : String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }));
+        if (v > 0 && v < 1000) state.rate = v; else delete state.rate;
+        rateEditing = false; save(); render();
+      });
+      i.addEventListener("keydown", function(e){ if (e.key === "Escape") { rateEditing = false; renderRate(); } });
+      rateEl.appendChild(f);
+    }
+
+    var add = document.getElementById("ledger-add");
+    // 用 elements 取欄位：form.name 是表單自己的 name 屬性，不是那個輸入框
+    var addName = add.elements["name"], addYen = add.elements["yen"];
+    add.addEventListener("submit", function(e){
+      e.preventDefault();
+      var v = parseYen(addYen.value);
+      if (!v) { addYen.focus(); return; }
+      state.items.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                         name: addName.value.trim() || "未命名", yen: v, ts: Date.now() });
+      save(); render();
+      add.reset(); addName.focus();
+    });
+
+    // 在別的分頁改過（例如同時開著兩個）就跟著更新
+    window.addEventListener("storage", function(e){
+      if (e.key !== KEY) return;
+      try { state = JSON.parse(e.newValue) || { items: [] }; } catch (err) { state = { items: [] }; }
+      if (!Array.isArray(state.items)) state.items = [];
+      editing = null; render();
+    });
+
+    render();
+  })();
 
 })();
 </script>
@@ -1664,7 +2751,7 @@ body.editing>#editor{display:block !important}
     var t = d.trip || {};
     if (t.fx && !(Number(t.fx.rate) > 0)) delete t.fx;
     ["emergency", "packing"].forEach(function(k){ if (Array.isArray(t[k]) && !t[k].length) delete t[k]; });
-    ["notes", "bookings"].forEach(function(k){ if (Array.isArray(d[k]) && !d[k].length) delete d[k]; });
+    ["notes", "transit", "bookings"].forEach(function(k){ if (Array.isArray(d[k]) && !d[k].length) delete d[k]; });
     return d;
   }
 
@@ -1734,7 +2821,7 @@ body.editing>#editor{display:block !important}
     g.appendChild(field(t, "start_date", "開始日期", {type: "date"}));
     g.appendChild(field(t, "end_date", "結束日期", {type: "date"}));
     g.appendChild(field(t, "travelers", "人數", {type: "number"}));
-    g.appendChild(field(t, "currency", "幣別（如 NT$／¥）"));
+    g.appendChild(field(t, "currency", "幣別（如 NT$／₩）"));
     g.appendChild(field(t, "budget", "總預算", {type: "number"}));
     body.appendChild(g);
     var fxTitle = document.createElement("div"); fxTitle.className = "ed-daytitle"; fxTitle.textContent = "雙幣別換算（選填）"; body.appendChild(fxTitle);
@@ -1822,11 +2909,6 @@ body.editing>#editor{display:block !important}
     }
   });
 
-  // 提醒（原本的提醒與備忘已合併成一份 notes）
-  section("提醒（出發前該注意、該確認的事）", false, function(body){
-    data.notes = data.notes || [];
-    body.appendChild(stringListEditor(data.notes));
-  });
 })();
 </script>
 

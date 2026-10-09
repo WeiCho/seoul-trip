@@ -1,0 +1,76 @@
+name: 天氣預報更新
+
+on:
+  schedule:
+    # 一天兩次，只在 10/11 月跑（UTC；+9 就是 KST）
+    #   21:10 UTC = 06:10 KST  ← 早上出門前
+    #   09:10 UTC = 18:10 KST  ← 傍晚看隔天
+    - cron: "10 9,21 * 10,11 *"
+  workflow_dispatch:
+
+# 與 deploy.yml 共用同一個 Pages 併發群組，避免兩邊同時部署
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Open-Meteo：16 天內的氣溫、降雨與逐時。抓不到只亮紅字、不中斷 job
+      - name: 抓 Open-Meteo 預報並更新 trip.json
+        continue-on-error: true
+        run: python scripts/update_forecast.py trip.json
+
+      - name: Commit & push
+        id: commit
+        run: |
+          if git diff --quiet -- trip.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "trip.json 無變化，不 commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add trip.json
+          git commit -m "chore: 每日更新天氣預報"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # 以下只有真的有更新時才跑（用 GITHUB_TOKEN push 不會觸發 deploy.yml，所以這裡自己重建網站）
+      - name: Install deps
+        if: steps.commit.outputs.changed == 'true'
+        run: pip install "jinja2>=3.1"
+
+      - name: Render handbook from trip.json
+        if: steps.commit.outputs.changed == 'true'
+        run: python render.py .
+
+      - name: Assemble site
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          mkdir -p _site
+          cp index.html sw.js manifest.webmanifest icon.svg "行程表.html" _site/
+          touch _site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.commit.outputs.changed == 'true'
+        with:
+          path: _site
+
+      - id: deployment
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/deploy-pages@v4
