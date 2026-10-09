@@ -812,12 +812,12 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               {%- if item.booking and item.booking.code %}{% set _ = meta.append(("確認碼", item.booking.code)) %}{% endif %}
               {%- if item.next_transit %}{% set _ = meta.append(("下一站", item.next_transit)) %}{% endif %}
               {% if meta %}<dl class="em-meta">{% for k, v in meta %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}</dl>{% endif %}
+              {%- if item.url or item.links %}
               <div class="dlg-links">
-                {%- if item.map_url %}<a class="more" href="{{ item.map_url }}" target="_blank" rel="noopener">地圖{{ pill() }}</a>{% endif %}
-                {%- if item.transit_url %}<a class="more" href="{{ item.transit_url }}" target="_blank" rel="noopener">到下一站的路線{{ pill() }}</a>{% endif %}
                 {%- if item.url %}<a class="more" href="{{ item.url }}" target="_blank" rel="noopener">官網／訂房頁{{ pill() }}</a>{% endif %}
                 {%- for lk in item.links %}<a class="more" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.label }}{{ pill() }}</a>{% endfor %}
               </div>
+              {%- endif %}
               <button type="button" class="em-close" data-em-close>關閉</button>
             </div>
           </dialog>
