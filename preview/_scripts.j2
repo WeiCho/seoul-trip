@@ -1,0 +1,1036 @@
+<script>
+(function(){
+  var strip = document.querySelector(".nav-links");
+  var links = Array.prototype.slice.call(document.querySelectorAll(".sticky-nav a"));
+  if (!strip || !links.length) return;
+  var byId = {};
+  links.forEach(function(a){ byId[a.hash.slice(1)] = a; });
+  var current = links[0];
+  current.classList.add("active");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting && byId[e.target.id] && byId[e.target.id] !== current) {
+        current.classList.remove("active");
+        current = byId[e.target.id];
+        current.classList.add("active");
+        // 只水平捲動導覽列本身，絕不觸碰頁面捲動
+        strip.scrollTo({
+          left: current.offsetLeft - (strip.clientWidth - current.offsetWidth) / 2,
+          behavior: reduce ? "auto" : "smooth"
+        });
+      }
+    });
+  }, {rootMargin:"-15% 0px -70% 0px"});
+  Object.keys(byId).forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+
+  // ── 換日：一次只顯示一天，左右鈕／鍵盤左右鍵切換 ──
+  // 沒有 JS 時 CSS 讓所有天照常顯示（.js .day:not(.is-on){display:none}），不會整區消失
+  var daysEls = Array.prototype.slice.call(document.querySelectorAll("section.day"));
+  var prevBtn = document.getElementById("day-prev");
+  var nextBtn = document.getElementById("day-next");
+  var themeEl = document.getElementById("day-theme");
+  var pickEls = Array.prototype.slice.call(document.querySelectorAll("#itinerary .daypick .dp"));
+  var cur = 0;
+
+  function showDay(n, focus){
+    if (!daysEls.length) return;
+    cur = Math.max(0, Math.min(daysEls.length - 1, n));
+    daysEls.forEach(function(d, k){ d.classList.toggle("is-on", k === cur); });
+    var d = daysEls[cur];
+    if (themeEl){
+      themeEl.textContent = d.getAttribute("data-theme-text") || "";
+      // 今日徽章跟著當天走
+      if (d.classList.contains("today")){
+        var badge = document.createElement("span");
+        badge.className = "today-badge";
+        badge.textContent = "今日";
+        themeEl.appendChild(badge);
+      }
+    }
+    // 跳日列跟著標出當前那天；今日的點也在這裡上（todayMode 會在標記
+    // 完 .today 之後再呼叫一次 showDay，所以順序不會漏）
+    pickEls.forEach(function(a, k){
+      if (k === cur) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+      a.classList.toggle("is-today", !!(daysEls[k] && daysEls[k].classList.contains("today")));
+    });
+    if (prevBtn) prevBtn.disabled = (cur === 0);
+    if (nextBtn) nextBtn.disabled = (cur === daysEls.length - 1);
+    // 換日後回到「行程」章節的頂端。按鈕在頁面下方，不捲回去的話
+    // 換完會停在下一天的中段，看不到自己換到了哪一天
+    if (focus){
+      var sec = document.getElementById("itinerary");
+      if (sec){
+        var head = document.querySelector(".sticky-nav");
+        var offset = head ? head.getBoundingClientRect().height : 0;
+        var top = sec.getBoundingClientRect().top + window.scrollY - offset - 8;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+        });
+      }
+    }
+  }
+  function dayIndexOf(el){
+    while (el && el !== document.body){
+      var i = daysEls.indexOf(el);
+      if (i > -1) return i;
+      el = el.parentElement;
+    }
+    return -1;
+  }
+  pickEls.forEach(function(a, k){
+    a.addEventListener("click", function(e){
+      // 修飾鍵按著是「開新分頁」，別攔
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      // 不讓瀏覽器自己跳錨點：那個跳法是瞬移到 section 的位置，
+      // 跟 showDay 的捲動會互相打斷
+      e.preventDefault();
+      showDay(k, true);
+      // replaceState 不塞歷史。六格點來點去若每次都進歷史，
+      // 「上一頁」會變成要按六次才離得開這頁
+      if (history.replaceState) history.replaceState(null, "", "#day-" + (k + 1));
+    });
+  });
+  if (prevBtn) prevBtn.addEventListener("click", function(){ showDay(cur - 1, true); });
+  if (nextBtn) nextBtn.addEventListener("click", function(){ showDay(cur + 1, true); });
+  document.addEventListener("keydown", function(e){
+    // e.target 可能是 document（頁面剛載入、還沒點過任何東西），它沒有 closest
+    var t = e.target;
+    if (t && t.closest && t.closest("input,textarea,select,[contenteditable]")) return;
+    if (e.altKey || e.ctrlKey || e.metaKey) return;   // 別跟 Alt+← 上一頁搶
+    if (e.key === "ArrowLeft")  showDay(cur - 1);
+    if (e.key === "ArrowRight") showDay(cur + 1);
+  });
+  showDay(0);
+
+  // 連到某天（待確認清單的 #day-N）時切到那一天
+  function openHash(hash){
+    if (!hash || hash.length < 2) return;
+    var el;
+    try { el = document.querySelector(hash); } catch (err) { return; }
+    if (!el) return;
+    var i = dayIndexOf(el);
+    if (i > -1) showDay(i);
+  }
+  links.forEach(function(a){
+    a.addEventListener("click", function(){ openHash(a.hash); });
+  });
+  window.addEventListener("hashchange", function(){ openHash(location.hash); });
+  openHash(location.hash);
+
+  // 列印：紙本要印出全部天數（換日只是螢幕上的行為）
+  var printedAll = false;
+  window.addEventListener("beforeprint", function(){
+    printedAll = true;
+    daysEls.forEach(function(d){ d.classList.add("is-on"); });
+  });
+  window.addEventListener("afterprint", function(){
+    if (!printedAll) return;
+    printedAll = false;
+    showDay(cur);   // 列印完把畫面收回單日
+  });
+
+  // ── 交通區的換日：只留跳日列，不做上下頁 ──
+  // 這一區一天最多四五段、六格全在眼前，直接點就到；再放一組左右鍵是重複的入口。
+  // 也各自記各自的那一天：兩區距離很遠，硬要同步反而會出現「在交通區翻到 Day 5、
+  // 捲回行程卻也被翻走」這種沒人要求的連動。
+  (function(){
+    var panes = [].slice.call(document.querySelectorAll("#transit .tday"));
+    if (!panes.length) return;
+    var picks = [].slice.call(document.querySelectorAll("#transit .daypick .dp"));
+
+    function show(n, focus){
+      var at = Math.max(0, Math.min(panes.length - 1, n));
+      panes.forEach(function(el, k){ el.classList.toggle("is-on", k === at); });
+      picks.forEach(function(a, k){
+        if (k === at) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+        a.classList.toggle("is-today", !!(panes[k] && panes[k].classList.contains("today")));
+      });
+      // 換完捲回交通區頂端，否則會停在下一天的中段
+      if (focus){
+        var sec = document.getElementById("transit");
+        var head = document.querySelector(".sticky-nav");
+        var off = head ? head.getBoundingClientRect().height : 0;
+        window.scrollTo({
+          top: Math.max(0, sec.getBoundingClientRect().top + window.scrollY - off - 8),
+          behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+        });
+      }
+    }
+    picks.forEach(function(a, k){
+      a.addEventListener("click", function(e){
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+        e.preventDefault();   // 錨點瞬移跟這裡的捲動會互相打斷
+        show(k, true);
+      });
+    });
+
+    // 開頁時直接停在今天那一格（行程區也是這個行為）
+    var start = 0;
+    var now = new Date();
+    var pad = function(n){ return String(n).padStart(2, "0"); };
+    var today = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+    panes.forEach(function(el, k){
+      if (el.getAttribute("data-date") === today){ el.classList.add("today"); start = k; }
+    });
+    show(start);
+  })();
+
+  // ── 今日模式：依裝置時鐘標出今天、灰階已過行程、浮出「下一站」 ──
+  function todayMode(now){
+    var y = now.getFullYear();
+    var pad = function(n){ return String(n).padStart(2, "0"); };
+    var today = y + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+    var nowHM = pad(now.getHours()) + ":" + pad(now.getMinutes());
+    var dayEl = document.querySelector('section.day[data-date="' + today + '"]');
+    var bar = document.querySelector(".now-bar");
+    if (!dayEl || !bar) return;
+
+    // 今天在行程裡：直接切到那一天，徽章由 showDay 貼在日期列上
+    dayEl.classList.add("today");
+    var idx = daysEls.indexOf(dayEl);
+    if (idx > -1) showDay(idx);
+
+    var next = null;
+    Array.prototype.forEach.call(dayEl.querySelectorAll(".stop"), function(s){
+      var t = s.getAttribute("data-time");
+      if (t && t < nowHM) s.classList.add("past");
+      else if (!next && t) next = s;
+    });
+
+    var dayNo = (dayEl.id || "").replace("day-", "");
+    var lbl = bar.querySelector(".lbl");
+    var go = bar.querySelector(".now-go");
+    if (next) {
+      lbl.innerHTML = "<small>DAY " + dayNo + " · 進行中</small>下一站 " +
+        next.getAttribute("data-time") + " " + next.getAttribute("data-name");
+      var map = next.getAttribute("data-map");
+      if (map) { go.href = map; go.hidden = false; } else { go.hidden = true; }
+    } else {
+      lbl.innerHTML = "<small>DAY " + dayNo + "</small>今日行程已全部結束";
+      go.hidden = true;
+    }
+
+    var dismissKey = "nowbar-dismissed:" + location.pathname + ":" + today;
+    try { if (localStorage.getItem(dismissKey) === "1") return; } catch (e) {}
+    bar.hidden = false;
+    document.body.style.paddingBottom = bar.offsetHeight + "px";
+    // 浮卡也要讓開：兩者都是 fixed 且都貼底，浮條 z-45 會蓋掉浮卡底部
+    document.documentElement.style.setProperty("--nowbar-h", bar.offsetHeight + "px");
+    bar.querySelector(".now-dismiss").addEventListener("click", function(){
+      bar.hidden = true;
+      document.body.style.paddingBottom = "";
+      document.documentElement.style.removeProperty("--nowbar-h");
+      Array.prototype.forEach.call(dayEl.querySelectorAll(".stop.past"), function(s){
+        s.classList.remove("past");
+      });
+      try { localStorage.setItem(dismissKey, "1"); } catch (e) {}
+    });
+  }
+  // 可用 ?today=2026-10-16 或 ?today=2026-10-16T14:30 模擬日期，方便預覽今日模式
+  var override = new URLSearchParams(location.search).get("today");
+  if (override && /^\d{4}-\d{2}-\d{2}/.test(override)) {
+    todayMode(new Date(override.length === 10 ? override + "T12:00:00" : override));
+  } else {
+    todayMode(new Date());
+  }
+
+  // 深色 / 大字 切換（偏好記在 localStorage；亮色與一般字為預設）
+  var root = document.documentElement;
+  var themeBtn = document.querySelector('[data-toggle="theme"]');
+  var sizeBtn = document.querySelector('[data-toggle="size"]');
+  function syncTools(){
+    if (themeBtn){
+      var dark = root.getAttribute("data-theme") === "dark";
+      themeBtn.setAttribute("aria-pressed", dark ? "true" : "false");
+      themeBtn.textContent = dark ? "LIGHT" : "DARK";
+      themeBtn.setAttribute("aria-label", dark ? "切換淺色模式" : "切換深色模式");
+    }
+    if (sizeBtn){
+      var large = root.getAttribute("data-theme-size") === "large";
+      sizeBtn.setAttribute("aria-pressed", large ? "true" : "false");
+    }
+  }
+  syncTools();
+  if (themeBtn) themeBtn.addEventListener("click", function(){
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    syncTools();
+  });
+  if (sizeBtn) sizeBtn.addEventListener("click", function(){
+    var large = root.getAttribute("data-theme-size") === "large";
+    if (large){ root.removeAttribute("data-theme-size"); }
+    else { root.setAttribute("data-theme-size", "large"); }
+    try { localStorage.setItem("textsize", large ? "normal" : "large"); } catch (e) {}
+    syncTools();
+  });
+  var editBtn = document.querySelector('[data-toggle="edit"]');
+  if (editBtn) editBtn.addEventListener("click", function(){
+    window.open(location.pathname + "?edit=1", "_blank");
+  });
+
+  // 所有外部連結一律另開分頁（# 頁內跳轉維持原分頁）
+  Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function(a){
+    var h = a.getAttribute("href") || "";
+    if (h && h.charAt(0) !== "#") { a.target = "_blank"; a.rel = "noopener"; }
+  });
+
+  // ── 工具列：三顆鈕收在三條線圖示裡 ──
+  var toolsToggle = document.getElementById("tools-toggle");
+  var toolsMenu = document.getElementById("tools-menu");
+  if (toolsToggle && toolsMenu) {
+    toolsMenu.hidden = true;
+    var setTools = function(open){
+      toolsMenu.hidden = !open;
+      toolsToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toolsToggle.setAttribute("aria-label", open ? "關閉工具選單" : "開啟工具選單");
+    };
+    toolsToggle.addEventListener("click", function(e){
+      e.stopPropagation();
+      setTools(toolsMenu.hidden);
+    });
+    // 點外面或按 Esc 收起來
+    document.addEventListener("click", function(e){
+      if (!toolsMenu.hidden && !toolsMenu.contains(e.target) && e.target !== toolsToggle) setTools(false);
+    });
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape" && !toolsMenu.hidden) { setTools(false); toolsToggle.focus(); }
+    });
+  }
+
+  // ── 緊急卡片彈窗 ──
+  // 用原生 <dialog>.showModal()：焦點鎖定、Escape 關閉、背景 inert 都由瀏覽器負責，
+  // 不用自己寫 focus trap。舊瀏覽器沒有 showModal 就退回錨點行為（內容仍在頁面上）
+  [].slice.call(document.querySelectorAll(".em-card")).forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var dlg = document.getElementById(btn.getAttribute("aria-controls"));
+      if (!dlg) return;
+      if (typeof dlg.showModal === "function") { dlg.showModal(); }
+      else { dlg.setAttribute("open", ""); dlg.scrollIntoView({block: "nearest"}); }
+    });
+  });
+  [].slice.call(document.querySelectorAll("[data-em-close]")).forEach(function (b) {
+    b.addEventListener("click", function () {
+      var dlg = b.closest("dialog");
+      if (dlg) { if (typeof dlg.close === "function") dlg.close(); else dlg.removeAttribute("open"); }
+    });
+  });
+  // 點背景關閉：<dialog> 的點擊事件在 backdrop 上也會觸發，且 target 會是 dialog 本身
+  [].slice.call(document.querySelectorAll(".em-dlg")).forEach(function (dlg) {
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  });
+
+  // ── 封面浮卡：載入時浮出，開始往下捲就退場；多張時疊成一疊，往左滑換下一張 ──
+  var liveCard = document.getElementById("card-deck");
+  if (liveCard) {
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ liveCard.classList.add("is-in"); });
+    });
+    // 保險：rAF 在分頁未渲染時不會回呼，浮卡會永遠停在 opacity:0
+    setTimeout(function(){ liveCard.classList.add("is-in"); }, 400);
+    // 手機封面要替浮卡在底部留位（見 .hero:has(.card-deck)）：量實高，
+    // 票根卡的印章凸出卡片上緣 34px，也要算進去。字級切換、換卡都會改變高度
+    var syncDeckH = function(){
+      var h = liveCard.offsetHeight + (liveCard.querySelector(".hello-stamp") ? 34 : 0);
+      if (h) document.documentElement.style.setProperty("--deck-h", h + "px");
+    };
+    syncDeckH();
+    if (window.ResizeObserver) new ResizeObserver(syncDeckH).observe(liveCard);
+  }
+
+  var deckCards = liveCard ? [].slice.call(liveCard.querySelectorAll(".card-live")) : [];
+  if (deckCards.length > 1) {
+    var deckCur = 0, dots = [];
+    // 疊法：最上面那張正常顯示，後面的往上縮一階，只露出邊
+    function layout(dx){
+      var n = deckCards.length;
+      deckCards.forEach(function(card, i){
+        var pos = (i - deckCur + n) % n;
+        var depth = Math.min(pos, 2);
+        card.style.setProperty("--dy", (-7 * depth) + "px");
+        card.style.setProperty("--sc", (1 - 0.035 * depth).toFixed(3));
+        card.style.setProperty("--op", pos === 0 ? "1" : (depth === 1 ? ".78" : ".5"));
+        card.style.setProperty("--z", String(n - depth));
+        card.setAttribute("aria-hidden", pos === 0 ? "false" : "true");
+        // aria-hidden 的卡片仍然可以 Tab 到，讀屏與鍵盤會不一致 —— 一併移出 Tab 序
+        Array.prototype.forEach.call(card.querySelectorAll("a"), function(lk){
+          if (pos === 0) lk.removeAttribute("tabindex"); else lk.setAttribute("tabindex","-1");
+        });
+        // 拖曳中只有最上面那張跟著手指走
+        if (pos === 0 && dx) {
+          card.style.transform = "translate3d(" + dx + "px,0,0)";
+        } else {
+          card.style.transform = "";
+        }
+      });
+      dots.forEach(function(d, i){ d.setAttribute("aria-current", i === deckCur ? "true" : "false"); });
+      // 每張卡文字長短不同：容器高度跟著最上面那張走。
+      // 卡片是 align-items:start 的疊層，offsetHeight 讀到的就是它自己的內容高
+      var h = deckCards[deckCur].offsetHeight;
+      if (h) liveCard.style.height = h + "px";
+    }
+    function go(step){
+      deckCur = (deckCur + step + deckCards.length) % deckCards.length;
+      layout(0);
+    }
+
+    // 頁碼點：桌機沒有滑動手勢時也能換卡
+    var dotWrap = document.createElement("div");
+    dotWrap.className = "deck-dots";
+    deckCards.forEach(function(card, i){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "顯示第 " + (i + 1) + " 張卡");
+      b.addEventListener("click", function(){ deckCur = i; layout(0); });
+      dotWrap.appendChild(b);
+      dots.push(b);
+    });
+    liveCard.appendChild(dotWrap);
+
+    // 手勢：水平拖曳超過門檻就換卡；沒超過就彈回。
+    // 直向的拖曳交還給頁面捲動（touch-action:pan-y 已允許）
+    var x0 = null, y0 = null, dx = 0, dragging = false;
+    liveCard.addEventListener("pointerdown", function(e){
+      if (e.target.closest("a") || e.target.closest("button")) return;
+      x0 = e.clientX; y0 = e.clientY; dx = 0; dragging = false;
+    });
+    liveCard.addEventListener("pointermove", function(e){
+      if (x0 === null) return;
+      var mx = e.clientX - x0, my = e.clientY - y0;
+      if (!dragging) {
+        if (Math.abs(mx) < 6 || Math.abs(mx) < Math.abs(my)) return;
+        dragging = true;
+        deckCards.forEach(function(c){ c.classList.add("is-dragging"); });
+        if (liveCard.setPointerCapture) { try { liveCard.setPointerCapture(e.pointerId); } catch (err) {} }
+      }
+      dx = mx;
+      layout(dx);
+    });
+    function endDrag(){
+      if (x0 === null) return;
+      x0 = null; y0 = null;
+      deckCards.forEach(function(c){ c.classList.remove("is-dragging"); });
+      if (dragging && Math.abs(dx) > 44) { go(dx < 0 ? 1 : -1); } else { layout(0); }
+      dragging = false; dx = 0;
+    }
+    liveCard.addEventListener("pointerup", endDrag);
+    liveCard.addEventListener("pointercancel", endDrag);
+    liveCard.addEventListener("pointerleave", endDrag);
+    layout(0);
+    // 換行數會隨寬度與字型載入而變，兩者都重量一次
+    window.addEventListener("resize", function(){ layout(0); });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function(){ layout(0); });
+    }
+  }
+
+  // ── 有 data-hours 的卡片：看「今天（韓國時間）有沒有營業」──
+  // 只判斷當天，不管此刻幾點；靜態頁可能隔幾天才打開，所以在瀏覽器端算。
+  deckCards.forEach(function(card){
+    var raw = card.getAttribute("data-hours");
+    if (!raw) return;
+    var spec;
+    try { spec = JSON.parse(raw); } catch (err) { return; }
+    var stateEl = card.querySelector(".state");
+    if (!stateEl || !stateEl.firstChild || stateEl.firstChild.nodeType !== 3) return;
+    var label = stateEl.firstChild;
+    function openToday(){
+      // 取韓國當地日期：把 toLocaleString 的結果再解析回 Date
+      var d = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Seoul"}));
+      var mmdd = ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+      if ((spec.closed || []).indexOf(mmdd) > -1) return false;
+      return ((spec.open || {})[String(d.getDay())] || []).length > 0;
+    }
+    function paint(){ label.nodeValue = openToday() ? "正常營業" : "休息"; }
+    paint();
+    // 跨日才需要重算：回到分頁時對一次就夠
+    document.addEventListener("visibilitychange", function(){
+      if (!document.hidden) paint();
+    });
+  });
+
+  // ── 固定頂列底色 + 深色花費色帶隨捲動展開 ──
+  var head = document.querySelector(".sticky-nav");
+  var ov = document.getElementById("emergency");
+  // 底色展開掛在「帶」上；內容淡入改掛在「章節」上，
+  // 這樣同一帶裡的第二個章節（檢查）也會等捲到才出現，動畫一致
+  var bands = [].slice.call(document.querySelectorAll(".band"));
+  if (ov) bands.push(ov);
+  var fades = [].slice.call(document.querySelectorAll("main .section, main .handoff"));
+  if (ov) fades.push(ov);
+  // 使用者要求減少動態時完全不碰 --open/--fade，兩者的 CSS 預設值就是「已展開」
+  var wantsMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+  // 緊急色塊左右內縮的實際 px。用 calc() 定義，讀不到數值，
+  // 所以量 ::before 的 used value，並只在載入與改變視窗大小時重算
+  var emInset = 0;
+  // 導覽實際佔位的兩個元素（連結群、工具鍵）
+  var navInk = head ? [head.querySelector(".nav-links"), head.querySelector(".nav-tools")] : null;
+  if (navInk && (!navInk[0] || !navInk[1])) navInk = null;
+  function measureInset(){
+    if (!ov) return;
+    emInset = parseFloat(getComputedStyle(ov, "::before").left) || 0;
+  }
+  measureInset();
+  window.addEventListener("resize", measureInset);
+
+  function syncScroll(){
+    // 導覽改成永遠透明、位置固定之後，原本每次捲動都要跑一輪
+    // getBoundingClientRect + getComputedStyle 的「取背景色」迴圈整個不需要了，
+    // .stuck 這個 class 也沒有任何規則在用。
+    if (liveCard) liveCard.classList.toggle("is-out", window.scrollY > 120);
+    // 導覽壓在深色塊上時只翻文字顏色。桌機上色塊內縮量綁著導覽的版心，
+    // 兩者永遠分開、這裡一律 false；真正會用到的是手機版（色塊近乎滿版）。
+    // 寫成 rect 判斷而不是寫死斷點，之後版面再動也不會失效
+    if (head && ov && navInk){
+      var er = ov.getBoundingClientRect();
+      // 用實際看得見的連結與工具鍵，不能用 .sticky-nav——它是 width:100% 的
+      // 透明容器，橫向永遠和色塊重疊，判斷會恆為 true
+      var a = navInk[0].getBoundingClientRect(), b = navInk[1].getBoundingClientRect();
+      var nT = Math.min(a.top, b.top), nB = Math.max(a.bottom, b.bottom);
+      var nL = Math.min(a.left, b.left), nR = Math.max(a.right, b.right);
+      var overlap = er.top < nB && er.bottom > nT &&
+                    (er.left + emInset) < nR && (er.right - emInset) > nL;
+      head.classList.toggle("over-dark", overlap);
+    }
+
+    if (!wantsMotion) return;
+    var vh = window.innerHeight;
+    // 左右展開只留給深色花費區；其餘區塊一律底色滿版，只做內容淡入
+    if (ov){
+      var od = ov.getBoundingClientRect();
+      var maxInset = window.innerWidth <= 760 ? 12 : 22;  // 窄螢幕別縮掉太多可視寬度
+      var op = clamp01((vh - od.top) / (vh * 0.65));
+      ov.style.setProperty("--open", (maxInset * (1 - op)).toFixed(2) + "%");
+    }
+    for (var j = 0; j < fades.length; j++){
+      var fe = fades[j], fd = fe.getBoundingClientRect();
+      var fp = clamp01((vh - fd.top) / (vh * 0.65));
+      // 0.08 而非 0.35：章節頂端一進到畫面就開始亮（95%），72% 時全亮。
+      // 用 0.35 的話要等頂端降到 77% 才開始，畫面底部會固定有 22.75% 是
+      // 「有內容但看不見」，捲動時讀起來就是一段一段斷開的
+      fe.style.setProperty("--fade", clamp01((fp - 0.08) / 0.35).toFixed(3));
+    }
+  }
+  // 直接同步，不繞 requestAnimationFrame：rAF 在分頁切到背景時不會回呼，
+  // 一旦 --fade 已被設為 0 就再也改不回來，深色花費整區會永遠透明
+  window.addEventListener("scroll", syncScroll, {passive:true});
+  window.addEventListener("resize", syncScroll);
+  document.addEventListener("visibilitychange", syncScroll);
+  window.addEventListener("beforeprint", function(){
+    // 紙本不做展開動畫。沒有這段，未捲到的章節會整片印成空白
+    if (ov) ov.style.setProperty("--open","0%");
+    fades.forEach(function(el){ el.style.setProperty("--fade","1"); });
+  });
+  syncScroll();
+
+  // 檢查清單勾選狀態存 localStorage（依本頁路徑分隔）
+  var packBoxes = document.querySelectorAll("input[data-pack]");
+  packBoxes.forEach(function(box){
+    var key = "pack:" + location.pathname + ":" + box.getAttribute("data-pack");
+    try { box.checked = localStorage.getItem(key) === "1"; } catch (e) {}
+    box.addEventListener("change", function(){
+      try { localStorage.setItem(key, box.checked ? "1" : "0"); } catch (e) {}
+    });
+  });
+
+  // ── 花費：自己的記帳（只存 localStorage，依本頁路徑分隔；不發任何網路請求）──
+  // 存的是 {rate?, items:[{id, name, yen, ts}]}。rate 只有自己改過才存，沒改就跟 trip.fx 走
+  (function(){
+    var root = document.getElementById("ledger");
+    if (!root) return;
+    root.hidden = false;
+    var KEY = "ledger:" + location.pathname;
+    var DEF_RATE = parseFloat(root.dataset.rate) || 41;
+    var DAY = 864e5;
+    function ymd(s){ var p = s.split("-"); return new Date(+p[0], p[1]-1, +p[2]); }
+    var start = ymd(root.dataset.start), end = ymd(root.dataset.end);
+    var total = Math.round((end - start) / DAY) + 1;
+
+    var canStore = true;
+    try { localStorage.setItem(KEY + ":probe", "1"); localStorage.removeItem(KEY + ":probe"); }
+    catch (e) { canStore = false; }
+    document.getElementById("ledger-warn").hidden = canStore;
+
+    var state = { items: [] };
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { var d = JSON.parse(raw); if (d && Array.isArray(d.items)) state = d; }
+    } catch (e) {}
+    function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+    function rate(){ return state.rate > 0 ? state.rate : DEF_RATE; }
+
+    // 全形數字、逗號、₩／원、空白都收；只要正整數韓元
+    function parseYen(v){
+      v = String(v || "").replace(/[０-９]/g, function(c){ return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
+                         .replace(/[,，、₩￦원\s]/g, "");
+      if (!/^\d+$/.test(v)) return 0;
+      var n = parseInt(v, 10);
+      return n > 0 && n <= 1e8 ? n : 0;
+    }
+    function yen(n){ return "₩" + n.toLocaleString("en-US"); }
+    function twd(n){ return "NT$" + Math.round(n / rate()).toLocaleString("en-US"); }
+    function el(tag, cls, text){
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    }
+
+    // 用「記下那天」對照行程起訖，決定歸哪一組。排序值越大越新
+    function groupOf(ts){
+      var t = new Date(ts), d = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+      var n = Math.round((d - start) / DAY) + 1;
+      if (n < 1) return { key: "pre", order: 0, no: "出發前", date: "" };
+      if (n > total) return { key: "post", order: total + 1, no: "回國後", date: "" };
+      return { key: "d" + n, order: n, no: "DAY " + (n < 10 ? "0" : "") + n,
+               date: (d.getMonth() + 1) + "." + (d.getDate() < 10 ? "0" : "") + d.getDate() };
+    }
+
+    var listEl = document.getElementById("ledger-list");
+    var editing = null;   // 正在編輯的那筆 id
+
+    function render(){
+      var sum = state.items.reduce(function(a, it){ return a + it.yen; }, 0);
+      document.getElementById("ledger-yen").textContent = yen(sum);
+      document.getElementById("ledger-twd").textContent = "≈ " + twd(sum);
+      renderRate();
+      document.getElementById("ledger-empty").hidden = state.items.length > 0;
+
+      var groups = {};
+      state.items.forEach(function(it){
+        var g = groupOf(it.ts);
+        (groups[g.key] = groups[g.key] || { g: g, items: [], sum: 0 }).items.push(it);
+        groups[g.key].sum += it.yen;
+      });
+      var order = Object.keys(groups).map(function(k){ return groups[k]; })
+                        .sort(function(a, b){ return b.g.order - a.g.order; });
+      listEl.textContent = "";
+      order.forEach(function(grp){
+        var sec = el("section", "lg-day");
+        var h = el("h3");
+        h.appendChild(el("span", "lg-no", grp.g.no));
+        if (grp.g.date) h.appendChild(el("span", "lg-date", grp.g.date));
+        h.appendChild(el("b", "lg-sub", yen(grp.sum)));
+        sec.appendChild(h);
+        var ul = el("ul");
+        grp.items.sort(function(a, b){ return b.ts - a.ts; }).forEach(function(it){
+          var li = el("li");
+          if (editing === it.id) li.appendChild(editForm(it));
+          else {
+            var b = el("button", "lg-row");
+            b.type = "button";
+            b.setAttribute("aria-label", it.name + " " + yen(it.yen) + "，點一下修改");
+            b.appendChild(el("span", "lg-name", it.name));
+            b.appendChild(el("b", "lg-amt", yen(it.yen)));
+            b.addEventListener("click", function(){ editing = it.id; render(); });
+            li.appendChild(b);
+          }
+          ul.appendChild(li);
+        });
+        sec.appendChild(ul);
+        listEl.appendChild(sec);
+      });
+      var f = listEl.querySelector(".lg-edit input");
+      if (f) f.focus();
+    }
+
+    function editForm(it){
+      var f = el("form", "lg-edit");
+      f.setAttribute("autocomplete", "off");
+      var n = el("input"); n.value = it.name; n.maxLength = 40; n.setAttribute("aria-label", "品項");
+      var wrap = el("span", "ledger-yen-in");
+      var y = el("input"); y.value = it.yen; y.inputMode = "numeric"; y.setAttribute("aria-label", "金額（韓元）");
+      wrap.appendChild(y);
+      var acts = el("div", "lg-edit-acts");
+      var ok = el("button", "ledger-btn", "儲存"); ok.type = "submit";
+      var cancel = el("button", "ledger-btn", "取消"); cancel.type = "button";
+      var del = el("button", "ledger-btn del", "刪除"); del.type = "button";
+      acts.appendChild(ok); acts.appendChild(cancel); acts.appendChild(del);
+      f.appendChild(n); f.appendChild(wrap); f.appendChild(acts);
+      f.addEventListener("submit", function(e){
+        e.preventDefault();
+        var v = parseYen(y.value);
+        if (!v) { y.focus(); y.select(); return; }
+        it.name = n.value.trim() || "未命名"; it.yen = v;
+        editing = null; save(); render();
+      });
+      cancel.addEventListener("click", function(){ editing = null; render(); });
+      del.addEventListener("click", function(){ remove(it); });
+      f.addEventListener("keydown", function(e){ if (e.key === "Escape") { editing = null; render(); } });
+      return f;
+    }
+
+    // 刪除不跳確認框，改成幾秒內可以「復原」
+    var undoEl = document.getElementById("ledger-undo"), undoTimer = null;
+    function remove(it){
+      var idx = state.items.indexOf(it);
+      state.items.splice(idx, 1);
+      editing = null; save(); render();
+      undoEl.textContent = "";
+      undoEl.appendChild(el("span", "", "已刪除「" + it.name + "」"));
+      var b = el("button", "", "復原"); b.type = "button";
+      b.addEventListener("click", function(){
+        state.items.splice(Math.min(idx, state.items.length), 0, it);
+        save(); render(); hideUndo();
+      });
+      undoEl.appendChild(b);
+      undoEl.hidden = false;
+      clearTimeout(undoTimer);
+      undoTimer = setTimeout(hideUndo, 6000);
+    }
+    function hideUndo(){ undoEl.hidden = true; clearTimeout(undoTimer); }
+
+    // 匯率：平常是一行字＋「修改」，點了才變成輸入框；清空就回到 trip.json 的預設
+    var rateEl = document.getElementById("ledger-rate"), rateEditing = false;
+    function renderRate(){
+      rateEl.textContent = "";
+      if (!rateEditing) {
+        rateEl.appendChild(el("span", "", "匯率 1 台幣 = ₩" + rate() + (state.rate > 0 ? "" : "（預設）")));
+        var b = el("button", "", "修改"); b.type = "button";
+        b.addEventListener("click", function(){ rateEditing = true; renderRate(); rateEl.querySelector("input").focus(); });
+        rateEl.appendChild(b);
+        return;
+      }
+      var f = el("form");
+      f.style.display = "contents";
+      f.appendChild(el("span", "", "1 台幣 = ₩"));
+      var i = el("input"); i.inputMode = "decimal"; i.value = state.rate > 0 ? state.rate : "";
+      i.placeholder = String(DEF_RATE); i.setAttribute("aria-label", "匯率：1 台幣換多少韓元");
+      var ok = el("button", "", "確定"); ok.type = "submit";
+      f.appendChild(i); f.appendChild(ok);
+      f.addEventListener("submit", function(e){
+        e.preventDefault();
+        var v = parseFloat(String(i.value).replace(/[０-９．]/g, function(c){
+          return c === "．" ? "." : String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }));
+        if (v > 0 && v < 1000) state.rate = v; else delete state.rate;
+        rateEditing = false; save(); render();
+      });
+      i.addEventListener("keydown", function(e){ if (e.key === "Escape") { rateEditing = false; renderRate(); } });
+      rateEl.appendChild(f);
+    }
+
+    var add = document.getElementById("ledger-add");
+    // 用 elements 取欄位：form.name 是表單自己的 name 屬性，不是那個輸入框
+    var addName = add.elements["name"], addYen = add.elements["yen"];
+    add.addEventListener("submit", function(e){
+      e.preventDefault();
+      var v = parseYen(addYen.value);
+      if (!v) { addYen.focus(); return; }
+      state.items.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                         name: addName.value.trim() || "未命名", yen: v, ts: Date.now() });
+      save(); render();
+      add.reset(); addName.focus();
+    });
+
+    // 在別的分頁改過（例如同時開著兩個）就跟著更新
+    window.addEventListener("storage", function(e){
+      if (e.key !== KEY) return;
+      try { state = JSON.parse(e.newValue) || { items: [] }; } catch (err) { state = { items: [] }; }
+      if (!Array.isArray(state.items)) state.items = [];
+      editing = null; render();
+    });
+
+    render();
+  })();
+
+})();
+</script>
+
+<script>
+/* ── 頁內編輯器：?edit=1 顯示表單，自動存草稿到 localStorage，可匯出 trip.json ── */
+(function(){
+  var srcEl = document.getElementById("trip-src");
+  if (!srcEl) return;
+  var baked;
+  try { baked = JSON.parse(srcEl.textContent); } catch (e) { return; }
+  var draftKey = "draft:" + location.pathname;
+  var editing = new URLSearchParams(location.search).get("edit") === "1";
+
+  function loadDraft(){ try { var d = localStorage.getItem(draftKey); return d ? JSON.parse(d) : null; } catch (e) { return null; } }
+
+  // 手冊模式：偵測未匯出的本機草稿 → 橫幅提醒
+  if (!editing) {
+    if (!loadDraft()) return;
+    var main = document.querySelector("main");
+    if (!main) return;
+    var bn = document.createElement("div");
+    bn.className = "draft-banner";
+    var sp = document.createElement("span");
+    sp.textContent = "📝 偵測到本機編輯草稿（尚未匯出成 trip.json）";
+    var open = document.createElement("a");
+    open.className = "ed-btn"; open.href = location.pathname + "?edit=1"; open.target = "_blank"; open.rel = "noopener";
+    open.textContent = "開啟編輯器";
+    var disc = document.createElement("button");
+    disc.className = "ed-btn"; disc.textContent = "捨棄草稿";
+    disc.addEventListener("click", function(){
+      if (confirm("捨棄本機草稿？此手冊顯示的內容不受影響。")) {
+        try { localStorage.removeItem(draftKey); } catch (e) {}
+        bn.remove();
+      }
+    });
+    bn.appendChild(sp); bn.appendChild(open); bn.appendChild(disc);
+    main.insertBefore(bn, main.firstChild);
+    return;
+  }
+
+  // ── 編輯模式 ──
+  document.body.classList.add("editing");
+  document.title = "編輯｜" + document.title;
+  var data = loadDraft() || JSON.parse(JSON.stringify(baked));
+  var host = document.getElementById("editor");
+  host.hidden = false;
+  var saveEl, saveTimer = null;
+
+  function save(){
+    try {
+      localStorage.setItem(draftKey, JSON.stringify(data));
+      if (saveEl) saveEl.textContent = "已存草稿 " + new Date().toLocaleTimeString();
+    } catch (e) { if (saveEl) saveEl.textContent = "存檔失敗（瀏覽器空間不足？）"; }
+  }
+  function touch(){ clearTimeout(saveTimer); saveTimer = setTimeout(save, 400); }
+
+  function field(obj, key, label, opts){
+    opts = opts || {};
+    var wrap = document.createElement("div");
+    wrap.className = "ed-field" + (opts.full ? " full" : "");
+    var l = document.createElement("label"); l.textContent = label; wrap.appendChild(l);
+    var inp;
+    if (opts.type === "textarea") { inp = document.createElement("textarea"); }
+    else if (opts.type === "select") {
+      inp = document.createElement("select");
+      (opts.opts || []).forEach(function(o){
+        var op = document.createElement("option"); op.value = o; op.textContent = o || "（無）"; inp.appendChild(op);
+      });
+    } else { inp = document.createElement("input"); inp.type = opts.type || "text"; }
+    var v = obj[key];
+    inp.value = (v === undefined || v === null) ? "" : v;
+    inp.addEventListener(opts.type === "select" ? "change" : "input", function(){
+      var val = inp.value;
+      if (opts.type === "number") { obj[key] = val === "" ? 0 : Number(val); }
+      else if (val === "") { delete obj[key]; }
+      else { obj[key] = val; }
+      touch();
+    });
+    wrap.appendChild(inp); return wrap;
+  }
+  function grid(){ var g = document.createElement("div"); g.className = "ed-grid"; return g; }
+
+  function listEditor(arr, buildRow, addLabel, makeNew){
+    var box = document.createElement("div");
+    function redraw(){
+      box.innerHTML = "";
+      arr.forEach(function(item, i){
+        var row = document.createElement("div"); row.className = "ed-row";
+        var head = document.createElement("div"); head.className = "ed-rowhead";
+        var b = document.createElement("b"); b.textContent = "# " + (i + 1); head.appendChild(b);
+        var del = document.createElement("button"); del.className = "ed-del"; del.type = "button"; del.textContent = "刪除";
+        del.addEventListener("click", function(){ arr.splice(i, 1); touch(); redraw(); });
+        head.appendChild(del); row.appendChild(head);
+        buildRow(item, row); box.appendChild(row);
+      });
+      var add = document.createElement("button"); add.className = "ed-add"; add.type = "button"; add.textContent = addLabel;
+      add.addEventListener("click", function(){ arr.push(makeNew()); touch(); redraw(); });
+      box.appendChild(add);
+    }
+    redraw(); return box;
+  }
+
+  function stringListEditor(arr){
+    var box = document.createElement("div");
+    function redraw(){
+      box.innerHTML = "";
+      arr.forEach(function(s, i){
+        var row = document.createElement("div"); row.className = "ed-strrow";
+        var inp = document.createElement("textarea"); inp.value = s;
+        inp.addEventListener("input", function(){ arr[i] = inp.value; touch(); });
+        var del = document.createElement("button"); del.className = "ed-del"; del.type = "button"; del.textContent = "刪除";
+        del.addEventListener("click", function(){ arr.splice(i, 1); touch(); redraw(); });
+        row.appendChild(inp); row.appendChild(del); box.appendChild(row);
+      });
+      var add = document.createElement("button"); add.className = "ed-add"; add.type = "button"; add.textContent = "＋ 新增一項";
+      add.addEventListener("click", function(){ arr.push(""); touch(); redraw(); });
+      box.appendChild(add);
+    }
+    redraw(); return box;
+  }
+
+  function section(title, open, build){
+    var det = document.createElement("details"); det.className = "ed-sec"; det.open = !!open;
+    var sum = document.createElement("summary"); sum.textContent = title; det.appendChild(sum);
+    var body = document.createElement("div"); body.className = "ed-body"; build(body); det.appendChild(body);
+    host.appendChild(det);
+  }
+
+  function cleanExport(){
+    var d = JSON.parse(JSON.stringify(data));
+    var t = d.trip || {};
+    if (t.fx && !(Number(t.fx.rate) > 0)) delete t.fx;
+    ["emergency", "packing"].forEach(function(k){ if (Array.isArray(t[k]) && !t[k].length) delete t[k]; });
+    ["notes", "transit", "bookings"].forEach(function(k){ if (Array.isArray(d[k]) && !d[k].length) delete d[k]; });
+    return d;
+  }
+
+  // 標題 + 說明 + 工具列
+  var title = document.createElement("h1"); title.className = "ed-title"; title.textContent = "編輯行程資料";
+  var sub = document.createElement("p"); sub.className = "ed-sub";
+  sub.textContent = "邊改邊自動存到這台裝置。改好可「匯出 trip.json」下載，或「複製 JSON」直接貼到雲端 repo 的 trip.json；更新 trip.json 後重新渲染，手冊就會套用。";
+  host.appendChild(title); host.appendChild(sub);
+
+  var bar = document.createElement("div"); bar.className = "ed-bar";
+  var exportBtn = document.createElement("button"); exportBtn.type = "button"; exportBtn.className = "ed-btn primary"; exportBtn.textContent = "⬇ 匯出 trip.json";
+  var copyBtn = document.createElement("button"); copyBtn.type = "button"; copyBtn.className = "ed-btn"; copyBtn.textContent = "📋 複製 JSON";
+  var resetBtn = document.createElement("button"); resetBtn.type = "button"; resetBtn.className = "ed-btn"; resetBtn.textContent = "還原草稿";
+  var backBtn = document.createElement("button"); backBtn.type = "button"; backBtn.className = "ed-btn"; backBtn.textContent = "← 回到手冊";
+  saveEl = document.createElement("span"); saveEl.className = "ed-save";
+  bar.appendChild(exportBtn); bar.appendChild(copyBtn); bar.appendChild(resetBtn); bar.appendChild(backBtn);
+  var spacer = document.createElement("span"); spacer.className = "spacer"; bar.appendChild(spacer);
+  bar.appendChild(saveEl);
+  host.appendChild(bar);
+
+  exportBtn.addEventListener("click", function(){
+    save();
+    var blob = new Blob([JSON.stringify(cleanExport(), null, 2) + "\n"], {type: "application/json"});
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "trip.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  });
+  copyBtn.addEventListener("click", function(){
+    save();
+    var text = JSON.stringify(cleanExport(), null, 2) + "\n";
+    function flash(msg){
+      copyBtn.textContent = msg;
+      setTimeout(function(){ copyBtn.textContent = "📋 複製 JSON"; }, 2000);
+    }
+    function fallback(){
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = text; ta.style.position = "fixed"; ta.style.top = "0"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        var ok = document.execCommand("copy"); ta.remove();
+        flash(ok ? "✓ 已複製" : "複製失敗，請手動選取");
+      } catch (e) { flash("複製失敗，請手動選取"); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ flash("✓ 已複製"); }, fallback);
+    } else {
+      fallback();
+    }
+  });
+  resetBtn.addEventListener("click", function(){
+    if (confirm("還原成手冊目前的原始資料，並清除本機草稿？")) {
+      try { localStorage.removeItem(draftKey); } catch (e) {}
+      location.reload();
+    }
+  });
+  backBtn.addEventListener("click", function(){ location.href = location.pathname; });
+
+  var ITEM_TYPES = ["景點", "餐廳", "交通", "住宿", "購物"];
+  var STATUS = ["", "confirmed", "pending"];
+
+  // 旅程 meta
+  section("旅程", true, function(body){
+    var t = data.trip = data.trip || {};
+    var g = grid();
+    g.appendChild(field(t, "title", "標題", {full: true}));
+    g.appendChild(field(t, "destination", "目的地", {full: true}));
+    g.appendChild(field(t, "start_date", "開始日期", {type: "date"}));
+    g.appendChild(field(t, "end_date", "結束日期", {type: "date"}));
+    g.appendChild(field(t, "travelers", "人數", {type: "number"}));
+    g.appendChild(field(t, "currency", "幣別（如 NT$／₩）"));
+    g.appendChild(field(t, "budget", "總預算", {type: "number"}));
+    body.appendChild(g);
+    var fxTitle = document.createElement("div"); fxTitle.className = "ed-daytitle"; fxTitle.textContent = "雙幣別換算（選填）"; body.appendChild(fxTitle);
+    t.fx = t.fx || {};
+    var fg = grid();
+    fg.appendChild(field(t.fx, "currency", "換算幣別"));
+    fg.appendChild(field(t.fx, "rate", "匯率（金額 × 此值）", {type: "number"}));
+    body.appendChild(fg);
+  });
+
+  // 每日行程
+  section("每日行程", false, function(body){
+    data.days = data.days || [];
+    body.appendChild(listEditor(data.days, function(day, row){
+      var g = grid();
+      g.appendChild(field(day, "date", "日期", {type: "date"}));
+      g.appendChild(field(day, "theme", "主題"));
+      g.appendChild(field(day, "weather", "天氣／穿著", {full: true}));
+      g.appendChild(field(day, "note", "當日小提醒", {full: true}));
+      row.appendChild(g);
+      var lbl = document.createElement("div"); lbl.className = "ed-daytitle"; lbl.textContent = "行程項目（請依時間排序）"; row.appendChild(lbl);
+      day.items = day.items || [];
+      row.appendChild(listEditor(day.items, function(item, irow){
+        var ig = grid();
+        ig.appendChild(field(item, "time", "時間", {type: "time"}));
+        ig.appendChild(field(item, "type", "類型", {type: "select", opts: ITEM_TYPES}));
+        ig.appendChild(field(item, "name", "名稱", {full: true}));
+        ig.appendChild(field(item, "note", "備註", {type: "textarea", full: true}));
+        ig.appendChild(field(item, "duration", "停留（如 1.5h）"));
+        ig.appendChild(field(item, "cost", "費用", {type: "number"}));
+        ig.appendChild(field(item, "map_query", "地圖搜尋字串"));
+        ig.appendChild(field(item, "next_transit", "到下一站的交通"));
+        ig.appendChild(field(item, "url", "連結", {full: true}));
+        ig.appendChild(field(item, "status", "狀態", {type: "select", opts: STATUS}));
+        irow.appendChild(ig);
+      }, "＋ 新增行程項目", function(){ return {time: "09:00", name: "新項目", type: "景點"}; }));
+    }, "＋ 新增一天", function(){ return {date: (data.trip && data.trip.start_date) || "", theme: "", items: []}; }));
+  });
+
+  // 預付項目（手冊已不單獨列出訂位，但金額仍計入花費）
+  section("預付項目（機票／住宿等，只計花費）", false, function(body){
+    data.bookings = data.bookings || [];
+    body.appendChild(listEditor(data.bookings, function(b, row){
+      var g = grid();
+      g.appendChild(field(b, "type", "類型（航班／飯店…）"));
+      g.appendChild(field(b, "name", "名稱"));
+      g.appendChild(field(b, "date", "日期", {type: "date"}));
+      g.appendChild(field(b, "time", "時間", {type: "time"}));
+      g.appendChild(field(b, "code", "確認碼"));
+      g.appendChild(field(b, "cost", "費用", {type: "number"}));
+      g.appendChild(field(b, "note", "備註", {type: "textarea", full: true}));
+      g.appendChild(field(b, "url", "連結", {full: true}));
+      g.appendChild(field(b, "status", "狀態", {type: "select", opts: STATUS}));
+      row.appendChild(g);
+    }, "＋ 新增預付項目", function(){ return {type: "飯店", name: ""}; }));
+  });
+
+  // 緊急資訊
+  section("緊急資訊", false, function(body){
+    var t = data.trip = data.trip || {};
+    t.emergency = t.emergency || [];
+    body.appendChild(listEditor(t.emergency, function(e, row){
+      var g = grid();
+      g.appendChild(field(e, "label", "名稱", {full: true}));
+      g.appendChild(field(e, "value", "說明／地址"));
+      g.appendChild(field(e, "tel", "電話（可一鍵撥號）"));
+      row.appendChild(g);
+    }, "＋ 新增緊急聯絡", function(){ return {label: "", value: "", tel: ""}; }));
+  });
+
+  // 檢查清單（trip.packing）
+  section("檢查清單", false, function(body){
+    var t = data.trip = data.trip || {};
+    var pk = t.packing;
+    if (pk && pk.length && typeof pk[0] === "string") {
+      body.appendChild(stringListEditor(pk));
+    } else {
+      t.packing = pk || [];
+      body.appendChild(listEditor(t.packing, function(grp, row){
+        row.appendChild(field(grp, "group", "分組名稱"));
+        grp.items = grp.items || [];
+        var lbl = document.createElement("div"); lbl.className = "ed-daytitle"; lbl.textContent = "項目"; row.appendChild(lbl);
+        row.appendChild(stringListEditor(grp.items));
+      }, "＋ 新增分組", function(){ return {group: "新分組", items: []}; }));
+    }
+  });
+
+})();
+</script>

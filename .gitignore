@@ -4,3 +4,5 @@ sw.js
 manifest.webmanifest
 icon.svg
 __pycache__/
+# 風格預覽的產出檔（用 preview/render_preview.py 重產）
+preview/*.html
