@@ -405,8 +405,11 @@ a.tr-route{text-decoration:underline;text-decoration-color:var(--sky)}
 .ledger-warn{margin-bottom:10px;font-size:13px;color:var(--warm)}
 .ledger-add{display:grid;grid-template-columns:minmax(0,14em) minmax(0,10em) auto;justify-content:start;gap:8px;padding:16px 0;border-top:1px solid var(--line)}
 .ledger-yen-in{position:relative;display:block}
-.ledger-yen-in::before{content:"₩";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:var(--latin);color:var(--soft);pointer-events:none}
-.ledger-yen-in input{width:100%;padding-left:28px;font-family:var(--latin);font-variant-numeric:tabular-nums}
+/* 金額框左邊的幣別鈕（₩／NT$），點一下切換；框的左內距跟著符號寬度變 */
+.ledger-cur{position:absolute;left:1px;top:1px;bottom:1px;padding:0 8px 0 12px;border:0;background:none;font-family:var(--latin);font-size:15px;color:var(--sky-d);cursor:pointer;text-decoration:underline dotted;text-underline-offset:4px}
+.ledger-yen-in input{width:100%;padding-left:34px;font-family:var(--latin);font-variant-numeric:tabular-nums}
+.ledger-yen-in.is-twd input{padding-left:52px}
+.lg-alt{margin-left:8px;font-size:13px;font-weight:400;color:var(--muted)}
 .ledger-go{min-width:46px;min-height:46px;border:0;border-radius:6px;background:var(--sky);color:#0b0b0e;font:inherit;font-size:20px;cursor:pointer;transition:background .3s}
 .ledger-go:hover{background:var(--sky-l)}
 .lg-day{border-top:1px solid var(--line);padding-top:14px;margin-top:12px}
@@ -974,11 +977,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <p class="ledger-warn" id="ledger-warn" hidden>這個瀏覽器不允許存資料（可能是無痕模式），關掉頁面記錄就會消失。</p>
     <form class="ledger-add" id="ledger-add" autocomplete="off">
       <input class="ledger-name-in" name="name" maxlength="40" placeholder="品項" aria-label="品項">
-      <span class="ledger-yen-in"><input name="yen" inputmode="numeric" placeholder="金額" aria-label="金額（韓元）"></span>
+      <span class="ledger-yen-in"><input name="yen" inputmode="numeric" placeholder="金額" aria-label="金額"></span>
       <button class="ledger-go" type="submit" aria-label="新增這筆">＋</button>
     </form>
     <div id="ledger-list"></div>
-    <p class="ledger-empty" id="ledger-empty">還沒有記錄。輸入品項與韓元金額按「＋」就會記下，依天自動分組。</p>
+    <p class="ledger-empty" id="ledger-empty">還沒有記錄。輸入品項與金額按「＋」就會記下，依天自動分組；金額左邊的 ₩ 點一下可改記台幣。</p>
   </div>
   <noscript><p class="ledger-empty">記帳需要開啟 JavaScript。</p></noscript>
   </div>
