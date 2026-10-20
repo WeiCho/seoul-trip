@@ -176,10 +176,31 @@
     var now = new Date();
     var pad = function(n){ return String(n).padStart(2, "0"); };
     var today = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+    var nowHM = pad(now.getHours()) + ":" + pad(now.getMinutes());
     panes.forEach(function(el, k){
-      if (el.getAttribute("data-date") === today){ el.classList.add("today"); start = k; }
+      if (el.getAttribute("data-date") !== today) return;
+      el.classList.add("today"); start = k;
+      // 今天的發車時刻：劃掉已過的、標出下一班
+      [].slice.call(el.querySelectorAll(".tr-deps")).forEach(function(ul){
+        var marked = false;
+        [].slice.call(ul.children).forEach(function(li){
+          if (li.getAttribute("data-t") < nowHM) li.classList.add("gone");
+          else if (!marked) { li.classList.add("next"); marked = true; }
+        });
+      });
     });
     show(start);
+
+    // 行程對話框裡的「怎麼去」：先翻到那一天，再捲到那一段
+    [].slice.call(document.querySelectorAll('a[href^="#leg-"]')).forEach(function(a){
+      a.addEventListener("click", function(e){
+        var row = document.getElementById(a.getAttribute("href").slice(1));
+        if (!row) return;
+        e.preventDefault();
+        show(panes.indexOf(row.closest(".tday")));
+        row.scrollIntoView({block: "start", behavior: "auto"});
+      });
+    });
   })();
 
   // ── 今日模式：依裝置時鐘標出今天、灰階已過行程、浮出「下一站」 ──

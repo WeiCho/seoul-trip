@@ -77,6 +77,7 @@ self.addEventListener("fetch", (e) => {
 
 ITEM_TYPES = ("景點", "餐廳", "交通", "住宿", "購物")
 TIME_RE = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")
+LATLNG_RE = re.compile(r"^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$")
 WEEKDAYS = ("週一", "週二", "週三", "週四", "週五", "週六", "週日")
 
 # 花費分類：items 的 type 與 bookings 的 type 各自對映到統一的花費類別
@@ -90,6 +91,18 @@ CATEGORY_OF_BOOKING = {
 PENDING_RE = re.compile(r"待補|待確認|待報價|待補充|尚未|未定|TBD", re.IGNORECASE)
 # 本日路線一鍵導航：Google Maps 消費者版路線點數上限（origin + waypoints + destination）
 MAX_ROUTE_POINTS = 10
+
+# 結構化交通（items[].transit）
+TRANSIT_MODES = {
+    "subway": "🚇", "train": "🚆", "bus": "🚌", "walk": "🚶", "taxi": "🚕",
+    "flight": "✈️", "boat": "⛴️",
+}
+MAP_APPS = ("google", "kakao", "naver")
+PRIORITIES = ("must", "optional")
+# 排程鬆緊（九州回顧）：只警告、不擋產出
+MAX_SPOTS_PER_DAY = 3          # 每天「景點＋購物」上限
+SPOT_TYPES = ("景點", "購物")
+BUFFER_MIN = 20                # 停留＋交通之外，至少再留的分鐘數
 
 
 class TripError(ValueError):
@@ -120,6 +133,39 @@ def _check_cost(obj, ctx):
     if not isinstance(cost, (int, float)) or isinstance(cost, bool) or cost < 0:
         raise TripError(f"{ctx} 的 cost 必須是 ≥ 0 的數字：{cost!r}")
     return cost
+
+
+def _check_transit(tr, ictx):
+    ctx = f"{ictx} 的 transit"
+    if not isinstance(tr, dict):
+        raise TripError(f"{ctx} 必須是物件")
+    mode = tr.get("mode")
+    if mode is not None and mode not in TRANSIT_MODES:
+        raise TripError(f"{ctx}.mode 必須是 {'/'.join(TRANSIT_MODES)}：{mode!r}")
+    minutes = tr.get("minutes")
+    if minutes is not None and (
+        not isinstance(minutes, int) or isinstance(minutes, bool) or minutes <= 0
+    ):
+        raise TripError(f"{ctx}.minutes 必須是正整數（分鐘）：{minutes!r}")
+    for key in ("first", "last"):
+        if tr.get(key):
+            _check_time(tr[key], f"{ctx}.{key}")
+    deps = tr.get("departures") or []
+    if not isinstance(deps, list):
+        raise TripError(f"{ctx}.departures 必須是 HH:MM 陣列")
+    for dep in deps:
+        _check_time(dep, f"{ctx}.departures")
+    steps = tr.get("steps") or []
+    if not isinstance(steps, list):
+        raise TripError(f"{ctx}.steps 必須是陣列")
+    for s_idx, step in enumerate(steps, 1):
+        if isinstance(step, str):
+            continue
+        if not isinstance(step, dict) or not step.get("text"):
+            raise TripError(f"{ctx}.steps 第 {s_idx} 步缺少 text")
+    for key in ("from_ll", "to_ll"):
+        if tr.get(key) and not LATLNG_RE.match(str(tr[key])):
+            raise TripError(f"{ctx}.{key} 格式應為「緯度,經度」：{tr[key]!r}")
 
 
 def validate(data):
@@ -169,11 +215,19 @@ def validate(data):
             if itype not in ITEM_TYPES:
                 raise TripError(f"{ictx} 的 type 必須是 {'/'.join(ITEM_TYPES)}：{itype!r}")
             _check_cost(item, ictx)
+            if item.get("priority") not in (None, *PRIORITIES):
+                raise TripError(f"{ictx} 的 priority 必須是 {'/'.join(PRIORITIES)}：{item['priority']!r}")
+            if item.get("transit") is not None:
+                _check_transit(item["transit"], ictx)
             if prev_time is not None and t < prev_time:
                 raise TripError(
                     f"{ctx} 行程未依時間排序：「{name}」（{t}）排在「{prev_name}」（{prev_time}）之後"
                 )
             prev_time, prev_name = t, name
+
+    apps = trip.get("map_apps")
+    if apps is not None and (not isinstance(apps, list) or any(a not in MAP_APPS for a in apps)):
+        raise TripError(f"trip.map_apps 必須是 {'/'.join(MAP_APPS)} 組成的陣列：{apps!r}")
 
     for b_idx, booking in enumerate(data.get("bookings") or [], 1):
         ctx = f"bookings 第 {b_idx} 筆"
@@ -204,6 +258,10 @@ def validate(data):
             raise TripError(
                 f"transit 第 {t_idx} 段的 day 必須是 1～{len(data['days'])} 的整數：{day_no!r}"
             )
+        # 九州回顧後加的欄位（逐步指引、首末班、發車時刻、備案、座標），規則同 items[].transit
+        _check_transit(t, f"transit 第 {t_idx} 段")
+        if t.get("at"):
+            _check_time(t["at"], f"transit 第 {t_idx} 段的 at")
 
     transit_links = data.get("transit_links") or []
     if not isinstance(transit_links, list):
@@ -299,6 +357,110 @@ def build_route_url(queries):
     return url, capped
 
 
+def _minutes_of(hhmm):
+    h, m = str(hhmm).split(":")
+    return int(h) * 60 + int(m)
+
+
+def parse_duration(text):
+    """「1.5h」「40m」「2h35m」「80-110m」「1-2h」→ 分鐘數（區間取上限）；看不懂回傳 None。"""
+    t = re.sub(r"\s+", "", str(text or "")).lower()
+    for a, b in (("小時", "h"), ("分鐘", "m"), ("分", "m"), ("hr", "h"), ("min", "m")):
+        t = t.replace(a, b)
+    rng = re.fullmatch(r"([\d.]+)-([\d.]+)([hm])", t)
+    if rng:
+        val, unit = float(rng.group(2)), rng.group(3)
+        return round(val * 60) if unit == "h" else round(val)
+    hm = re.fullmatch(r"(?:([\d.]+)h)?(?:(\d+)m)?", t)
+    if hm and (hm.group(1) or hm.group(2)):
+        return round(float(hm.group(1) or 0) * 60) + int(hm.group(2) or 0)
+    return None
+
+
+def transit_links(tr, from_query, to_query, apps):
+    """依 trip.map_apps 產生 A→B 大眾運輸路線深連結。缺起點或終點就不產生。"""
+    a = tr.get("from_query") or from_query
+    b = tr.get("to_query") or to_query
+    a_name = tr.get("from") or a
+    b_name = tr.get("to") or b
+    a_ll = str(tr.get("from_ll") or "").replace(" ", "")
+    b_ll = str(tr.get("to_ll") or "").replace(" ", "")
+    links = []
+    for app in apps:
+        if app == "google" and a and b:
+            mode = "walking" if tr.get("mode") == "walk" else "transit"
+            links.append({"label": "Google 路線", "url": (
+                "https://www.google.com/maps/dir/?api=1&origin=" + quote(str(a))
+                + "&destination=" + quote(str(b)) + "&travelmode=" + mode)})
+        elif app == "kakao":
+            if a_ll and b_ll:
+                links.append({"label": "Kakao 路線", "url": (
+                    "https://map.kakao.com/link/by/"
+                    + ("walk" if tr.get("mode") == "walk" else "traffic") + "/"
+                    + quote(f"{a_name},{a_ll}") + "/" + quote(f"{b_name},{b_ll}"))})
+            elif a and b:
+                links.append({"label": "Kakao 路線", "url": (
+                    "https://map.kakao.com/?sName=" + quote(str(a)) + "&eName=" + quote(str(b)))})
+        elif app == "naver" and a_ll and b_ll:
+            (alat, alng), (blat, blng) = a_ll.split(","), b_ll.split(",")
+            links.append({"label": "Naver 路線", "url": (
+                f"https://map.naver.com/p/directions/{alng},{alat},{quote(str(a_name))},,/"
+                f"{blng},{blat},{quote(str(b_name))},,/-/"
+                + ("walk" if tr.get("mode") == "walk" else "transit"))})
+    return links
+
+
+def enrich_transit(tr, from_query, to_query, apps):
+    """transit 物件 → 模板要用的欄位（摘要列、步驟、時刻、深連結）。"""
+    tr = dict(tr)
+    tr["icon"] = TRANSIT_MODES.get(tr.get("mode"), "→")
+    route = " → ".join(x for x in (tr.get("from"), tr.get("to")) if x)
+    tr["title"] = " ".join(x for x in (tr.get("line"), route) if x) or "前往下一站"
+    sub = []
+    if tr.get("direction"):
+        sub.append(tr["direction"])
+    if tr.get("minutes"):
+        sub.append(f"約 {tr['minutes']} 分")
+    tr["sub"] = "・".join(sub)
+    tr["steps"] = [
+        {"text": st} if isinstance(st, str) else st for st in tr.get("steps") or []
+    ]
+    sched = []
+    if tr.get("first"):
+        sched.append(f"首班 {tr['first']}")
+    if tr.get("last"):
+        sched.append(f"末班 {tr['last']}")
+    if tr.get("headway"):
+        sched.append(tr["headway"])
+    tr["sched"] = " · ".join(sched)
+    tr["route_links"] = transit_links(tr, from_query, to_query, apps)
+    return tr
+
+
+def pacing_warnings(day_no, items):
+    """排太緊的警告（九州回顧）：景點＋購物過多、或兩站之間來不及。"""
+    warnings = []
+    spots = [it for it in items if it["type"] in SPOT_TYPES]
+    if len(spots) > MAX_SPOTS_PER_DAY:
+        warnings.append(
+            f"Day {day_no} 排了 {len(spots)} 個景點／購物（建議最多 {MAX_SPOTS_PER_DAY} 個）"
+        )
+    # 只檢查有填交通時間的段落：舊的 next_transit 文字沒有分鐘數可算
+    for item, nxt in zip(items, items[1:]):
+        tr = item.get("transit") or {}
+        if not tr.get("minutes"):
+            continue
+        stay = parse_duration(item.get("duration")) or 0
+        need = stay + tr["minutes"] + BUFFER_MIN
+        gap = _minutes_of(nxt["time"]) - _minutes_of(item["time"])
+        if gap < need:
+            warnings.append(
+                f"Day {day_no}「{item['name']}」→「{nxt['name']}」只隔 {gap} 分，"
+                f"停留 {stay}＋交通 {tr['minutes']}＋緩衝 {BUFFER_MIN} 需要 {need} 分"
+            )
+    return warnings
+
+
 def make_fx_alt(fx):
     """回傳一個 fx_alt(v) 函式：有匯率且金額非零時輸出「 ≈ ¥12,345」，否則空字串。"""
     def fx_alt(v):
@@ -350,6 +512,8 @@ def enrich(data):
         segment = re.split(r"[・·,，/\s]+", source)[-1]
         trip["hero_word"] = segment[:4] or str(trip["title"])[:4]
 
+    apps = trip.get("map_apps") or ["google"]
+    warnings = []
     days = []
     spent = 0
     by_cat = {}          # 花費類別 → 金額
@@ -378,10 +542,15 @@ def enrich(data):
                     "anchor": f"day-{day_no}",
                 })
             items.append(item)
-        # 交通銜接列連到「下一站」的導航
-        for item, nxt in zip(items, items[1:]):
-            if item.get("next_transit") and nxt.get("map_query"):
-                item["transit_url"] = dir_url(nxt["map_query"])
+        # 交通銜接列連到「下一站」的導航；結構化 transit 優先於 next_transit 文字
+        for idx, item in enumerate(items):
+            nxt = items[idx + 1] if idx + 1 < len(items) else {}
+            nq = nxt.get("map_query")
+            if item.get("transit"):
+                item["transit"] = enrich_transit(item["transit"], item.get("map_query"), nq, apps)
+            elif item.get("next_transit") and nq:
+                item["transit_url"] = dir_url(nq)
+        warnings += pacing_warnings(day_no, items)
         route_url, route_capped = build_route_url(
             [it.get("map_query") for it in items]
         )
@@ -432,9 +601,23 @@ def enrich(data):
 
     # 交通按天分組：交通區跟行程一樣一次只顯示一天，但只列有要自己搭車的那幾天
     # （包車或機場接送的日子沒有區間可寫，留一格空的只會讓人多點一次）
-    transit = data.get("transit") or []
+    transit = []
+    for raw in data.get("transit") or []:
+        t = dict(raw)
+        t["steps"] = [{"text": st} if isinstance(st, str) else st for st in t.get("steps") or []]
+        sched = [f"首班 {t['first']}" if t.get("first") else "",
+                 f"末班 {t['last']}" if t.get("last") else "", t.get("headway") or ""]
+        t["sched"] = " · ".join(x for x in sched if x)
+        t["route_links"] = transit_links(t, t.get("from_query"), t.get("to_query"), apps)
+        transit.append(t)
     for day in days:
         day["transit"] = [t for t in transit if t.get("day") == day["day_no"]]
+        # at＝這段交通從哪個行程項目出發（HH:MM），讓項目的對話框可以跳到這一段
+        for k, t in enumerate(day["transit"], 1):
+            t["anchor"] = f"leg-{day['day_no']}-{k}"
+            for item in day["items"]:
+                if t.get("at") and item["time"] == t["at"]:
+                    item.setdefault("legs", []).append(t)
     transit_days = [day for day in days if day["transit"]]
 
     wishlist = []
@@ -477,6 +660,7 @@ def enrich(data):
         "wishlist_groups": wishlist_groups,
         "highlights": data.get("highlights") or [],
         "pending": pending,
+        "warnings": warnings,
         "totals": {
             "spent": spent,
             "budget": budget,
@@ -510,6 +694,8 @@ def render(trip_dir):
     )
     env.globals["fx_alt"] = make_fx_alt(context["trip"].get("fx"))
     html = env.get_template(TEMPLATE_NAME).render(**context)
+    for w in context["warnings"]:
+        print(f"⚠ 排太緊：{w}")
 
     out = trip_dir / OUTPUT_NAME
     tmp = out.with_suffix(".html.tmp")

@@ -30,6 +30,8 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html sw.js manifest.webmanifest icon.svg "行程表.html" _site/
+          # 交通逐步指引的圖片
+          if [ -d img ]; then cp -r img _site/; fi
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
