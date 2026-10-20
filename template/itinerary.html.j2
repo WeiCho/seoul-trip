@@ -286,6 +286,7 @@ main{display:block}
   font:inherit;font-size:16px;font-weight:500;line-height:1.55;letter-spacing:.03em;color:var(--ink);text-align:left;
 }
 .stop-name::after{content:"";flex:none;width:6px;height:6px;margin-left:auto;border:solid var(--soft);border-width:1.5px 1.5px 0 0;transform:rotate(45deg)}
+.opt-tag{flex:none;margin-left:8px;padding:0 7px;border:1px solid var(--line);border-radius:4px;font-size:11.5px;font-weight:400;letter-spacing:.06em;color:var(--soft)}
 .stop-name:hover{color:var(--sky-d)}
 .nav-btn{
   display:inline-grid;place-items:center;min-height:34px;padding:0 13px;border-radius:999px;
@@ -817,7 +818,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <li class="stop {{ TYPE_META[item.type].cls if item.type in TYPE_META else '' }}" data-time="{{ item.time }}" data-name="{{ item.name }}"{% if item.map_url %} data-map="{{ item.map_url }}"{% endif %}>
           {%- set did = "stop-" ~ day.day_no ~ "-" ~ loop.index %}
           <time>{{ item.time }}</time>
-          <button type="button" class="stop-name" data-dlg="{{ did }}" aria-haspopup="dialog">{{ item.name }}</button>
+          <button type="button" class="stop-name" data-dlg="{{ did }}" aria-haspopup="dialog">{{ item.name }}{% if item.priority == "optional" %}<span class="opt-tag">可捨棄</span>{% endif %}</button>
           {%- if item.map_url %}<a class="nav-btn" href="{{ item.map_url }}" aria-label="在地圖上開啟 {{ item.name }}">導航</a>{% endif %}
           <dialog class="em-dlg info-dlg" id="{{ did }}" aria-labelledby="{{ did }}-t">
             <div class="em-dlg-in">
