@@ -269,6 +269,10 @@ def validate(data):
             if opts:
                 _require(o, "label", octx)
             _check_transit(o, octx)
+            # live：要在大卡上顯示哪幾站的即時到站（需要 trip.live_api 指向 travel-planner/worker）
+            live = o.get("live") or []
+            if not isinstance(live, list) or any(not isinstance(x, dict) or not x.get("station") for x in live):
+                raise TripError(f"{octx} 的 live 必須是陣列，每項至少要有 station")
         if t.get("at"):
             _check_time(t["at"], f"transit 第 {t_idx} 段的 at")
 

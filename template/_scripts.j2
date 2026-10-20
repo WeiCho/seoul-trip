@@ -234,6 +234,99 @@
     });
   })();
 
+  // ── 即時到站：只抓「現在看得到」的大卡，30 秒更新一次；抓不到就靠卡片上的首末班與班距 ──
+  (function(){
+    var boxes = [].slice.call(document.querySelectorAll(".tr-live"));
+    if (!boxes.length || !window.fetch) return;
+    var REFRESH = 30000;
+    var pad = function(n){ return String(n).padStart(2, "0"); };
+
+    // 首爾 API 的韓文到站訊息 → 中文（秒數是 0 的時候只能靠這個）
+    function when(t){
+      if (t.seconds) return t.seconds < 60 ? "即將進站" : Math.round(t.seconds / 60) + " 分後";
+      var m = t.msg || "", r;
+      if ((r = m.match(/(\d+)분/))) return r[1] + " 分後";
+      if ((r = m.match(/\[(\d+)\]번째 전역/))) return "前 " + r[1] + " 站";
+      if (/전역 도착/.test(m)) return "前一站";
+      if (/전역 출발/.test(m)) return "前一站已開";
+      if (/진입/.test(m)) return "進站中";
+      if (/도착/.test(m)) return "到站";
+      if (/출발/.test(m)) return "已出發";
+      return m;
+    }
+    function rank(t){ return t.seconds || (/진입|도착/.test(t.msg) && !/전역/.test(t.msg) ? 1 : 9999); }
+
+    function render(st, data){
+      var line = st.getAttribute("data-line"), toward = st.getAttribute("data-toward");
+      var list = st.querySelector(".tr-live-list");
+      var trains = (data.trains || []).filter(function(t){
+        return (!line || t.lineId === line || t.line === line) && (!toward || (t.toward || "").indexOf(toward) > -1);
+      }).sort(function(a, b){ return rank(a) - rank(b); }).slice(0, 3);
+      if (!trains.length) {
+        list.innerHTML = '<li class="tr-live-msg">目前沒有這個方向的列車資料（可能已過末班）</li>';
+        return;
+      }
+      list.innerHTML = "";
+      trains.forEach(function(t){
+        var li = document.createElement("li");
+        var b = document.createElement("b"); b.textContent = when(t);
+        var s = document.createElement("span"); s.textContent = "往 " + (t.dest || "");
+        li.appendChild(b); li.appendChild(s);
+        if (t.express) { var e = document.createElement("span"); e.className = "tag"; e.textContent = "急行"; li.appendChild(e); }
+        if (t.last) { var l = document.createElement("span"); l.className = "tag"; l.textContent = "末班"; li.appendChild(l); }
+        var m = document.createElement("small"); m.textContent = t.msg || ""; li.appendChild(m);
+        list.appendChild(li);
+      });
+    }
+
+    function fail(box, text){
+      box.classList.add("is-stale");
+      [].slice.call(box.querySelectorAll(".tr-live-list")).forEach(function(list){
+        list.innerHTML = '<li class="tr-live-msg"></li>';
+        list.firstChild.textContent = text;
+      });
+    }
+
+    function load(box){
+      box._at = Date.now();
+      if (navigator.onLine === false) return fail(box, "目前離線，看下面的首末班與班距");
+      var api = box.getAttribute("data-api").replace(/\/$/, "");
+      var sts = [].slice.call(box.querySelectorAll(".tr-live-st"));
+      Promise.all(sts.map(function(st){
+        return fetch(api + "/seoul/subway?station=" + encodeURIComponent(st.getAttribute("data-station")))
+          .then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error(j.error || r.status); return j; }); })
+          .then(function(j){ render(st, j); });
+      })).then(function(){
+        box.classList.remove("is-stale");
+        var d = new Date();
+        box.querySelector("[data-live-time]").textContent = pad(d.getHours()) + ":" + pad(d.getMinutes()) + " 更新";
+      }).catch(function(){
+        fail(box, "暫時抓不到即時資料，看下面的首末班與班距");
+      });
+    }
+
+    boxes.forEach(function(box){
+      box.querySelector(".tr-live-refresh").addEventListener("click", function(){ load(box); });
+    });
+    // 每 3 秒看一下哪些大卡正出現在螢幕上（換方案、換天、捲動都不用另外通知），到期才真的去抓。
+    // 首爾 API 一天只有 1,000 次，所以捲到別處、或手冊在背景時都不抓
+    function onScreen(box){
+      if (box.offsetParent === null) return false;
+      var r = box.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight;
+    }
+    function tick(){
+      if (document.visibilityState === "hidden") return;
+      boxes.forEach(function(box){
+        if (!onScreen(box)) return;
+        if (!box._at || Date.now() - box._at > REFRESH) load(box);
+      });
+    }
+    tick();
+    setInterval(tick, 3000);
+    document.addEventListener("visibilitychange", tick);
+  })();
+
   // ── 今日模式：依裝置時鐘標出今天、灰階已過行程、浮出「下一站」 ──
   function todayMode(now){
     var y = now.getFullYear();

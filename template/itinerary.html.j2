@@ -370,6 +370,23 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 .ride-steps li{margin-bottom:14px}
 .ride-steps li p{margin:0;white-space:pre-line}
 .ride-steps img{display:block;width:100%;height:auto;margin-top:8px;border-radius:6px;border:1px solid var(--line)}
+/* 即時到站 */
+.tr-live{margin:6px 0 10px;padding:12px 14px;border-radius:8px;background:var(--sky-t)}
+.tr-live-st+.tr-live-st{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.tr-live-h{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500}
+.tr-live-h small{margin-left:auto;font-size:11.5px;letter-spacing:.1em;color:var(--sky-d)}
+.tr-live-dot{width:8px;height:8px;border-radius:50%;background:#2fb36d;box-shadow:0 0 0 0 rgba(47,179,109,.5);animation:pulse 2s infinite}
+.tr-live.is-stale .tr-live-dot{background:var(--soft);animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(47,179,109,0)}100%{box-shadow:0 0 0 0 rgba(47,179,109,0)}}
+.tr-live-list{margin:6px 0 0;padding:0;list-style:none;font-size:14px;line-height:1.7}
+.tr-live-list li{display:flex;gap:10px;align-items:baseline}
+.tr-live-list b{min-width:4.6em;font-family:var(--latin);font-variant-numeric:tabular-nums;color:var(--sky-d)}
+.tr-live-list small{color:var(--muted)}
+.tr-live-list .tag{padding:0 6px;border-radius:4px;background:var(--card);font-size:11.5px;color:var(--sky-d)}
+.tr-live-msg{color:var(--muted)}
+.tr-live-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--soft)}
+.tr-live-refresh{min-height:32px;padding:0 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:inherit;font:inherit;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.tr-live-dot{animation:none}}
 .tr-links{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:14px}
 button.more{background:none;border-width:0 0 1px;border-style:solid;border-color:var(--ink);padding:0 0 6px;font:inherit;font-size:14.5px;color:inherit;cursor:pointer}
 .tr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lc);margin-right:8px;vertical-align:1px}
@@ -920,6 +937,18 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           <div class="tr-card-h">
             <b class="tr-letter">{{ "ABCD"[loop.index0] }}</b><span>{{ o.label }}</span>
             <button type="button" class="tr-x" aria-label="回到兩個方案">✕</button>
+          </div>
+          {%- endif %}
+          {#- 即時到站：大卡看得到時才去抓（Worker 轉接首爾地鐵 API），抓不到就只剩下面的首末班與班距 -#}
+          {%- if trip.live_api and o.live %}
+          <div class="tr-live" data-api="{{ trip.live_api }}">
+            {%- for lv in o.live %}
+            <div class="tr-live-st" data-station="{{ lv.station }}" data-line="{{ lv.line or '' }}" data-toward="{{ lv.toward or '' }}">
+              <p class="tr-live-h"><i class="tr-live-dot" aria-hidden="true"></i>{{ lv.label or lv.station }}<small>即時到站</small></p>
+              <ol class="tr-live-list" aria-live="polite"><li class="tr-live-msg">讀取中…</li></ol>
+            </div>
+            {%- endfor %}
+            <p class="tr-live-foot"><span data-live-time></span><button type="button" class="tr-live-refresh">更新</button></p>
           </div>
           {%- endif %}
           <dl class="tr-meta">
