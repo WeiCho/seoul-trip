@@ -201,6 +201,37 @@
         row.scrollIntoView({block: "start", behavior: "auto"});
       });
     });
+
+    // 兩個方案：點一行只留那張大卡，✕ 回到兩行。選擇記在這支手機（路上反覆開關手冊不用重選）
+    [].slice.call(document.querySelectorAll("#transit .has-opts")).forEach(function(row){
+      var key = "leg-pick:" + location.pathname + ":" + row.getAttribute("data-leg");
+      var cards = [].slice.call(row.querySelectorAll(".tr-card"));
+      function pick(i, save){
+        row.classList.toggle("picked", i !== null);
+        cards.forEach(function(c){ c.classList.toggle("is-on", String(i) === c.getAttribute("data-opt")); });
+        try {
+          if (!save) return;
+          if (i === null) localStorage.removeItem(key); else localStorage.setItem(key, String(i));
+        } catch (err) {}
+      }
+      [].slice.call(row.querySelectorAll(".tr-opt")).forEach(function(b){
+        b.addEventListener("click", function(){
+          pick(b.getAttribute("data-opt"), true);
+          var x = row.querySelector(".tr-card.is-on .tr-x");
+          if (x) x.focus({preventScroll: true});
+        });
+      });
+      [].slice.call(row.querySelectorAll(".tr-x")).forEach(function(x){
+        x.addEventListener("click", function(){
+          pick(null, true);
+          var first = row.querySelector(".tr-opt");
+          if (first) first.focus({preventScroll: true});
+        });
+      });
+      var saved = null;
+      try { saved = localStorage.getItem(key); } catch (err) {}
+      if (saved !== null && row.querySelector('.tr-card[data-opt="' + saved + '"]')) pick(saved, false);
+    });
   })();
 
   // ── 今日模式：依裝置時鐘標出今天、灰階已過行程、浮出「下一站」 ──

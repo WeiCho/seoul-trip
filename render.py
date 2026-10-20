@@ -258,8 +258,17 @@ def validate(data):
             raise TripError(
                 f"transit 第 {t_idx} 段的 day 必須是 1～{len(data['days'])} 的整數：{day_no!r}"
             )
-        # 九州回顧後加的欄位（逐步指引、首末班、發車時刻、備案、座標），規則同 items[].transit
-        _check_transit(t, f"transit 第 {t_idx} 段")
+        # 九州回顧後加的欄位（逐步指引、首末班、發車時刻、座標），規則同 items[].transit。
+        # 一段交通可以有兩個以上的方案（options），例如「機場巴士」與「塞車改搭鐵路」；
+        # 沒有 options 時整段本身就是唯一方案
+        opts = t.get("options")
+        if opts is not None and (not isinstance(opts, list) or not opts):
+            raise TripError(f"transit 第 {t_idx} 段的 options 必須是非空陣列")
+        for o_idx, o in enumerate(opts or [t], 1):
+            octx = f"transit 第 {t_idx} 段" + (f"的方案 {o_idx}" if opts else "")
+            if opts:
+                _require(o, "label", octx)
+            _check_transit(o, octx)
         if t.get("at"):
             _check_time(t["at"], f"transit 第 {t_idx} 段的 at")
 
@@ -385,28 +394,28 @@ def transit_links(tr, from_query, to_query, apps):
     b_name = tr.get("to") or b
     a_ll = str(tr.get("from_ll") or "").replace(" ", "")
     b_ll = str(tr.get("to_ll") or "").replace(" ", "")
+    # 沒有搜尋字串時，Google 直接用座標
+    a, b = a or a_ll, b or b_ll
     links = []
+    # 走路、計程車要用各家的步行／開車模式，其餘都是大眾運輸
+    kind = {"walk": "walk", "taxi": "car"}.get(tr.get("mode"), "transit")
     for app in apps:
         if app == "google" and a and b:
-            mode = "walking" if tr.get("mode") == "walk" else "transit"
+            mode = {"walk": "walking", "car": "driving"}.get(kind, "transit")
             links.append({"label": "Google 路線", "url": (
                 "https://www.google.com/maps/dir/?api=1&origin=" + quote(str(a))
                 + "&destination=" + quote(str(b)) + "&travelmode=" + mode)})
-        elif app == "kakao":
-            if a_ll and b_ll:
-                links.append({"label": "Kakao 路線", "url": (
-                    "https://map.kakao.com/link/by/"
-                    + ("walk" if tr.get("mode") == "walk" else "traffic") + "/"
-                    + quote(f"{a_name},{a_ll}", safe=",") + "/" + quote(f"{b_name},{b_ll}", safe=","))})
-            elif a and b:
-                links.append({"label": "Kakao 路線", "url": (
-                    "https://map.kakao.com/?sName=" + quote(str(a)) + "&eName=" + quote(str(b)))})
+        # Kakao 只吃座標：用站名的 ?sName=&eName= 會開出起訖點空白的路線頁（實測）
+        elif app == "kakao" and a_ll and b_ll:
+            links.append({"label": "Kakao 路線", "url": (
+                "https://map.kakao.com/link/by/"
+                + {"walk": "walk", "car": "car"}.get(kind, "traffic") + "/"
+                + quote(f"{a_name},{a_ll}", safe=",") + "/" + quote(f"{b_name},{b_ll}", safe=","))})
         elif app == "naver" and a_ll and b_ll:
             (alat, alng), (blat, blng) = a_ll.split(","), b_ll.split(",")
             links.append({"label": "Naver 路線", "url": (
                 f"https://map.naver.com/p/directions/{alng},{alat},{quote(str(a_name))},,/"
-                f"{blng},{blat},{quote(str(b_name))},,/-/"
-                + ("walk" if tr.get("mode") == "walk" else "transit"))})
+                f"{blng},{blat},{quote(str(b_name))},,/-/" + kind)})
     return links
 
 
@@ -601,14 +610,19 @@ def enrich(data):
 
     # 交通按天分組：交通區跟行程一樣一次只顯示一天，但只列有要自己搭車的那幾天
     # （包車或機場接送的日子沒有區間可寫，留一格空的只會讓人多點一次）
+    def enrich_option(o):
+        o = dict(o)
+        o["steps"] = [{"text": st} if isinstance(st, str) else st for st in o.get("steps") or []]
+        sched = [f"首班 {o['first']}" if o.get("first") else "",
+                 f"末班 {o['last']}" if o.get("last") else "", o.get("headway") or ""]
+        o["sched"] = " · ".join(x for x in sched if x)
+        o["route_links"] = transit_links(o, o.get("from_query"), o.get("to_query"), apps)
+        return o
+
     transit = []
     for raw in data.get("transit") or []:
         t = dict(raw)
-        t["steps"] = [{"text": st} if isinstance(st, str) else st for st in t.get("steps") or []]
-        sched = [f"首班 {t['first']}" if t.get("first") else "",
-                 f"末班 {t['last']}" if t.get("last") else "", t.get("headway") or ""]
-        t["sched"] = " · ".join(x for x in sched if x)
-        t["route_links"] = transit_links(t, t.get("from_query"), t.get("to_query"), apps)
+        t["options"] = [enrich_option(o) for o in (raw.get("options") or [raw])]
         transit.append(t)
     for day in days:
         day["transit"] = [t for t in transit if t.get("day") == day["day_no"]]
