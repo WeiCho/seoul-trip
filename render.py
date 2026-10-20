@@ -397,7 +397,7 @@ def transit_links(tr, from_query, to_query, apps):
                 links.append({"label": "Kakao 路線", "url": (
                     "https://map.kakao.com/link/by/"
                     + ("walk" if tr.get("mode") == "walk" else "traffic") + "/"
-                    + quote(f"{a_name},{a_ll}") + "/" + quote(f"{b_name},{b_ll}"))})
+                    + quote(f"{a_name},{a_ll}", safe=",") + "/" + quote(f"{b_name},{b_ll}", safe=","))})
             elif a and b:
                 links.append({"label": "Kakao 路線", "url": (
                     "https://map.kakao.com/?sName=" + quote(str(a)) + "&eName=" + quote(str(b)))})
