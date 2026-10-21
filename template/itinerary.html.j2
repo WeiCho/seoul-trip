@@ -371,6 +371,11 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 .ride-steps li p{margin:0;white-space:pre-line}
 .ride-steps img{display:block;width:100%;height:auto;margin-top:8px;border-radius:6px;border:1px solid var(--line)}
 .ride-refs{margin:4px 0 18px;padding-top:12px;border-top:1px solid var(--line);font-size:13.5px;line-height:1.7}
+.tr-last-note{display:block;font-size:12.5px;color:var(--soft);line-height:1.6}
+.ride-notes{margin:4px 0 0;padding:12px 0 0;border-top:1px solid var(--line);font-size:13.5px;line-height:1.75}
+.ride-notes div{display:grid;grid-template-columns:3.2em 1fr;gap:8px;margin-bottom:8px}
+.ride-notes dt{color:var(--sky-d)}
+.ride-notes dd{margin:0;white-space:pre-line}
 .ride-refs-h{margin:0 0 6px;font-size:12px;letter-spacing:.12em;color:var(--sky-d)}
 .ride-refs ul{margin:0;padding:0;list-style:none}
 .ride-refs li{margin-bottom:8px}
@@ -958,13 +963,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           </div>
           {%- endif %}
           <dl class="tr-meta">
-            {%- if o.line %}<div><dt>路線</dt><dd>{%- if o.line_color %}<i class="tr-dot" style="--lc:{{ o.line_color }}"></i>{% endif %}{% if o.url %}<a href="{{ o.url }}" target="_blank" rel="noopener">{{ o.line }}</a>{% else %}{{ o.line }}{% endif %}</dd></div>{%- endif %}
-            {%- if o.platform %}<div><dt>上車</dt><dd>{{ o.platform }}</dd></div>{% endif %}
             {%- if o.time %}<div><dt>時間</dt><dd>{{ o.time }}</dd></div>{% endif %}
             {%- if o.fare %}<div><dt>票價</dt><dd>{{ o.fare }}</dd></div>{% endif %}
-            {%- if o.sched %}<div><dt>首末班</dt><dd>{{ o.sched }}</dd></div>{% endif %}
-            {%- if o.departures %}<div><dt>發車</dt><dd><ul class="tr-deps" aria-label="發車時刻">{% for d in o.departures %}<li data-t="{{ d }}">{{ d }}</li>{% endfor %}</ul></dd></div>{% endif %}
-            {%- if o.warn %}<div class="tr-warn"><dt>注意</dt><dd>{{ o.warn }}</dd></div>{% endif %}
+            {%- if o.last or o.last_note %}<div><dt>末班車</dt><dd>{{ o.last or '' }}{% if o.last_note %}<small class="tr-last-note">{{ o.last_note }}</small>{% endif %}</dd></div>{% endif %}
           </dl>
           <div class="tr-links">
             {%- if o.steps %}<button type="button" class="more" data-dlg="{{ oid }}-ride" aria-haspopup="dialog">搭車{{ pill() }}</button>{% endif %}
@@ -980,6 +981,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                 <li><p>{{ st.text }}</p>{% if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% endif %}</li>
               {%- endfor %}
               </ol>
+              {#- 卡片只留時間／票價／末班車，其餘提醒收在這裡 -#}
+              {%- if o.platform or o.warn or o.departures %}
+              <dl class="ride-notes">
+                {%- if o.platform %}<div><dt>上車</dt><dd>{{ o.platform }}</dd></div>{% endif %}
+                {%- if o.departures %}<div><dt>發車</dt><dd>{{ o.departures | join("、") }}</dd></div>{% endif %}
+                {%- if o.warn %}<div><dt>注意</dt><dd>{{ o.warn }}</dd></div>{% endif %}
+              </dl>
+              {%- endif %}
               {#- 網友實況：Threads／IG／FB 上查到的貼文，照片留在原貼文（不轉存） -#}
               {%- if o.refs %}
               <div class="ride-refs">
