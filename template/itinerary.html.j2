@@ -370,6 +370,12 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 .ride-steps li{margin-bottom:14px}
 .ride-steps li p{margin:0;white-space:pre-line}
 .ride-steps img{display:block;width:100%;height:auto;margin-top:8px;border-radius:6px;border:1px solid var(--line)}
+.ride-refs{margin:4px 0 18px;padding-top:12px;border-top:1px solid var(--line);font-size:13.5px;line-height:1.7}
+.ride-refs-h{margin:0 0 6px;font-size:12px;letter-spacing:.12em;color:var(--sky-d)}
+.ride-refs ul{margin:0;padding:0;list-style:none}
+.ride-refs li{margin-bottom:8px}
+.ride-refs a{color:inherit;text-underline-offset:3px}
+.ride-refs span{display:block;color:var(--soft);font-size:12.5px}
 /* 即時到站 */
 .tr-live{margin:6px 0 10px;padding:12px 14px;border-radius:8px;background:var(--sky-t)}
 .tr-live-st+.tr-live-st{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
@@ -974,6 +980,17 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                 <li><p>{{ st.text }}</p>{% if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% endif %}</li>
               {%- endfor %}
               </ol>
+              {#- 網友實況：Threads／IG／FB 上查到的貼文，照片留在原貼文（不轉存） -#}
+              {%- if o.refs %}
+              <div class="ride-refs">
+                <p class="ride-refs-h">網友實況</p>
+                <ul>
+                {%- for r in o.refs %}
+                  <li><a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.label }}</a>{% if r.note %}<span>{{ r.note }}</span>{% endif %}</li>
+                {%- endfor %}
+                </ul>
+              </div>
+              {%- endif %}
               <button type="button" class="em-close" data-em-close>關閉</button>
             </div>
           </dialog>
