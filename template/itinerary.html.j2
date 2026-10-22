@@ -366,7 +366,7 @@ a.tr-route{text-decoration:underline;text-decoration-color:var(--sky)}
 html:not(.js) .has-opts .tr-pick{display:none}
 html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line)}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.ride-steps{margin:14px 0 0;padding:12px 0 0 1.4em;border-top:1px solid var(--line);font-size:14.5px;line-height:1.85}
+.ride-steps{margin:0;padding:0 0 0 1.4em;outline:0;font-size:14.5px;line-height:1.85}
 .ride-steps li{margin-bottom:14px}
 .ride-steps li p{margin:0;white-space:pre-line}
 .ride-steps img{display:block;width:100%;height:auto;margin-top:8px;border-radius:6px;border:1px solid var(--line)}
@@ -968,11 +968,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
             {%- for lk in o.route_links %}<a class="more" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.label }}{{ pill() }}</a>{% endfor %}
           </div>
           {%- if o.steps %}
-          <dialog class="em-dlg info-dlg ride-dlg" id="{{ oid }}-ride" aria-labelledby="{{ oid }}-ride-t">
+          {#- 彈窗裡只放步驟，不顯示日期與標題；名稱只給讀屏用 -#}
+          <dialog class="em-dlg info-dlg ride-dlg" id="{{ oid }}-ride" aria-label="搭車：{{ o.label or o.line or t.route }}">
             <div class="em-dlg-in">
-              <p class="dlg-kicker">{{ day.date_short }} {{ day.weekday }}{% if multi %}・方案 {{ "ABCD"[loop.index0] }}{% endif %}</p>
-              <h3 id="{{ oid }}-ride-t" tabindex="-1" autofocus>搭車：{{ o.label or o.line or t.route }}</h3>
-              <ol class="ride-steps">
+              <ol class="ride-steps" tabindex="-1" autofocus>
               {%- for st in o.steps %}
                 <li><p>{{ st.text }}</p>
                   {%- if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% endif %}
