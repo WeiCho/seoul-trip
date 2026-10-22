@@ -370,17 +370,11 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 .ride-steps li{margin-bottom:14px}
 .ride-steps li p{margin:0;white-space:pre-line}
 .ride-steps img{display:block;width:100%;height:auto;margin-top:8px;border-radius:6px;border:1px solid var(--line)}
-.ride-refs{margin:4px 0 18px;padding-top:12px;border-top:1px solid var(--line);font-size:13.5px;line-height:1.7}
+.ride-sign{display:flex;align-items:center;gap:12px;margin-top:8px;padding:12px 14px;border-radius:6px;background:#23272e;color:#fff}
+.ride-sign b{flex:none;display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border-radius:17px;background:var(--c);font-family:var(--latin);font-size:16px;font-weight:600;line-height:1}
+.ride-sign strong{display:block;font-size:16px;font-weight:600;line-height:1.35;letter-spacing:.02em}
+.ride-sign small{display:block;font-size:12.5px;color:#b9c0cc;line-height:1.5}
 .tr-last-note{display:block;font-size:12.5px;color:var(--soft);line-height:1.6}
-.ride-notes{margin:4px 0 0;padding:12px 0 0;border-top:1px solid var(--line);font-size:13.5px;line-height:1.75}
-.ride-notes div{display:grid;grid-template-columns:3.2em 1fr;gap:8px;margin-bottom:8px}
-.ride-notes dt{color:var(--sky-d)}
-.ride-notes dd{margin:0;white-space:pre-line}
-.ride-refs-h{margin:0 0 6px;font-size:12px;letter-spacing:.12em;color:var(--sky-d)}
-.ride-refs ul{margin:0;padding:0;list-style:none}
-.ride-refs li{margin-bottom:8px}
-.ride-refs a{color:inherit;text-underline-offset:3px}
-.ride-refs span{display:block;color:var(--soft);font-size:12.5px}
 /* 即時到站 */
 .tr-live{margin:6px 0 10px;padding:12px 14px;border-radius:8px;background:var(--sky-t)}
 .tr-live-st+.tr-live-st{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
@@ -901,6 +895,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 {# ── 交通：滿版照片＋白卡 ── #}
 {% if transit %}
 <div class="band band-photo">
+{#- 首爾地鐵各線官方色，給搭車步驟的指標牌用 -#}
+{%- set line_colors = {"1":"#0052a4","2":"#00a84d","3":"#ef7c1c","4":"#00a5de","5":"#996cac","6":"#cd7c2f","7":"#747f00","水仁盆唐":"#f5a200","AREX":"#0090d2"} %}
 <section class="section" id="transit">
   <div class="section-heading">
     <h2>Transit</h2><span class="zh">交通</span>
@@ -978,28 +974,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               <h3 id="{{ oid }}-ride-t" tabindex="-1" autofocus>搭車：{{ o.label or o.line or t.route }}</h3>
               <ol class="ride-steps">
               {%- for st in o.steps %}
-                <li><p>{{ st.text }}</p>{% if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% endif %}</li>
+                <li><p>{{ st.text }}</p>
+                  {%- if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% endif %}
+                  {#- 站內拍不到照片的步驟，畫一塊仿首爾地鐵的指標牌：線號圓圈＋方向 -#}
+                  {%- if st.sign %}{% set sg = st.sign %}<div class="ride-sign" role="img" aria-label="{{ sg.zh or sg.ko }}"><b style="--c:{{ line_colors[sg.line] | default(sg.color or '#3d5bab') }}">{{ sg.badge or sg.line }}</b><span><strong>{{ sg.ko }}</strong>{% if sg.zh %}<small>{{ sg.zh }}</small>{% endif %}</span></div>{% endif %}
+                </li>
               {%- endfor %}
               </ol>
-              {#- 卡片只留時間／票價／末班車，其餘提醒收在這裡 -#}
-              {%- if o.platform or o.warn or o.departures %}
-              <dl class="ride-notes">
-                {%- if o.platform %}<div><dt>上車</dt><dd>{{ o.platform }}</dd></div>{% endif %}
-                {%- if o.departures %}<div><dt>發車</dt><dd>{{ o.departures | join("、") }}</dd></div>{% endif %}
-                {%- if o.warn %}<div><dt>注意</dt><dd>{{ o.warn }}</dd></div>{% endif %}
-              </dl>
-              {%- endif %}
-              {#- 網友實況：Threads／IG／FB 上查到的貼文，照片留在原貼文（不轉存） -#}
-              {%- if o.refs %}
-              <div class="ride-refs">
-                <p class="ride-refs-h">網友實況</p>
-                <ul>
-                {%- for r in o.refs %}
-                  <li><a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.label }}</a>{% if r.note %}<span>{{ r.note }}</span>{% endif %}</li>
-                {%- endfor %}
-                </ul>
-              </div>
-              {%- endif %}
               <button type="button" class="em-close" data-em-close>關閉</button>
             </div>
           </dialog>
