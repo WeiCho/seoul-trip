@@ -2013,14 +2013,6 @@
     {
       "label": "首爾地鐵路線圖",
       "url": "https://www.seoulmetro.co.kr/kr/cyberStation.do"
-    },
-    {
-      "label": "中文地鐵路線圖（簡體，首爾交通公社 PDF／JPG）",
-      "url": "https://data.seoul.go.kr/dataList/OA-22535/F/1/datasetView.do"
-    },
-    {
-      "label": "Naver Map 即時轉乘查詢",
-      "url": "https://map.naver.com/"
     }
   ]
 }
