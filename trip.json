@@ -212,7 +212,17 @@
           "duration": "1h",
           "map_query": "커먼그라운드 건대",
           "priority": "optional",
-          "naver_query": "커먼그라운드"
+          "naver_query": "커먼그라운드",
+          "next_transit": "步行 3 分回住處"
+        },
+        {
+          "time": "22:05",
+          "name": "回 Airbnb",
+          "type": "住宿",
+          "note": "洗澡休息，隔天 09:20 出門。",
+          "map_query": "서울 광진구 동일로18길 69",
+          "naver_query": "서울 광진구 동일로18길 69",
+          "status": "confirmed"
         }
       ],
       "weather_area": {
@@ -341,6 +351,15 @@
           "priority": "must",
           "next_transit": "聖水站搭 2 號線 1 站回建大入口",
           "naver_query": "무구옥 성수점"
+        },
+        {
+          "time": "18:45",
+          "name": "回 Airbnb",
+          "type": "住宿",
+          "note": "回去休息一下，晚上想再出門就在建大附近逛。",
+          "map_query": "서울 광진구 동일로18길 69",
+          "naver_query": "서울 광진구 동일로18길 69",
+          "status": "confirmed"
         }
       ],
       "weather_area": {
@@ -458,6 +477,15 @@
           "priority": "must",
           "next_transit": "步行到弘大入口站 → 2 號線回建大入口",
           "naver_query": "한우다움 홍대"
+        },
+        {
+          "time": "20:30",
+          "name": "回 Airbnb",
+          "type": "住宿",
+          "note": "回去休息，隔天 08:00 就要出門。",
+          "map_query": "서울 광진구 동일로18길 69",
+          "naver_query": "서울 광진구 동일로18길 69",
+          "status": "confirmed"
         }
       ],
       "weather_area": {
@@ -595,6 +623,15 @@
           "priority": "must",
           "next_transit": "鍾路3街站 → 3 號線 1 站 → 乙支路3街轉 2 號線",
           "naver_query": "이복희해장 종로"
+        },
+        {
+          "time": "19:15",
+          "name": "回 Airbnb",
+          "type": "住宿",
+          "note": "回去休息，晚上想再出門就在建大附近逛。",
+          "map_query": "서울 광진구 동일로18길 69",
+          "naver_query": "서울 광진구 동일로18길 69",
+          "status": "confirmed"
         }
       ],
       "weather_area": {
@@ -664,7 +701,17 @@
           "map_query": "건대 맛의거리",
           "duration": "1h",
           "priority": "optional",
-          "naver_query": "건대 맛의거리"
+          "naver_query": "건대 맛의거리",
+          "next_transit": "步行 1 分回住處"
+        },
+        {
+          "time": "19:35",
+          "name": "回 Airbnb",
+          "type": "住宿",
+          "note": "收行李、確認 T-money 餘額，隔天 10:15 退房。",
+          "map_query": "서울 광진구 동일로18길 69",
+          "naver_query": "서울 광진구 동일로18길 69",
+          "status": "confirmed"
         }
       ],
       "weather_area": {
