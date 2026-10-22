@@ -152,7 +152,6 @@
           "type": "交通",
           "note": "A 機場巴士 6013 不用轉車但下班會塞，B AREX＋2 號線不塞車要轉一次，細節看交通。",
           "duration": "1.5-2.5h",
-          "map_query": "37.4688671,126.4344385",
           "next_transit": "下車 → 步行到住處",
           "links": [
             {
@@ -697,7 +696,6 @@
           "type": "交通",
           "note": "A 機場巴士 6013 不用轉車但可能客滿，B 2 號線＋AREX 不塞車但轉乘要走很遠，細節看交通。",
           "duration": "1.5-2h",
-          "map_query": "37.539187,127.070047",
           "next_transit": "T2 3 樓出境大廳"
         },
         {
@@ -828,57 +826,6 @@
       "map_query": "연남그곳 서울 마포구 연희로1길 19",
       "naver_url": "https://map.naver.com/p/entry/place/1472379447",
       "naver_query": "연남그곳"
-    },
-    {
-      "name": "jean and juice",
-      "type": "購物",
-      "category": "逛街",
-      "area": "梨泰院",
-      "address": "서울 용산구 회나무로13가길 23-6 1층（梨泰院洞 260-102）",
-      "naver_url": "https://map.naver.com/p/entry/place/2008128330",
-      "map_url": "https://www.google.com/maps/search/?api=1&query=GXRR%2BF6+Seoul",
-      "naver_query": "서울 용산구 회나무로13가길 23-6"
-    },
-    {
-      "name": "kamadeva",
-      "type": "購物",
-      "category": "逛街",
-      "area": "梨泰院",
-      "address": "서울 용산구 녹사평대로 208-1 3층（梨泰院洞 532）",
-      "naver_url": "https://map.naver.com/p/entry/place/1353791955",
-      "map_url": "https://maps.google.com/?cid=10046632728391963941",
-      "naver_query": "서울 용산구 녹사평대로 208-1"
-    },
-    {
-      "name": "ayadz studio",
-      "type": "購物",
-      "category": "逛街",
-      "area": "延南洞",
-      "address": "서울 마포구 성미산로31길 13 2층（延南洞 223-44）",
-      "naver_url": "https://map.naver.com/p/entry/place/2092090927",
-      "map_url": "https://maps.google.com/?cid=12959674280344959625",
-      "naver_query": "서울 마포구 성미산로31길 13"
-    },
-    {
-      "name": "tst",
-      "type": "購物",
-      "category": "逛街",
-      "area": "延禧洞",
-      "address": "서울 서대문구 연희동 190-21",
-      "naver_url": "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%84%9C%EB%8C%80%EB%AC%B8%EA%B5%AC%20%EC%97%B0%ED%9D%AC%EB%8F%99%20190-21",
-      "map_url": "https://www.google.com/maps/search/?api=1&query=HW8H%2BM9+Seoul",
-      "note": "地圖上找不到正確的店家頁，連結只指到地址，位置待確認。",
-      "naver_query": "서울 서대문구 연희동 190-21"
-    },
-    {
-      "name": "flots",
-      "type": "購物",
-      "category": "逛街",
-      "area": "延南洞",
-      "address": "서울 마포구 성미산로29길 33 2층（延南洞 245-44）",
-      "naver_url": "https://map.naver.com/p/entry/place/1784203380",
-      "map_query": "서울 마포구 성미산로29길 33",
-      "naver_query": "서울 마포구 성미산로29길 33"
     }
   ],
   "bookings": [

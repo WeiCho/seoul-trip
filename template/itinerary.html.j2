@@ -298,6 +298,9 @@ main{display:block}
 .nav-btn:active{transform:scale(.94)}
 .nav-btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 .nav-btn.is-none{visibility:hidden}
+/* Naver 查不到的地方（例如台灣的機場）才退回 Google：白底線框 G，跟口袋名單同一款 */
+.nav-btn.gm{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.nav-btn.gm:hover{box-shadow:0 4px 10px rgb(0 0 0 / .08)}
 .t-go{--tc:var(--sky-d)} .t-eat{--tc:#d9762b} .t-stay{--tc:#2f9a76} .t-see{--tc:#c4487c} .t-shop{--tc:#7a63c9}
 :root[data-theme="dark"] .t-eat{--tc:#f0a062} :root[data-theme="dark"] .t-stay{--tc:#5cc9a2} :root[data-theme="dark"] .t-see{--tc:#ec7fad} :root[data-theme="dark"] .t-shop{--tc:#a895ef}
 .kind{display:inline-flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.16em;color:var(--tc)}
@@ -856,11 +859,12 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         </div>
       <ol class="timeline">
       {% for item in day["items"] %}
-        <li class="stop {{ TYPE_META[item.type].cls if item.type in TYPE_META else '' }}" data-time="{{ item.time }}" data-name="{{ item.name }}"{% if item.nav_url %} data-map="{{ item.nav_url }}"{% endif %}>
+        <li class="stop {{ TYPE_META[item.type].cls if item.type in TYPE_META else '' }}" data-time="{{ item.time }}" data-name="{{ item.name }}"{% if item.nav_url or item.map_url %} data-map="{{ item.nav_url or item.map_url }}"{% endif %}>
           {%- set did = "stop-" ~ day.day_no ~ "-" ~ loop.index %}
           <time>{{ item.time }}</time>
           <button type="button" class="stop-name" data-dlg="{{ did }}" aria-haspopup="dialog">{{ item.name }}</button>
-          {%- if item.nav_url %}<a class="nav-btn" href="{{ item.nav_url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟 {{ item.name }}">N</a>{% else %}<span class="nav-btn is-none" aria-hidden="true"></span>{% endif %}
+          {%- if item.nav_url %}<a class="nav-btn" href="{{ item.nav_url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟 {{ item.name }}">N</a>
+          {%- elif item.map_url %}<a class="nav-btn gm" href="{{ item.map_url }}" target="_blank" rel="noopener" aria-label="用 Google 地圖開啟 {{ item.name }}">G</a>{% else %}<span class="nav-btn is-none" aria-hidden="true"></span>{% endif %}
           <dialog class="em-dlg info-dlg" id="{{ did }}" aria-labelledby="{{ did }}-t">
             <div class="em-dlg-in">
               <p class="dlg-kicker">{{ day.date_short }} {{ day.weekday }}・{{ item.time }}</p>
@@ -1017,9 +1021,12 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <h2>Pocket list</h2><span class="zh">口袋名單</span>
         <p>想去、但還沒排進行程的地方。（共 {{ wishlist | length }} 處）</p>
       </div>
+      {#- 只有一類時跳轉列沒有意義 -#}
+      {%- if wishlist_groups | length > 1 %}
       <nav class="wish-jump" aria-label="口袋名單分類">
         {%- for g in wishlist_groups %}<a href="#wish-{{ loop.index }}">{{ g.label }}<b>{{ g["items"] | length }}</b></a>{% endfor %}
       </nav>
+      {%- endif %}
     </div>
     <div>
     {% for g in wishlist_groups %}{% set gloop = loop %}
@@ -1034,7 +1041,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               {%- if w.area or w.tagline %}<span class="wl-sub">{% if w.area %}<span class="area">{{ w.area }}</span>{% endif %}{{ w.tagline or "" }}</span>{% endif %}
             </button>
             <div class="wl-maps">
-              {%- if w.naver_url %}<a class="nv" href="{{ w.naver_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} 在 Naver 地圖">N</a>{% endif %}
+              {%- if w.naver_url %}<a class="nv" href="{{ w.naver_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} 在 Naver 地圖">N</a>
+              {%- elif w.map_url %}<a href="{{ w.map_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} 在 Google 地圖">G</a>{% endif %}
             </div>
           </div>
           <dialog class="em-dlg info-dlg" id="{{ wid }}" aria-labelledby="{{ wid }}-t">
@@ -1050,7 +1058,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               </dl>
               {%- endif %}
               <div class="dlg-links">
-                {%- if w.naver_url %}<a class="more" href="{{ w.naver_url }}" target="_blank" rel="noopener">Naver 地圖{{ pill() }}</a>{% endif %}
+                {%- if w.naver_url %}<a class="more" href="{{ w.naver_url }}" target="_blank" rel="noopener">Naver 地圖{{ pill() }}</a>
+                {%- elif w.map_url %}<a class="more" href="{{ w.map_url }}" target="_blank" rel="noopener">Google 地圖{{ pill() }}</a>{% endif %}
                 {%- if w.url %}<a class="more" href="{{ w.url }}" target="_blank" rel="noopener">官網{{ pill() }}</a>{% endif %}
                 {%- for lk in w.links %}<a class="more" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.label }}{{ pill() }}</a>{% endfor %}
               </div>
