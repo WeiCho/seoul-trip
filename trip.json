@@ -751,7 +751,7 @@
         {
           "emoji": "📍",
           "label": "宣陵本店",
-          "url": "https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EB%B3%B5%ED%9D%AC%ED%95%B4%EC%9E%A5%20%EC%84%A0%EB%A6%89%EB%B3%B8%EC%A0%90%20%ED%85%8C%ED%97%A4%EB%9E%80%EB%A1%9C70%EA%B8%B8%2014-12"
+          "url": "https://map.naver.com/p/search/%EC%9D%B4%EB%B3%B5%ED%9D%AC%ED%95%B4%EC%9E%A5%20%EC%84%A0%EB%A6%89"
         }
       ],
       "hours": "宣陵本店 每日 11:00–24:00",
@@ -785,10 +785,12 @@
     {
       "name": "Pippo",
       "type": "餐廳",
-      "area": "",
-      "note": "韓國女生口袋名單的早午餐咖啡廳，歐洲風、有戶外座位。大推無花果生火腿，另有生火腿芝麻葉長棍三明治、炒蛋配煎肉。地址待查（影片標了 Naver 地標但沒寫出來）。",
+      "area": "新堂（青丘站 1 號出口）",
+      "note": "韓國女生口袋名單的早午餐咖啡廳，歐洲風、有戶外座位。大推無花果生火腿，另有生火腿芝麻葉長棍三明治、炒蛋配煎肉。Naver／Kakao 上的「피뽀」（新堂洞，歐洲風、有露台、賣三明治和早午餐）最符合，菜單沒列無花果生火腿，去之前再確認是不是同一家。",
       "category": "食物",
-      "tagline": "無花果生火腿早午餐"
+      "tagline": "無花果生火腿早午餐",
+      "naver_query": "피뽀",
+      "address": "서울 중구 청구로 94 1층（新堂洞）"
     },
     {
       "name": "아티스트 베이커리 Artist Bakery 安國",
@@ -824,7 +826,8 @@
       "hours": "週二–週五 11:00–20:00（休息 15:00–16:00）；週六、日 11:00–20:00；週一公休",
       "note": "韓定食小店。招牌是慢火熬很久的明太子海帶湯（명란미역국），配健康米飯和每天換的五樣小菜。其他定食：辣炒豬肉定食（제육정식）、辣炒豬肉蓋飯（제육덮밥）。電話 0507-1336-4960。",
       "map_query": "연남그곳 서울 마포구 연희로1길 19",
-      "naver_url": "https://map.naver.com/p/entry/place/1472379447"
+      "naver_url": "https://map.naver.com/p/entry/place/1472379447",
+      "naver_query": "연남그곳"
     },
     {
       "name": "jean and juice",
@@ -833,7 +836,8 @@
       "area": "梨泰院",
       "address": "서울 용산구 회나무로13가길 23-6 1층（梨泰院洞 260-102）",
       "naver_url": "https://map.naver.com/p/entry/place/2008128330",
-      "map_url": "https://www.google.com/maps/search/?api=1&query=GXRR%2BF6+Seoul"
+      "map_url": "https://www.google.com/maps/search/?api=1&query=GXRR%2BF6+Seoul",
+      "naver_query": "서울 용산구 회나무로13가길 23-6"
     },
     {
       "name": "kamadeva",
@@ -842,7 +846,8 @@
       "area": "梨泰院",
       "address": "서울 용산구 녹사평대로 208-1 3층（梨泰院洞 532）",
       "naver_url": "https://map.naver.com/p/entry/place/1353791955",
-      "map_url": "https://maps.google.com/?cid=10046632728391963941"
+      "map_url": "https://maps.google.com/?cid=10046632728391963941",
+      "naver_query": "서울 용산구 녹사평대로 208-1"
     },
     {
       "name": "ayadz studio",
@@ -851,7 +856,8 @@
       "area": "延南洞",
       "address": "서울 마포구 성미산로31길 13 2층（延南洞 223-44）",
       "naver_url": "https://map.naver.com/p/entry/place/2092090927",
-      "map_url": "https://maps.google.com/?cid=12959674280344959625"
+      "map_url": "https://maps.google.com/?cid=12959674280344959625",
+      "naver_query": "서울 마포구 성미산로31길 13"
     },
     {
       "name": "tst",
@@ -861,7 +867,8 @@
       "address": "서울 서대문구 연희동 190-21",
       "naver_url": "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%84%9C%EB%8C%80%EB%AC%B8%EA%B5%AC%20%EC%97%B0%ED%9D%AC%EB%8F%99%20190-21",
       "map_url": "https://www.google.com/maps/search/?api=1&query=HW8H%2BM9+Seoul",
-      "note": "地圖上找不到正確的店家頁，連結只指到地址，位置待確認。"
+      "note": "地圖上找不到正確的店家頁，連結只指到地址，位置待確認。",
+      "naver_query": "서울 서대문구 연희동 190-21"
     },
     {
       "name": "flots",
@@ -870,7 +877,8 @@
       "area": "延南洞",
       "address": "서울 마포구 성미산로29길 33 2층（延南洞 245-44）",
       "naver_url": "https://map.naver.com/p/entry/place/1784203380",
-      "map_query": "서울 마포구 성미산로29길 33"
+      "map_query": "서울 마포구 성미산로29길 33",
+      "naver_query": "서울 마포구 성미산로29길 33"
     }
   ],
   "bookings": [

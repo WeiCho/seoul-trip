@@ -1035,7 +1035,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
             </button>
             <div class="wl-maps">
               {%- if w.naver_url %}<a class="nv" href="{{ w.naver_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} 在 Naver 地圖">N</a>{% endif %}
-              {%- if w.map_url %}<a href="{{ w.map_url }}" target="_blank" rel="noopener" aria-label="{{ w.name }} 在 Google 地圖">G</a>{% endif %}
             </div>
           </div>
           <dialog class="em-dlg info-dlg" id="{{ wid }}" aria-labelledby="{{ wid }}-t">
@@ -1052,7 +1051,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               {%- endif %}
               <div class="dlg-links">
                 {%- if w.naver_url %}<a class="more" href="{{ w.naver_url }}" target="_blank" rel="noopener">Naver 地圖{{ pill() }}</a>{% endif %}
-                {%- if w.map_url %}<a class="more" href="{{ w.map_url }}" target="_blank" rel="noopener">Google 地圖{{ pill() }}</a>{% endif %}
                 {%- if w.url %}<a class="more" href="{{ w.url }}" target="_blank" rel="noopener">官網{{ pill() }}</a>{% endif %}
                 {%- for lk in w.links %}<a class="more" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.label }}{{ pill() }}</a>{% endfor %}
               </div>
