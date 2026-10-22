@@ -547,6 +547,9 @@ def enrich(data):
                 paid_items.append((item["name"], item["cost"]))
             if item.get("map_query"):
                 item["map_url"] = map_url(item["map_query"])
+            # 首爾的行程導航一律開 Naver：Google 在韓國不能步行導航
+            if item.get("naver_query"):
+                item["nav_url"] = naver_url(item["naver_query"])
             reason = _pending_reason(item)
             if reason:
                 pending.append({

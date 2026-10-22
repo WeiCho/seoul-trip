@@ -272,7 +272,6 @@ main{display:block}
 .wx-hours .p{color:var(--sky-d)}
 .day-note{margin-top:14px;padding:12px 14px;border-radius:8px;background:var(--sky-t);font-size:13.5px;line-height:1.8}
 .day-aside .more{margin-top:14px;width:100%;font-size:13.5px}
-.route-cap{display:block;font-size:11.5px;color:var(--soft)}
 
 .timeline{list-style:none;margin:0;padding:0}
 .stop{
@@ -286,13 +285,19 @@ main{display:block}
   font:inherit;font-size:16px;font-weight:500;line-height:1.55;letter-spacing:.03em;color:var(--ink);text-align:left;
 }
 .stop-name::after{content:"";flex:none;width:6px;height:6px;margin-left:auto;border:solid var(--soft);border-width:1.5px 1.5px 0 0;transform:rotate(45deg)}
-.opt-tag{flex:none;margin-left:8px;padding:0 7px;border:1px solid var(--line);border-radius:4px;font-size:11.5px;font-weight:400;letter-spacing:.06em;color:var(--soft)}
 .stop-name:hover{color:var(--sky-d)}
+/* Naver 圓鈕：跟口袋名單的綠色 N 同一款（40px），外圈再擴到 44px 點擊範圍；
+   沒地點可導航的站放一個看不見的佔位，右邊的箭頭才會對齊 */
 .nav-btn{
-  display:inline-grid;place-items:center;min-height:34px;padding:0 13px;border-radius:999px;
-  background:var(--sky-t);color:var(--sky-d);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.08em;
+  position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
+  background:#03c75a;color:#fff;text-decoration:none;font-family:var(--latin);font-size:15px;font-weight:600;line-height:1;
+  transition:transform .3s var(--out),box-shadow .3s;
 }
-.nav-btn:hover{background:var(--sky);color:#0b0b0e}
+.nav-btn::before{content:"";position:absolute;inset:-2px}
+.nav-btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgb(3 199 90 / .28)}
+.nav-btn:active{transform:scale(.94)}
+.nav-btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.nav-btn.is-none{visibility:hidden}
 .t-go{--tc:var(--sky-d)} .t-eat{--tc:#d9762b} .t-stay{--tc:#2f9a76} .t-see{--tc:#c4487c} .t-shop{--tc:#7a63c9}
 :root[data-theme="dark"] .t-eat{--tc:#f0a062} :root[data-theme="dark"] .t-stay{--tc:#5cc9a2} :root[data-theme="dark"] .t-see{--tc:#ec7fad} :root[data-theme="dark"] .t-shop{--tc:#a895ef}
 .kind{display:inline-flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.16em;color:var(--tc)}
@@ -524,6 +529,10 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .em-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:13.5px}
 .em-meta dt{color:var(--muted)}
 .em-meta dd{margin:0}
+/* 下一站：可以點的那幾段，用全站連結語法（底線＋黑色小膠囊），點了翻到交通卡 */
+.em-meta a.next-leg{color:inherit;text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px;text-decoration-thickness:1.5px}
+.em-meta a.next-leg .pill{display:inline-grid;width:28px;height:18px;margin-left:8px;vertical-align:-3px}
+.em-meta a.next-leg:hover .pill{transform:translateX(4px);background:var(--sky-d)}
 .em-tel{display:flex;justify-content:center;align-items:center;margin-top:18px;min-height:54px;border-radius:8px;background:var(--sky);color:#0b0b0e;text-decoration:none;font-family:var(--latin);font-size:22px;letter-spacing:.06em}
 .em-tel.is-todo{background:var(--sage);color:var(--muted);gap:10px;font-family:var(--sans);font-size:14px}
 .em-todo-line{width:8em;border-bottom:1px dashed var(--muted)}
@@ -844,18 +853,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           {% elif day.weather %}<p class="day-weather">{{ day.weather }}</p>{% endif %}
           {%- if fc and fc.spread %}<p class="wx-spread">各模式差異大（{{ fc.spread.what }} {{ fc.spread.lo }}–{{ fc.spread.hi }}°C），出發前再看一次</p>{%- endif %}
           {%- endif %}
-          {% if day.route_url %}
-          <a class="more" href="{{ day.route_url }}" target="_blank" rel="noopener">本日路線一鍵導航{{ pill() }}</a>
-          {% if day.route_capped %}<span class="route-cap">點位較多，僅串接前段</span>{% endif %}
-          {% endif %}
         </div>
       <ol class="timeline">
       {% for item in day["items"] %}
-        <li class="stop {{ TYPE_META[item.type].cls if item.type in TYPE_META else '' }}" data-time="{{ item.time }}" data-name="{{ item.name }}"{% if item.map_url %} data-map="{{ item.map_url }}"{% endif %}>
+        <li class="stop {{ TYPE_META[item.type].cls if item.type in TYPE_META else '' }}" data-time="{{ item.time }}" data-name="{{ item.name }}"{% if item.nav_url %} data-map="{{ item.nav_url }}"{% endif %}>
           {%- set did = "stop-" ~ day.day_no ~ "-" ~ loop.index %}
           <time>{{ item.time }}</time>
-          <button type="button" class="stop-name" data-dlg="{{ did }}" aria-haspopup="dialog">{{ item.name }}{% if item.priority == "optional" %}<span class="opt-tag">可捨棄</span>{% endif %}</button>
-          {%- if item.map_url %}<a class="nav-btn" href="{{ item.map_url }}" aria-label="在地圖上開啟 {{ item.name }}">導航</a>{% endif %}
+          <button type="button" class="stop-name" data-dlg="{{ did }}" aria-haspopup="dialog">{{ item.name }}</button>
+          {%- if item.nav_url %}<a class="nav-btn" href="{{ item.nav_url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟 {{ item.name }}">N</a>{% else %}<span class="nav-btn is-none" aria-hidden="true"></span>{% endif %}
           <dialog class="em-dlg info-dlg" id="{{ did }}" aria-labelledby="{{ did }}-t">
             <div class="em-dlg-in">
               <p class="dlg-kicker">{{ day.date_short }} {{ day.weekday }}・{{ item.time }}</p>
@@ -865,15 +870,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               {%- if item.duration %}{% set _ = meta.append(("停留", item.duration)) %}{% endif %}
               {%- if item.booking and item.booking.hours %}{% set _ = meta.append(("營業", item.booking.hours)) %}{% endif %}
               {%- if item.booking and item.booking.code %}{% set _ = meta.append(("確認碼", item.booking.code)) %}{% endif %}
-              {%- if item.next_transit %}{% set _ = meta.append(("下一站", item.next_transit)) %}{% endif %}
-              {% if meta %}<dl class="em-meta">{% for k, v in meta %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}</dl>{% endif %}
-              {%- if item.url or item.links or item.legs %}
-              <div class="dlg-links">
-                {%- for t in item.legs %}<a class="more" href="#{{ t.anchor }}" data-em-close>怎麼去：{{ t.route }}{{ pill() }}</a>{% endfor %}
-                {%- if item.url %}<a class="more" href="{{ item.url }}" target="_blank" rel="noopener">官網／訂房頁{{ pill() }}</a>{% endif %}
-                {%- for lk in item.links %}<a class="more" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.label }}{{ pill() }}</a>{% endfor %}
-              </div>
-              {%- endif %}
+              {#- 下一站：有交通卡就連過去（關掉彈窗、翻到交通那一段），短步行沒有卡就只是文字 -#}
+              {%- set leg = item.legs[0] if item.legs else none %}
+              {%- if item.next_transit or leg %}{% set _ = meta.append(("下一站", item.next_transit or leg.route)) %}{% endif %}
+              {% if meta %}<dl class="em-meta">{% for k, v in meta %}<dt>{{ k }}</dt><dd>
+                {%- if k == "下一站" and leg %}<a class="next-leg" href="#{{ leg.anchor }}" data-em-close>{{ v }}{{ pill() }}</a>{% else %}{{ v }}{% endif %}</dd>{% endfor %}</dl>{% endif %}
               <button type="button" class="em-close" data-em-close>關閉</button>
             </div>
           </dialog>
