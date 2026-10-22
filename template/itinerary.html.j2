@@ -398,7 +398,7 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 .tr-live-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--soft)}
 .tr-live-refresh{min-height:32px;padding:0 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:inherit;font:inherit;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.tr-live-dot{animation:none}}
-.tr-links{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:14px}
+.tr-links{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:14px}
 button.more{background:none;border-width:0 0 1px;border-style:solid;border-color:var(--ink);padding:0 0 6px;font:inherit;font-size:14.5px;color:inherit;cursor:pointer}
 .tr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lc);margin-right:8px;vertical-align:1px}
 .transit-links{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:clamp(26px,4vh,40px)}
@@ -967,7 +967,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           </dl>
           <div class="tr-links">
             {%- if o.steps %}<button type="button" class="more" data-dlg="{{ oid }}-ride" aria-haspopup="dialog">搭車{{ pill() }}</button>{% endif %}
-            {%- for lk in o.route_links %}<a class="more" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.label }}{{ pill() }}</a>{% endfor %}
+            {%- for lk in o.route_links %}
+            {%- if lk.app == "naver" %}<a class="nav-btn" href="{{ lk.url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖查這段路線">N</a>
+            {%- else %}<a class="more" href="{{ lk.url }}" target="_blank" rel="noopener">{{ lk.label }}{{ pill() }}</a>{% endif %}
+            {%- endfor %}
           </div>
           {%- if o.steps %}
           {#- 彈窗裡只放步驟，不顯示日期與標題；名稱只給讀屏用 -#}

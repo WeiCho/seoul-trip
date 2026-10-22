@@ -417,7 +417,7 @@ def transit_links(tr, from_query, to_query, apps):
                 + quote(f"{a_name},{a_ll}", safe=",") + "/" + quote(f"{b_name},{b_ll}", safe=","))})
         elif app == "naver" and a_ll and b_ll:
             (alat, alng), (blat, blng) = a_ll.split(","), b_ll.split(",")
-            links.append({"label": "Naver 路線", "url": (
+            links.append({"label": "Naver 路線", "app": "naver", "url": (
                 f"https://map.naver.com/p/directions/{alng},{alat},{quote(str(a_name))},,/"
                 f"{blng},{blat},{quote(str(b_name))},,/-/" + kind)})
     return links
