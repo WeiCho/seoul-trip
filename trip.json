@@ -967,32 +967,27 @@
           "steps": [
             {
               "text": "出海關，跟著「機場鐵路」指標下到 B1",
-              "sign": {
-                "line": "AREX",
-                "ko": "공항철도",
-                "zh": "機場鐵路 Airport Railroad",
-                "badge": "AREX"
-              }
+              "img": "img/c-t2-arex-a11.jpg",
+              "alt": "仁川機場 T2 機場鐵路站的站名牌",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "刷卡進站，搭「普通車」往首爾站方向",
-              "sign": {
-                "line": "AREX",
-                "ko": "일반열차 · 서울역 방면",
-                "zh": "普通車・往首爾站（不要搭直達車）",
-                "badge": "AREX"
-              }
+              "text": "刷卡進站，搭「普通車」往首爾站方向（일반열차 · 서울역 방면）",
+              "img": "img/c-t2-arex-sign.jpg",
+              "alt": "T2 機場鐵路站柱子上的指標：往 1 航廈・首爾站",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "坐約 60 分，弘大入口下車"
+              "text": "坐約 60 分，弘大入口下車",
+              "img": "img/c-hongik-arex-sign.jpg",
+              "alt": "弘大入口站機場鐵路月台的站名牌",
+              "credit": "圖：MNXANL／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "轉 2 號線，往新村方向",
-              "sign": {
-                "line": "2",
-                "ko": "신촌 방면",
-                "zh": "往 新村"
-              }
+              "text": "轉 2 號線，往新村方向（신촌 방면）",
+              "img": "img/c-hongik-l2.jpg",
+              "alt": "弘大入口站 2 號線月台",
+              "credit": "圖：ZKang123／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
               "text": "坐 16 站到建大入口，走 5 號出口",
@@ -1053,12 +1048,10 @@
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往聖水・往十里方向",
-              "sign": {
-                "line": "2",
-                "ko": "성수 · 왕십리 방면",
-                "zh": "往 聖水・往十里"
-              }
+              "text": "往聖水・往十里方向（성수 · 왕십리 방면）",
+              "img": "img/c-kondae-l2.jpg",
+              "alt": "建大入口站 2 號線高架月台",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
               "text": "坐 2 站，纛島下車，走 8 號出口",
@@ -1066,7 +1059,9 @@
               "alt": "纛島站 8 號出口一帶，高架橋下的手扶梯（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "導航到할머니의 레시피，步行約 12 分"
+              "text": "導航到할머니의 레시피，步行約 12 分",
+              "img": "img/halmeoni-recipe.jpg",
+              "alt": "Kakao 標註的할머니의 레시피巷口，紅框是綠色小招牌（Kakao 로드뷰 2024 年 8 月）"
             }
           ],
           "live": [
@@ -1111,21 +1106,16 @@
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往石南方向，坐 3 站到江南區廳",
-              "sign": {
-                "line": "7",
-                "ko": "석남 방면",
-                "zh": "往 石南"
-              }
+              "text": "往石南方向，坐 3 站到江南區廳（석남 방면）",
+              "img": "img/c-kondae-l7.jpg",
+              "alt": "建大入口站 7 號線站名牌，箭頭指向 자양（往石南方向）",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
-              "text": "轉黃色水仁盆唐線，往往十里方向",
-              "sign": {
-                "line": "水仁盆唐",
-                "ko": "왕십리 방면",
-                "zh": "往 往十里",
-                "badge": "水仁"
-              }
+              "text": "轉黃色水仁盆唐線，往往十里方向（왕십리 방면）",
+              "img": "img/c-gangnamgu-sb.jpg",
+              "alt": "江南區廳站水仁盆唐線月台（黃色）",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
               "text": "坐 1 站，狎鷗亭羅德奧下車，走 5 號出口",
@@ -1179,13 +1169,10 @@
               "alt": "狎鷗亭羅德奧站 5 號出口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往往十里方向，坐 1 站到首爾林",
-              "sign": {
-                "line": "水仁盆唐",
-                "ko": "왕십리 방면",
-                "zh": "往 往十里",
-                "badge": "水仁"
-              }
+              "text": "往往十里方向，坐 1 站到首爾林（왕십리 방면）",
+              "img": "img/c-apgujeong-sb.jpg",
+              "alt": "狎鷗亭羅德奧站水仁盆唐線月台",
+              "credit": "圖：분당선M／Wikimedia Commons（CC BY-SA 3.0）"
             },
             {
               "text": "走 3 號出口，前面就是首爾林",
@@ -1227,12 +1214,10 @@
               "alt": "無垢屋聖水店一帶（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "上高架月台，往建大入口方向",
-              "sign": {
-                "line": "2",
-                "ko": "건대입구 · 잠실 방면",
-                "zh": "往 建大入口・蠶室"
-              }
+              "text": "上高架月台，往建大入口方向（건대입구 · 잠실 방면）",
+              "img": "img/c-seongsu-l2.jpg",
+              "alt": "聖水站 2 號線高架月台",
+              "credit": "圖：분당선M／Wikimedia Commons（CC BY-SA 3.0）"
             },
             {
               "text": "坐 1 站，建大入口下車，走回住處約 4 分",
@@ -1274,12 +1259,10 @@
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往聖水・往十里方向",
-              "sign": {
-                "line": "2",
-                "ko": "성수 · 왕십리 방면",
-                "zh": "往 聖水・往十里"
-              }
+              "text": "往聖水・往十里方向（성수 · 왕십리 방면）",
+              "img": "img/c-kondae-l2.jpg",
+              "alt": "建大入口站 2 號線高架月台",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
               "text": "坐 16 站，弘大入口下車，走 3 號出口",
@@ -1331,7 +1314,10 @@
               "text": "Kakao Map 步行導航到「연희동 190-21」，往北約 15 分"
             },
             {
-              "text": "到了延禧洞，店在住宅巷子裡邊走邊找"
+              "text": "到了延禧洞，店在住宅巷子裡邊走邊找",
+              "img": "img/c-yeonhui.jpg",
+              "alt": "延禧洞住宅區街景",
+              "credit": "圖：Minchelin／Wikimedia Commons（CC BY-SA 2.0 kr）"
             }
           ],
           "refs": [
@@ -1368,7 +1354,9 @@
           "to_ll": "37.552812,126.921312",
           "steps": [
             {
-              "text": "導航到한우다움（양화로16길 34），往南約 20 分"
+              "text": "導航到한우다움（양화로16길 34），往南約 20 分",
+              "img": "img/hongik-exit3.jpg",
+              "alt": "弘大入口站 3 號出口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
               "text": "店在 2、3 樓，找招牌「한우다움」",
@@ -1408,12 +1396,10 @@
               "alt": "弘大入口站 9 號出口，玻璃頂棚上寫著 9（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "進 2 號線，往新村方向",
-              "sign": {
-                "line": "2",
-                "ko": "신촌 방면",
-                "zh": "往 新村（不是往合井）"
-              }
+              "text": "進 2 號線，往新村方向（신촌 방면）",
+              "img": "img/c-hongik-l2.jpg",
+              "alt": "弘大入口站 2 號線月台",
+              "credit": "圖：ZKang123／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
               "text": "坐 16 站，建大入口下車，走回住處約 4 分",
@@ -1455,20 +1441,16 @@
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往聖水・往十里方向，坐 9 站到乙支路3街",
-              "sign": {
-                "line": "2",
-                "ko": "성수 · 왕십리 방면",
-                "zh": "往 聖水・往十里"
-              }
+              "text": "往聖水・往十里方向，坐 9 站到乙支路3街（성수 · 왕십리 방면）",
+              "img": "img/c-kondae-l2.jpg",
+              "alt": "建大入口站 2 號線高架月台",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
-              "text": "轉橘色 3 號線，往大化方向",
-              "sign": {
-                "line": "3",
-                "ko": "대화 방면",
-                "zh": "往 大化"
-              }
+              "text": "轉橘色 3 號線，往大化方向（대화 방면）",
+              "img": "img/c-euljiro-l3.jpg",
+              "alt": "乙支路3街站 3 號線月台，箭頭指向鍾路3街（往大化方向）",
+              "credit": "圖：阿貴／Wikimedia Commons（GFDL）"
             },
             {
               "text": "坐 2 站，安國下車，走 1 號出口就是 Artist Bakery",
@@ -1522,13 +1504,10 @@
               "alt": "경복궁역3번출구 公車站（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "搭 7022（或 1020、7212），上車刷 T-money",
-              "sign": {
-                "line": "7022",
-                "ko": "부암동 · 구기동 방면",
-                "zh": "1020、7212 也可以",
-                "color": "#53b332"
-              }
+              "text": "搭 7022（或 1020、7212），上車刷 T-money（부암동 · 구기동 방면）",
+              "img": "img/c-bus-7022.jpg",
+              "alt": "綠色支線公車 7022",
+              "credit": "圖：Wikiwater2020／Wikimedia Commons（CC BY-SA 3.0）"
             },
             {
               "text": "坐 6 站，「부암동주민센터.무계원」下車",
@@ -1592,13 +1571,10 @@
               "alt": "부암동주민센터 往市區方向的站牌，對面紅磚建築旁、有候車亭（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "搭 7022（或 1020、7212），坐 6 站到「경복궁역2번출구」",
-              "sign": {
-                "line": "7022",
-                "ko": "경복궁역 방면",
-                "zh": "往 景福宮站",
-                "color": "#53b332"
-              }
+              "text": "搭 7022（或 1020、7212），坐 6 站到「경복궁역2번출구」（경복궁역 방면）",
+              "img": "img/c-bus-7022.jpg",
+              "alt": "綠色支線公車 7022",
+              "credit": "圖：Wikiwater2020／Wikimedia Commons（CC BY-SA 3.0）"
             },
             {
               "text": "從景福宮站 2 號出口進站",
@@ -1606,20 +1582,15 @@
               "alt": "景福宮站 2 號出口，玻璃上寫著大大的 2（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "3 號線往梧琴方向，坐 2 站到鍾路3街",
-              "sign": {
-                "line": "3",
-                "ko": "오금 방면",
-                "zh": "往 梧琴"
-              }
+              "text": "3 號線往梧琴方向，坐 2 站到鍾路3街（오금 방면）",
+              "img": "img/c-gyeongbokgung-l3.jpg",
+              "alt": "景福宮站 3 號線月台",
+              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
               "text": "走 4 號或 6 號出口，益善洞就在旁邊",
-              "sign": {
-                "line": "3",
-                "ko": "4 · 6번 출구",
-                "zh": "4、6 號出口・益善洞"
-              }
+              "img": "img/jongno3ga-exit4.jpg",
+              "alt": "鍾路3街站 4 號出口的站柱（Kakao 로드뷰 2026 年 6–7 月）"
             }
           ],
           "last": "23:50",
@@ -1652,27 +1623,21 @@
           "steps": [
             {
               "text": "走到鍾路3街站，進橘色 3 號線",
-              "sign": {
-                "line": "3",
-                "ko": "종로3가역",
-                "zh": "鍾路3街站・找橘色 3 號線"
-              }
+              "img": "img/c-jongno-entrance.jpg",
+              "alt": "鍾路3街站出入口，招牌上有 1、3、5 號線",
+              "credit": "圖：hyolee2／Wikimedia Commons（CC BY-SA 3.0）"
             },
             {
-              "text": "往梧琴方向，坐 1 站到乙支路3街",
-              "sign": {
-                "line": "3",
-                "ko": "오금 방면",
-                "zh": "往 梧琴"
-              }
+              "text": "往梧琴方向，坐 1 站到乙支路3街（오금 방면）",
+              "img": "img/c-jongno-l3.jpg",
+              "alt": "鍾路3街站 3 號線月台，箭頭指向乙支路3街（往梧琴方向）",
+              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "轉 2 號線，往往十里方向",
-              "sign": {
-                "line": "2",
-                "ko": "동대문역사문화공원 · 왕십리 방면",
-                "zh": "往 東大門歷史文化公園・往十里"
-              }
+              "text": "轉 2 號線，往往十里方向（동대문역사문화공원 · 왕십리 방면）",
+              "img": "img/c-euljiro-transfer2.jpg",
+              "alt": "乙支路3街站往 2 號線的轉乘指標",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
               "text": "坐 9 站，建大入口下車，走回住處約 4 分",
@@ -1702,27 +1667,20 @@
           "steps": [
             {
               "text": "走到鍾路3街站，進紫色 5 號線",
-              "sign": {
-                "line": "5",
-                "ko": "종로3가역",
-                "zh": "鍾路3街站・找紫色 5 號線"
-              }
+              "img": "img/jongno3ga-exit4.jpg",
+              "alt": "鍾路3街站 5 號線 4 號出口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往河南檢丹山・馬川方向，坐 10 站到君子",
-              "sign": {
-                "line": "5",
-                "ko": "하남검단산 · 마천 방면",
-                "zh": "往 河南檢丹山・馬川，哪班都停君子"
-              }
+              "text": "往河南檢丹山・馬川方向，坐 10 站到君子（하남검단산 · 마천 방면）",
+              "img": "img/c-jongno-l5.jpg",
+              "alt": "鍾路3街站 5 號線月台",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "轉 7 號線，往石南方向，坐 2 站到建大入口",
-              "sign": {
-                "line": "7",
-                "ko": "석남 방면",
-                "zh": "往 石南"
-              }
+              "text": "轉 7 號線，往石南方向，坐 2 站到建大入口（석남 방면）",
+              "img": "img/c-gunja-l7.jpg",
+              "alt": "君子站 7 號線站名牌，箭頭指向어린이대공원（往石南方向）",
+              "credit": "圖：Banwol／Wikimedia Commons（CC BY-SA 3.0）"
             },
             {
               "text": "出站走回住處約 4 分",
@@ -1764,20 +1722,16 @@
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往聖水・往十里方向，坐 4 站到往十里",
-              "sign": {
-                "line": "2",
-                "ko": "성수 · 왕십리 방면",
-                "zh": "往 聖水・往十里"
-              }
+              "text": "往聖水・往十里方向，坐 4 站到往十里（성수 · 왕십리 방면）",
+              "img": "img/c-kondae-l2.jpg",
+              "alt": "建大入口站 2 號線高架月台",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
-              "text": "轉紫色 5 號線，往傍花方向",
-              "sign": {
-                "line": "5",
-                "ko": "방화 방면",
-                "zh": "往 傍花"
-              }
+              "text": "轉紫色 5 號線，往傍花方向（방화 방면）",
+              "img": "img/c-wangsimni-l5.jpg",
+              "alt": "往十里站 5 號線，往傍花的列車",
+              "credit": "圖：Mtattrain／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
               "text": "坐 12 站，麻浦下車，走 3 號出口",
@@ -1785,7 +1739,9 @@
               "alt": "麻浦站 3 號出口，紅框是玻璃頂棚的出口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "步行約 5 分到麻浦元祖蔘雞湯"
+              "text": "步行約 5 分到麻浦元祖蔘雞湯",
+              "img": "img/mapo-samgyetang.jpg",
+              "alt": "麻浦元祖蔘雞湯的直式招牌「옻닭 蔘鷄湯」（Kakao 로드뷰 2026 年 6–7 月）"
             }
           ],
           "refs": [
@@ -1834,23 +1790,21 @@
               }
             },
             {
-              "text": "坐 1 站到孔德，轉 6 號線往新內方向",
-              "sign": {
-                "line": "6",
-                "ko": "신내 방면",
-                "zh": "往 新內"
-              }
+              "text": "坐 1 站到孔德，轉 6 號線往新內方向（신내 방면）",
+              "img": "img/c-gongdeok-l6.jpg",
+              "alt": "孔德站 6 號線站名牌，箭頭指向효창공원앞（往新內方向）",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
               "text": "坐 3 站，綠莎坪下車，搭長手扶梯上去",
-              "sign": {
-                "line": "6",
-                "ko": "녹사평역",
-                "zh": "綠莎坪站"
-              }
+              "img": "img/c-noksapyeong-esc.jpg",
+              "alt": "綠莎坪站的長手扶梯",
+              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "導航到 kamadeva"
+              "text": "導航到 kamadeva",
+              "img": "img/kamadeva.jpg",
+              "alt": "kamadeva 所在的街口，店在 3 樓（Kakao 로드뷰 2026 年 6–7 月）"
             }
           ],
           "refs": [
@@ -1894,20 +1848,16 @@
           "to_ll": "37.540363,127.069266",
           "steps": [
             {
-              "text": "回綠莎坪站，6 號線往新內方向",
-              "sign": {
-                "line": "6",
-                "ko": "신내 방면",
-                "zh": "往 新內"
-              }
+              "text": "回綠莎坪站，6 號線往新內方向（신내 방면）",
+              "img": "img/c-noksapyeong-l6.jpg",
+              "alt": "綠莎坪站 6 號線站名柱，箭頭指向梨泰院（往新內方向）",
+              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "坐 6 站到新堂，轉 2 號線往往十里方向",
-              "sign": {
-                "line": "2",
-                "ko": "상왕십리 · 왕십리 방면",
-                "zh": "往 上往十里・往十里"
-              }
+              "text": "坐 6 站到新堂，轉 2 號線往往十里方向（상왕십리 · 왕십리 방면）",
+              "img": "img/c-sindang-l2.jpg",
+              "alt": "新堂站 2 號線站名牌，箭頭指向上往十里",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
               "text": "坐 6 站，建大入口下車，走回住處約 4 分",
@@ -1968,12 +1918,9 @@
             },
             {
               "text": "坐到終點「인천공항 2터미널」，3 樓出境大廳",
-              "sign": {
-                "line": "6013",
-                "ko": "인천공항 2터미널 하차",
-                "zh": "在 T2 下車（T1 的下一站）",
-                "color": "#3d5bab"
-              }
+              "img": "img/c-t2-2a.jpg",
+              "alt": "仁川機場 T2 出境大廳",
+              "credit": "圖：Twotwo2019／Wikimedia Commons（CC BY 4.0）"
             }
           ],
           "refs": [
@@ -2020,33 +1967,28 @@
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往聖水・往十里方向，坐 16 站到弘大入口",
-              "sign": {
-                "line": "2",
-                "ko": "성수 · 왕십리 방면",
-                "zh": "往 聖水・往十里"
-              }
+              "text": "往聖水・往十里方向，坐 16 站到弘大入口（성수 · 왕십리 방면）",
+              "img": "img/c-kondae-l2.jpg",
+              "alt": "建大入口站 2 號線高架月台",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
               "text": "轉機場鐵路（有電梯，約 10 分）",
-              "sign": {
-                "line": "AREX",
-                "ko": "공항철도",
-                "zh": "機場鐵路 Airport Railroad",
-                "badge": "AREX"
-              }
+              "img": "img/c-hongik-transfer.jpg",
+              "alt": "弘大入口站往機場鐵路的轉乘通道",
+              "credit": "圖：IRTC1015／Wikimedia Commons（Public domain）"
             },
             {
-              "text": "搭普通車到終點仁川機場 2 航廈",
-              "sign": {
-                "line": "AREX",
-                "ko": "일반열차 · 인천공항2터미널 방면",
-                "zh": "普通車・往仁川機場 T2",
-                "badge": "AREX"
-              }
+              "text": "搭普通車到終點仁川機場 2 航廈（일반열차 · 인천공항2터미널 방면）",
+              "img": "img/c-hongik-arex.jpg",
+              "alt": "弘大入口站機場鐵路月台，看板寫著往仁川機場 T1-2",
+              "credit": "圖：R151trains／Wikimedia Commons（CC0）"
             },
             {
-              "text": "跟著「出境 Departures」上 3 樓"
+              "text": "跟著「出境 Departures」上 3 樓",
+              "img": "img/c-t2-2a.jpg",
+              "alt": "仁川機場 T2 出境大廳",
+              "credit": "圖：Twotwo2019／Wikimedia Commons（CC BY 4.0）"
             }
           ],
           "refs": [

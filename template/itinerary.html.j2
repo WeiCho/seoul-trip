@@ -370,6 +370,7 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 .ride-steps li{margin-bottom:14px}
 .ride-steps li p{margin:0;white-space:pre-line}
 .ride-steps img{display:block;width:100%;height:auto;margin-top:8px;border-radius:6px;border:1px solid var(--line)}
+.ride-credit{display:block;margin-top:4px;font-size:11px;line-height:1.4;color:var(--soft)}
 .ride-sign{display:flex;align-items:center;gap:12px;margin-top:8px;padding:12px 14px;border-radius:6px;background:#23272e;color:#fff}
 .ride-sign b{flex:none;display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border-radius:17px;background:var(--c);font-family:var(--latin);font-size:16px;font-weight:600;line-height:1}
 .ride-sign strong{display:block;font-size:16px;font-weight:600;line-height:1.35;letter-spacing:.02em}
@@ -974,9 +975,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               <ol class="ride-steps" tabindex="-1" autofocus>
               {%- for st in o.steps %}
                 <li><p>{{ st.text }}</p>
-                  {%- if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% endif %}
-                  {#- 站內拍不到照片的步驟，畫一塊仿首爾地鐵的指標牌：線號圓圈＋方向 -#}
-                  {%- if st.sign %}{% set sg = st.sign %}<div class="ride-sign" role="img" aria-label="{{ sg.zh or sg.ko }}"><b style="--c:{{ line_colors[sg.line] | default(sg.color or '#3d5bab') }}">{{ sg.badge or sg.line }}</b><span><strong>{{ sg.ko }}</strong>{% if sg.zh %}<small>{{ sg.zh }}</small>{% endif %}</span></div>{% endif %}
+                  {%- if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% if st.credit %}<small class="ride-credit">{{ st.credit }}</small>{% endif %}{% endif %}
+                  {#- 找不到實拍照片的步驟，才畫一塊仿首爾地鐵的指標牌：線號圓圈＋方向 -#}
+                  {%- if st.sign and not st.img %}{% set sg = st.sign %}<div class="ride-sign" role="img" aria-label="{{ sg.zh or sg.ko }}"><b style="--c:{{ line_colors[sg.line] | default(sg.color or '#3d5bab') }}">{{ sg.badge or sg.line }}</b><span><strong>{{ sg.ko }}</strong>{% if sg.zh %}<small>{{ sg.zh }}</small>{% endif %}</span></div>{% endif %}
                 </li>
               {%- endfor %}
               </ol>
