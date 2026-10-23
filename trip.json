@@ -134,17 +134,52 @@
           "note": "飛行 2 小時 35 分，14:40 抵達仁川第二航廈。",
           "duration": "2h35m",
           "status": "confirmed",
-          "next_transit": "下機 → 入境審查 → 領行李 → 海關"
+          "next_transit": "下機 → SES 註冊通道 → 自動通關 → 領行李 → 海關"
         },
         {
           "time": "14:40",
-          "name": "抵達仁川機場第二航廈：入境、領行李",
+          "name": "抵達仁川機場第二航廈：註冊 SES 入境、領行李",
           "type": "交通",
-          "note": "入境審查常排 40–80 分，看 SES 自動通關登錄的隊伍比較短就去辦；11/2 起可先填電子入境卡。",
-          "duration": "80-110m",
+          "note": "入境時直接在入境審查區註冊 SES 自動通關，免費、只要護照，約 1 分鐘，註冊完馬上走自動閘門，不用排人工、也不用填電子入境卡。限 17 歲以上，三個人各自註冊；之後到護照到期前入出境都能用。怕當天註冊通道沒開，可以落地前 72 小時內先上 e-arrivalcard.go.kr 填好當備案（免費）。",
+          "duration": "40-70m",
           "map_query": "인천국제공항 제2여객터미널",
           "next_transit": "出海關 → 手扶梯下 B1 交通中心 → 巴士售票機",
-          "naver_query": "인천국제공항 제2여객터미널"
+          "naver_query": "인천국제공항 제2여객터미널",
+          "steps": [
+            {
+              "text": "下機後跟著「입국심사 Immigration」走，看到 SES 註冊立牌（上面有台灣護照）就對了",
+              "img": "https://blog.turis.io/wp-content/uploads/2026/02/icn_smart_entry_service_sign_cover.jpg",
+              "alt": "SES Smart Entry Service Registration Center 立牌，列出台灣等可註冊國家的護照",
+              "credit": "圖：turis.io（2026/2）"
+            },
+            {
+              "text": "T2 入境審查分 A（248 號門旁，24 小時）和 B（253 號門旁，05:00–20:00）兩區，兩邊都有註冊通道；14:40 落地兩區都開",
+              "img": "https://blog.turis.io/wp-content/uploads/2026/02/icn_ses_registration_center_t2_map-1024x814.png",
+              "alt": "仁川機場第二航廈 2 樓入境審查 A、B 區位置圖",
+              "credit": "圖：turis.io（2026/2）"
+            },
+            {
+              "text": "排隊時不走左邊外國人、也不走右邊韓國人，看地板指示走中間的 SES 註冊通道",
+              "img": "https://blog.turis.io/wp-content/uploads/2026/02/icn_t1_automated_immigration_lane.jpg",
+              "alt": "仁川機場入境審查區的排隊動線",
+              "credit": "圖：turis.io（2026/2）"
+            },
+            {
+              "text": "到櫃台交護照，按兩手食指指紋、對鏡頭拍照，約 1 分鐘",
+              "img": "https://blog.turis.io/wp-content/uploads/2026/02/icn_ses_registration_desk_t1.jpg",
+              "alt": "Smart Entry Service 註冊櫃台",
+              "credit": "圖：turis.io（2026/2）"
+            },
+            {
+              "text": "護照背面會貼上 SES 貼紙，之後入出境看到這張就走自動通關",
+              "img": "https://blog.turis.io/wp-content/uploads/2026/02/kr_ses_sticker.jpg",
+              "alt": "貼在護照背面的 SES 貼紙",
+              "credit": "圖：turis.io（2026/2）"
+            },
+            {
+              "text": "跟著地板 U 型迴轉到自動閘門：綠燈進去 → 護照照片頁放讀取機 → 按指紋 → 看鏡頭，門開就入境了，接著去領行李"
+            }
+          ]
         },
         {
           "time": "16:30",

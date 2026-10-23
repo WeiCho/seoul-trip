@@ -379,6 +379,7 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .ride-steps{margin:0;padding:0 0 0 1.4em;outline:0;font-size:14.5px;line-height:1.85}
 .ride-steps li{margin-bottom:14px}
+.em-steps{margin:4px 0 18px}
 .ride-steps li p{margin:0;white-space:pre-line}
 .ride-steps img{display:block;width:100%;height:auto;margin-top:8px;border-radius:6px;border:1px solid var(--line)}
 .ride-credit{display:block;margin-top:4px;font-size:11px;line-height:1.4;color:var(--soft)}
@@ -879,6 +880,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               <p class="dlg-kicker">{{ day.date_short }} {{ day.weekday }}・{{ item.time }}</p>
               <h3 id="{{ did }}-t" tabindex="-1" autofocus>{{ item.name }}</h3>
               {% if item.note %}<p class="em-desc">{{ item.note }}</p>{% endif %}
+              {#- 需要照圖操作的站（例如機場註冊 SES），跟搭車彈窗一樣列步驟配圖 -#}
+              {%- if item.steps %}
+              <ol class="ride-steps em-steps">
+              {%- for st in item.steps %}
+                <li><p>{{ st.text }}</p>
+                  {%- if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% if st.credit %}<small class="ride-credit">{{ st.credit }}</small>{% endif %}{% endif %}
+                </li>
+              {%- endfor %}
+              </ol>
+              {%- endif %}
               {% set meta = [] %}
               {%- if item.duration %}{% set _ = meta.append(("停留", item.duration)) %}{% endif %}
               {%- if item.booking and item.booking.hours %}{% set _ = meta.append(("營業", item.booking.hours)) %}{% endif %}
