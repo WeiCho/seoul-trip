@@ -735,12 +735,12 @@
     },
     {
       "date": "2026-11-08",
-      "theme": "麻浦元祖蔘雞湯・梨泰院選物・綠莎坪天橋",
+      "theme": "麻浦元祖蔘雞湯・龍山美術館與選物店・梨泰院・綠莎坪看南山塔・赤土發酵烤肉",
       "weather": "首爾約 6–15°C",
-      "note": "最後一個整天，節奏放慢：下午逛完就回住處收行李，晚餐在建大美食街隨意吃",
+      "note": "最後一個整天。龍山的小店週日多半 12–14 點才開，所以上午先吃蔘雞湯，下午從新龍山往北逛到三角地，傍晚在綠莎坪看南山塔，晚餐回新龍山吃先訂好的烤肉，20:20 左右回住處收行李",
       "items": [
         {
-          "time": "10:20",
+          "time": "10:00",
           "name": "從 Airbnb 出發",
           "type": "住宿",
           "note": "出門前確認 T-money 餘額、帶行動電源。",
@@ -751,17 +751,17 @@
           "naver_query": "서울 광진구 동일로18길 69"
         },
         {
-          "time": "11:30",
+          "time": "11:00",
           "name": "午餐：마포원조삼계탕 麻浦元祖蔘雞湯",
           "type": "餐廳",
           "note": "45 年老店，推漆樹蔘雞湯（옻닭）、烏骨雞湯，有中文菜單。",
           "booking": {
-            "hours": "每日 11:00–23:00（最後點餐 22:00）"
+            "hours": "每日 11:00–23:00（休息 15:30–17:00，最後點餐 22:30）"
           },
           "map_query": "마포원조삼계탕 서울 마포구 도화길 22-3",
           "duration": "1h",
           "priority": "must",
-          "next_transit": "麻浦站 5 號線 1 站 → 孔德轉 6 號線 → 綠莎坪",
+          "next_transit": "5 號線→孔德轉 6 號線→三角地轉 4 號線→新龍山，約 25 分",
           "naver_query": "마포원조옻닭삼계탕",
           "photo": {
             "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QP_GawwbnRqUq6hclOSXvdAkqlSkAOJGYylP31jStzCY6SW1VGzghZ6l4U_xBlvED4LIoVrHuDW3SRiZQv5YzTpB6h_HMxqofc9b0O8Grx1B00YZWlcAr8307KQuljMqAPzghyYanLfdu4=w900-k-no-rw",
@@ -770,25 +770,66 @@
           }
         },
         {
-          "time": "13:30",
+          "time": "12:30",
+          "name": "愛茉莉太平洋美術館（아모레퍼시픽미술관 APMA）",
+          "type": "景點",
+          "note": "新龍山站 1 號出口直通。11 月的展是 Sol LeWitt《Open Structure》和 Jonas Wood（都展到 2027/2），成人約 ₩18,000，要先在官網預約入場時段，週日人多；最後入場 17:30。",
+          "booking": {
+            "hours": "10:00–18:00（週一休館）"
+          },
+          "map_query": "아모레퍼시픽미술관 서울 용산구 한강대로 100",
+          "duration": "1h15m",
+          "priority": "must",
+          "next_transit": "步行約 8 分到 LOFA Seoul",
+          "naver_query": "아모레퍼시픽미술관",
+          "photo": {
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TZkFcVW9tUtFTkohYWFhrBM5IKNk0kPnxT0IbfEQPjXB7wn1wZ7BnAO5_eIh8_Kx7qv48GZFWrgPtlhIGCdIqLPjDb8ADrdwNj5XjNQn52WWomP7O7m1GSlmNK2fAr0n-KWjU_ANwyXhZ7=w900-k-no-rw",
+            "alt": "地下展廳的大型裝置（2025 年的展，11 月換成 Sol LeWitt）",
+            "credit": "圖：Hwang／Google 地圖（2025/10）"
+          }
+        },
+        {
+          "time": "13:50",
+          "name": "LOFA Seoul（로파서울）選物店",
+          "type": "購物",
+          "note": "影片裡博主說「心中好逛第一名」的兩層樓選物店，在 3、4 樓，藝術、設計、生活小物都有；週日 12:00–19:00。",
+          "map_query": "로파서울 서울 용산구 한강대로11길 21",
+          "duration": "1h",
+          "priority": "must",
+          "next_transit": "沿한강대로往北走約 15 分到三角地",
+          "naver_query": "로파서울"
+        },
+        {
+          "time": "15:10",
+          "name": "三角地小店：pixel per inch、EXIT6 general store",
+          "type": "購物",
+          "note": "pixel per inch 是底片、海報、文具店，在한강대로54길 7 的 3 樓（週日 13:00–19:30）；EXIT6 是大型居家雜貨，在한강대로 179 的 2 樓、三角地站 6 號出口旁（週日 14:00–19:00）。",
+          "map_query": "픽셀퍼인치 서울 용산구 한강대로54길 7",
+          "duration": "1h10m",
+          "priority": "optional",
+          "next_transit": "三角地站搭 6 號線 1 站到綠莎坪",
+          "naver_query": "픽셀퍼인치"
+        },
+        {
+          "time": "16:35",
           "name": "梨泰院選物：kamadeva、jean and juice",
           "type": "購物",
-          "note": "kamadeva 在 3 樓，jean and juice 走路約 10 分、坡有點陡；週日可能晚開，先在 Naver 確認。",
+          "note": "kamadeva 在 3 樓，週日 14:00–20:00；jean and juice 走路約 10 分、坡有點陡，週日營業時間先在 Naver 確認。",
           "map_query": "서울 용산구 녹사평대로 208-1",
-          "duration": "2h",
+          "duration": "50m",
           "priority": "must",
-          "next_transit": "步行回綠莎坪站",
+          "next_transit": "走到綠莎坪天橋",
           "naver_query": "서울 용산구 녹사평대로 208-1"
         },
         {
-          "time": "15:50",
+          "time": "17:25",
           "name": "綠莎坪天橋看南山塔",
           "type": "景點",
-          "note": "看得到南山塔的步行天橋，《梨泰院 Class》拍攝地，拍完從綠莎坪站回建大。",
+          "note": "看得到南山塔的步行天橋，《梨泰院 Class》拍攝地；11/8 日落約 17:25，天色變暗、南山塔亮燈的時候最好看。",
           "map_query": "녹사평 육교",
-          "duration": "30m",
-          "priority": "optional",
-          "next_transit": "6 號線 綠莎坪 → 新堂轉 2 號線 → 建大入口",
+          "duration": "25m",
+          "priority": "must",
+          "next_transit": "綠莎坪站 6 號線→三角地轉 4 號線→新龍山，約 25 分",
           "naver_query": "녹사평역",
           "photo": {
             "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfAf9_9fDBIbb4rEsoP79J2cFaXF3wxdDAWeRO0b2Ehr0SRIOb0uj3LLc40Th7HgxqVvGXEHGpIXsyny0JMD0Xwov-UskSsTpgnwnTfCDCRMD-Qtiu-pTWxGUdDpR-HFvjGQ07k=w900-k-no-rw",
@@ -797,18 +838,26 @@
           }
         },
         {
-          "time": "18:30",
-          "name": "晚餐：建大美食街自由吃",
+          "time": "18:15",
+          "name": "晚餐：적토발효구이 赤土發酵烤肉 龍山店",
           "type": "餐廳",
-          "note": "住處走 1 分，口袋名單的白玉羊肉串（백옥양꼬치）可以這天吃，吃完回去收行李。",
-          "map_query": "건대 맛의거리",
-          "duration": "1h",
-          "priority": "optional",
-          "naver_query": "건대 맛의거리",
-          "next_transit": "步行 1 分回住處"
+          "note": "用紅陶甕發酵熟成的豬肉，招牌鹽味五花（260g ₩28,000）、發酵豬頸肉（180g，2 份起）。要先在 Catch Table 訂 3 人 18:30。影片裡的夢炭、南永敦都不收預約，只能當天到店門口機台排隊。",
+          "booking": {
+            "hours": "週日午餐 11:30 起、晚餐 17:00–22:00"
+          },
+          "map_query": "적토발효구이 용산점 서울 용산구 한강대로14길 12",
+          "duration": "1h15m",
+          "priority": "must",
+          "next_transit": "新龍山站 4 號線→東大門歷史文化公園轉 2 號線→建大入口，約 45 分",
+          "naver_query": "적토발효구이 용산점",
+          "photo": {
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TQqI43A8fR9cyP2d_Fjk_jaOsd9ioExB1dBE1HnkG89r6RArHM7Ax6BliBT5LRodIPgT5iapmaiRsJCZTXc0x4I0XOQJkvxAYzXrQwARZemP2DJrzqT50tFx5h4GCkjUqzjCh3nGMHkXMq=w900-k-no-rw",
+            "alt": "鐵盤上烤好的發酵豬五花，配青椒、菇和蒜",
+            "credit": "圖：이정아／Google 地圖（2025/12）"
+          }
         },
         {
-          "time": "19:35",
+          "time": "20:20",
           "name": "回 Airbnb",
           "type": "住宿",
           "note": "收行李、確認 T-money 餘額，隔天 10:15 退房。",
@@ -818,9 +867,9 @@
         }
       ],
       "weather_area": {
-        "label": "首爾（梨泰院）",
+        "label": "首爾（龍山）",
         "lat": 37.53,
-        "lon": 126.99
+        "lon": 126.97
       }
     },
     {
@@ -2007,7 +2056,7 @@
       "day": 5,
       "when": "早上",
       "route": "建大入口 → 麻浦（마포）",
-      "at": "10:20",
+      "at": "10:00",
       "options": [
         {
           "label": "2 號線＋5 號線",
@@ -2069,25 +2118,25 @@
     {
       "day": 5,
       "when": "中午",
-      "route": "麻浦 → 綠莎坪（녹사평）・梨泰院",
-      "at": "11:30",
+      "route": "麻浦 → 新龍山（신용산）・APMA",
+      "at": "11:00",
       "options": [
         {
-          "label": "5 號線＋6 號線",
-          "summary": "5 號線 1 站，孔德轉 6 號線 3 站，約 20 分",
+          "label": "5 號線＋6 號線＋4 號線",
+          "summary": "麻浦 1 站到孔德轉 6 號線，2 站到三角地再轉 4 號線 1 站到新龍山；約 25 分",
           "mode": "subway",
-          "line": "5 號線 麻浦 → 孔德（공덕）轉 6 號線 → 綠莎坪",
-          "line_color": "#cd7c2f",
-          "platform": "麻浦站 5 號線，往「河南檢丹山・馬川」方向月台",
-          "time": "地鐵約 15 分＋轉乘 5 分",
-          "fare": "₩1,550／人",
-          "headway": "5 號線約 6 分一班；6 號線約 8–10 分一班；首班約 05:30、末班約 23:30（週末略早）",
-          "minutes": 25,
-          "warn": "要去梨泰院，導航常叫你在綠莎坪下車而不是梨泰院站，是對的：選物店都在綠莎坪站這頭。\n累了或趕時間就用 Kakao T 叫計程車，約 15 分、₩9,000 上下",
+          "line": "5 號線 麻浦 → 孔德（공덕）轉 6 號線 → 三角地（삼각지）轉 4 號線 → 新龍山",
+          "line_color": "#00a5de",
+          "platform": "麻浦站 5 號線，往河南檢丹山・馬川方向（하남검단산 · 마천 방면）月台",
+          "time": "地鐵約 10 分＋轉乘兩次約 10 分＋出站 3 分",
+          "fare": "₩1,550／人，T-money／WOWPASS 感應",
+          "headway": "5、6 號線約 5–8 分一班；4 號線約 5 分一班",
+          "minutes": 30,
+          "warn": "三角地 6 號線轉 4 號線的通道很長（有電動步道），抓 5 分鐘。\n吃飽懶得轉車，可以直接叫 Kakao T 計程車到아모레퍼시픽，約 15 分",
           "from": "麻浦站",
-          "to": "綠莎坪站",
+          "to": "新龍山站",
           "from_ll": "37.539574,126.945932",
-          "to_ll": "37.534542,126.986595",
+          "to_ll": "37.529124,126.968458",
           "steps": [
             {
               "text": "回麻浦站，進 5 號線，往河南檢丹山・馬川方向",
@@ -2106,7 +2155,65 @@
               "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
-              "text": "坐 3 站，綠莎坪下車，搭長手扶梯上去",
+              "img": "img/c-samgakji-l6.jpg",
+              "alt": "三角地站 6 號線站名牌，上方寫 4호선 갈아타는 곳（往 4 號線轉乘），右下是下一站녹사평",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）",
+              "text": "坐 2 站，三角地下車，跟著藍色「4호선 갈아타는 곳」轉乘指標"
+            },
+            {
+              "img": "img/c-samgakji-transfer.jpg",
+              "alt": "三角地站往 4 號線的轉乘通道，中間有電動步道，指標寫 갈아타는 곳 4",
+              "credit": "圖：banwol／Wikimedia Commons（CC BY-SA 3.0）",
+              "text": "走轉乘通道（有電動步道）到 4 號線"
+            },
+            {
+              "img": "img/c-samgakji-l4.jpg",
+              "alt": "三角地站 4 號線站名牌，右邊箭頭指向 신용산（往新龍山方向）",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）",
+              "text": "4 號線往新龍山方向（신용산 방면），坐 1 站"
+            },
+            {
+              "img": "img/c-sinyongsan-l4.jpg",
+              "alt": "新龍山站 4 號線站名牌，站名下面寫아모레퍼시픽（愛茉莉太平洋）",
+              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）",
+              "text": "新龍山下車，走 1 號出口直通愛茉莉太平洋總部，美術館入口在 1 樓"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "when": "下午",
+      "route": "三角地 → 綠莎坪（녹사평）・梨泰院",
+      "at": "15:10",
+      "options": [
+        {
+          "label": "6 號線 1 站",
+          "summary": "三角地站坐 6 號線 1 站到綠莎坪，約 3 分；走路約 20 分",
+          "mode": "subway",
+          "line": "6 號線 三角地（삼각지）→ 綠莎坪（녹사평），1 站",
+          "line_color": "#cd7c2f",
+          "platform": "三角地站 6 號線，往新內方向（신내 방면）月台",
+          "time": "走到月台 4 分＋地鐵 3 分＋手扶梯上地面 3 分",
+          "fare": "₩1,550／人",
+          "headway": "約 6–8 分一班",
+          "minutes": 15,
+          "warn": "綠莎坪站很深，出站要搭好幾段長手扶梯",
+          "from": "三角地站",
+          "to": "綠莎坪站",
+          "from_ll": "37.534830,126.973050",
+          "to_ll": "37.534542,126.986595",
+          "steps": [
+            "逛完 EXIT6，從旁邊的三角地站 6 號出口下去",
+            {
+              "img": "img/c-samgakji-l6.jpg",
+              "alt": "三角地站 6 號線站名牌，上方寫 4호선 갈아타는 곳（往 4 號線轉乘），右下是下一站녹사평",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）",
+              "text": "6 號線往新內方向（신내 방면），下一站就是綠莎坪"
+            },
+            {
+              "text": "綠莎坪下車，搭長手扶梯上去",
               "img": "img/c-noksapyeong-esc.jpg",
               "alt": "綠莎坪站的長手扶梯",
               "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
@@ -2116,67 +2223,113 @@
               "img": "img/kamadeva.jpg",
               "alt": "kamadeva 所在的街口，店在 3 樓（Kakao 로드뷰 2026 年 6–7 月）"
             }
-          ],
-          "refs": [
-            {
-              "label": "IG：首爾旅遊官方｜綠莎坪站出來就是步行天橋、解放村",
-              "url": "https://www.instagram.com/p/C7gTUtkvCbH/",
-              "note": "VISIT SEOUL 官方帳號：天橋能看南山塔"
-            },
-            {
-              "label": "Threads：去梨泰院，導航為什麼叫我坐到綠莎坪站",
-              "url": "https://www.threads.com/@___.xqn/post/DXHQXDaicpk",
-              "note": "2026/4"
-            }
-          ],
-          "last": "23:43",
-          "last_note": "麻浦（週日）"
+          ]
         }
       ]
     },
     {
       "day": 5,
       "when": "傍晚",
-      "route": "綠莎坪 → 建大入口",
-      "at": "15:50",
+      "route": "綠莎坪 → 新龍山（적토발효구이）",
+      "at": "17:25",
       "options": [
         {
-          "label": "6 號線＋2 號線",
-          "summary": "6 號線 6 站，新堂轉 2 號線 6 站，約 35 分",
+          "label": "6 號線＋4 號線",
+          "summary": "綠莎坪 6 號線 1 站到三角地，轉 4 號線 1 站到新龍山，再走 8 分；約 25 分",
           "mode": "subway",
-          "line": "6 號線 綠莎坪 → 新堂（신당）轉 2 號線 → 建大入口",
-          "line_color": "#00a84d",
-          "platform": "綠莎坪站 6 號線，往「新內（신내）」方向月台",
-          "time": "地鐵約 30 分＋轉乘 5 分",
+          "line": "6 號線 綠莎坪 → 三角地（삼각지）轉 4 號線 → 新龍山（신용산）",
+          "line_color": "#00a5de",
+          "platform": "綠莎坪站 6 號線，往應岩方向（응암 방면）月台",
+          "time": "手扶梯 3 分＋地鐵 5 分＋轉乘 5 分＋步行 8 分",
           "fare": "₩1,550／人",
-          "headway": "6 號線約 8–10 分一班；2 號線約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
-          "minutes": 40,
-          "warn": "週日傍晚梨泰院站人多，從綠莎坪上車比較有位子。\n累了或趕時間就用 Kakao T 叫計程車，約 25 分、₩15,000 上下",
+          "headway": "6 號線約 6–8 分一班；4 號線約 5 分一班",
+          "minutes": 25,
+          "warn": "訂的是 18:30，17:55 前出發就來得及。\n也可以在綠莎坪直接叫 Kakao T 計程車到店，約 10 分",
           "from": "綠莎坪站",
-          "to": "建大入口站",
+          "to": "적토발효구이 용산점",
           "from_ll": "37.534542,126.986595",
-          "to_ll": "37.540363,127.069266",
+          "to_ll": "37.524906,126.964823",
           "steps": [
             {
-              "text": "回綠莎坪站，6 號線往新內方向（신내 방면）",
+              "text": "從天橋走回綠莎坪站，搭手扶梯下到 6 號線，往應岩方向（응암 방면）",
               "img": "img/c-noksapyeong-l6.jpg",
               "alt": "綠莎坪站 6 號線站名柱，箭頭指向梨泰院（往新內方向）",
               "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "坐 6 站到新堂，轉 2 號線往往十里方向（상왕십리 · 왕십리 방면）",
-              "img": "img/c-sindang-l2.jpg",
-              "alt": "新堂站 2 號線站名牌，箭頭指向上往十里",
+              "img": "img/c-samgakji-transfer.jpg",
+              "alt": "三角地站往 4 號線的轉乘通道，中間有電動步道，指標寫 갈아타는 곳 4",
+              "credit": "圖：banwol／Wikimedia Commons（CC BY-SA 3.0）",
+              "text": "坐 1 站，三角地下車，跟著「갈아타는 곳 4」走轉乘通道"
+            },
+            {
+              "img": "img/c-samgakji-l4.jpg",
+              "alt": "三角地站 4 號線站名牌，右邊箭頭指向 신용산（往新龍山方向）",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）",
+              "text": "4 號線往新龍山方向（신용산 방면），坐 1 站"
+            },
+            {
+              "img": "img/c-sinyongsan-l4.jpg",
+              "alt": "新龍山站 4 號線站名牌，站名下面寫아모레퍼시픽（愛茉莉太平洋）",
+              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）",
+              "text": "新龍山下車出站，用 Naver 導航往龍山站方向走約 8 分"
+            },
+            {
+              "text": "看到招牌寫「赤土」就是적토발효구이",
+              "img": "img/jukto-yongsan.jpg",
+              "alt": "적토발효구이 店面：咖啡色外牆、招牌寫赤土，紅框是入口（Kakao 로드뷰 2026 年 7 月）"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "when": "晚上",
+      "route": "新龍山 → 建大入口",
+      "at": "18:15",
+      "options": [
+        {
+          "label": "4 號線＋2 號線",
+          "summary": "新龍山 4 號線 7 站到東大門歷史文化公園，轉 2 號線 7 站到建大入口；約 45 分",
+          "mode": "subway",
+          "line": "4 號線 新龍山 → 東大門歷史文化公園（동대문역사문화공원）轉 2 號線 → 建大入口",
+          "line_color": "#00a84d",
+          "platform": "新龍山站 4 號線，往首爾站方向（서울역 방면）月台",
+          "time": "步行到站 8 分＋地鐵約 30 分＋轉乘 5 分＋步行 4 分",
+          "fare": "₩1,550／人",
+          "headway": "4、2 號線都約 5 分一班",
+          "minutes": 50,
+          "warn": "東大門歷史文化公園的 4 號線轉 2 號線要走一段，跟著綠色 2 號線指標",
+          "from": "新龍山站",
+          "to": "建大入口站",
+          "from_ll": "37.529540,126.967850",
+          "to_ll": "37.540363,127.069266",
+          "steps": [
+            {
+              "text": "走回新龍山站，4 號線往首爾站方向（서울역 방면）",
+              "img": "img/c-sinyongsan-north.jpg",
+              "alt": "新龍山站 4 號線站名牌，箭頭指向삼각지（往三角地、首爾站方向）",
               "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "坐 6 站，建大入口下車，走回住處約 4 分",
+              "text": "坐 7 站，東大門歷史文化公園下車",
+              "img": "img/c-ddp-l4.jpg",
+              "alt": "東大門歷史文化公園站 4 號線站名牌（422）",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+            },
+            {
+              "text": "轉綠色 2 號線，往新堂方向（신당 방면）",
+              "img": "img/c-ddp-l2.jpg",
+              "alt": "東大門歷史文化公園站 2 號線站名牌，左邊是신당（往新堂、聖水方向）",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+            },
+            {
+              "text": "坐 7 站，建大入口下車，走 5 號出口回住處約 4 分",
               "img": "img/kondae-exit5.jpg",
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             }
-          ],
-          "last": "22:55",
-          "last_note": "綠莎坪（週日）"
+          ]
         }
       ]
     },
