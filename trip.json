@@ -366,7 +366,7 @@
           "map_query": "무구옥 성수점 아차산로11길 11",
           "duration": "1h",
           "priority": "must",
-          "next_transit": "聖水站搭 2 號線 1 站回建大入口",
+          "next_transit": "走路 3 分到 Kodak Corner Shop",
           "naver_query": "무구옥 성수점",
           "photo": {
             "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S_PProsJd8G2fPyZ-nmFrEYJ46xcQlgvBFj8CUMnAbWUcxA1RkauM8MvqzDTKmKNe6zqQTF5XJ8bbzRA0wK2M9eSpBHHYoENJo8MKykSAob9-Inf9oMeZ-QdLHrXFyZ853U5JQGzKcjDeo=w900-k-no-rw",
@@ -375,7 +375,18 @@
           }
         },
         {
-          "time": "19:00",
+          "time": "18:50",
+          "name": "Kodak Corner Shop 聖水",
+          "type": "購物",
+          "note": "Kodak 授權的服飾、包包、雜貨店，在연무장7길 3-1 的 1–2 樓，離無垢屋走路約 3 分；營業到 20:30。吃飽想散步再逛，累了就跳過。",
+          "map_query": "코닥코너샵 성수 서울 성동구 연무장7길 3-1",
+          "duration": "30m",
+          "priority": "optional",
+          "next_transit": "聖水站搭 2 號線 1 站回建大入口",
+          "naver_query": "코닥코너샵 성수"
+        },
+        {
+          "time": "19:35",
           "name": "回 Airbnb",
           "type": "住宿",
           "note": "早點睡，明天去延南洞。",
@@ -471,9 +482,9 @@
         },
         {
           "time": "13:00",
-          "name": "延南洞選物：ayadz studio、flots",
+          "name": "延南洞選物：ayadz studio、flots、연남필름（延南膠卷）",
           "type": "購物",
-          "note": "ayadz studio 和 flots 都在성미산로的 2 樓，走路 3 分；小店常 12:00 後才開，先在 Naver 確認。",
+          "note": "ayadz studio 和 flots 都在성미산로的 2 樓，走路 3 分；小店常 12:00 後才開，先在 Naver 確認。旁邊約 100 公尺的연남필름（성미산로29안길 11，2 樓）是底片店，可以買底片、送沖洗，每天 10:00–19:00。",
           "map_query": "서울 마포구 성미산로31길 13",
           "duration": "1.5h",
           "priority": "must",
@@ -1547,8 +1558,8 @@
     {
       "day": 2,
       "when": "晚上",
-      "route": "聖水（無垢屋）→ 建大入口",
-      "at": "17:45",
+      "route": "聖水（Kodak Corner Shop）→ 建大入口",
+      "at": "18:50",
       "options": [
         {
           "label": "2 號線 1 站",
@@ -1568,7 +1579,7 @@
           "to_ll": "37.540363,127.069266",
           "steps": [
             {
-              "text": "從無垢屋走到聖水站，約 5 分",
+              "text": "從 Kodak Corner Shop 走到聖水站，約 5 分",
               "img": "img/mugu-ok-seongsu.jpg",
               "alt": "無垢屋聖水店一帶（Kakao 로드뷰 2026 年 6–7 月）"
             },
