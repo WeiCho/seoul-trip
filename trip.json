@@ -366,7 +366,7 @@
           "map_query": "무구옥 성수점 아차산로11길 11",
           "duration": "1h",
           "priority": "must",
-          "next_transit": "走路 3 分到 Kodak Corner Shop",
+          "next_transit": "聖水站搭 2 號線 1 站回建大入口",
           "naver_query": "무구옥 성수점",
           "photo": {
             "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S_PProsJd8G2fPyZ-nmFrEYJ46xcQlgvBFj8CUMnAbWUcxA1RkauM8MvqzDTKmKNe6zqQTF5XJ8bbzRA0wK2M9eSpBHHYoENJo8MKykSAob9-Inf9oMeZ-QdLHrXFyZ853U5JQGzKcjDeo=w900-k-no-rw",
@@ -375,18 +375,7 @@
           }
         },
         {
-          "time": "18:50",
-          "name": "Kodak Corner Shop 聖水",
-          "type": "購物",
-          "note": "Kodak 授權的服飾、包包、雜貨店，在연무장7길 3-1 的 1–2 樓，離無垢屋走路約 3 分；營業到 20:30。吃飽想散步再逛，累了就跳過。",
-          "map_query": "코닥코너샵 성수 서울 성동구 연무장7길 3-1",
-          "duration": "30m",
-          "priority": "optional",
-          "next_transit": "聖水站搭 2 號線 1 站回建大入口",
-          "naver_query": "코닥코너샵 성수"
-        },
-        {
-          "time": "19:35",
+          "time": "19:00",
           "name": "回 Airbnb",
           "type": "住宿",
           "note": "早點睡，明天去延南洞。",
@@ -1085,38 +1074,85 @@
       "naver_query": "고래사진관 충무로"
     },
     {
-      "name": "Snow Peak（스노우피크）各店",
-      "type": "購物",
-      "area": "漢南・建大・明洞・汝矣島",
-      "category": "威佐想去",
-      "tagline": "韓國限定服飾・露營裝備",
-      "address": "나인원한남점：서울 용산구 한남대로 91 GF 1층",
-      "hours": "나인원한남 每日 10:30–20:30",
-      "note": "韓國的 Snow Peak 服飾是授權品牌 Snow Peak Apparel（代言人 BTS V），款式跟日本、台灣不一樣。\n・나인원한남（漢南）：首爾最新、評價最好的一間，Google 5.0，網友說超大間好逛、店員親切\n・樂天百貨建大 Star City 7 樓：住處走 5 分，週一–四 10:30–20:00、週五–日到 20:30（11/5 已排）\n・明洞店（명동6길 14）：服飾和包包，有幾則評論說店員沒耐心\n・더현대서울 4 樓（汝矣島）、新世界百貨本店新館 5 樓（露營用品）\n・想看日本原裝露營裝備：木洞 HQ Lounge（양천구 공항대로 602），在首爾西南邊",
+      "name": "Snow Peak 나인원한남점",
+      "area": "漢南",
+      "tagline": "首爾最推的一間",
+      "address": "서울 용산구 한남대로 91 GF 1층",
+      "hours": "每日 10:30–20:30",
+      "note": "韓國的 Snow Peak 服飾是授權品牌 Snow Peak Apparel（代言人 BTS V），款式跟日本、台灣不一樣。首爾最新、評價最好的一間，Google 5.0（101 則），台灣網友說超大間好逛、店員親切。附近還有 THE NORTH FACE 漢南、Salomon。",
       "map_query": "스노우피크 나인원한남 서울 용산구 한남대로 91",
       "naver_query": "스노우피크 나인원한남",
-      "links": [
-        {
-          "emoji": "📍",
-          "label": "建大 Star City",
-          "url": "https://map.naver.com/p/search/%EC%8A%A4%EB%85%B8%EC%9A%B0%ED%94%BC%ED%81%AC%20%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EA%B1%B4%EB%8C%80%EC%8A%A4%ED%83%80%EC%8B%9C%ED%8B%B0%EC%A0%90"
-        },
-        {
-          "emoji": "📍",
-          "label": "明洞店",
-          "url": "https://map.naver.com/p/search/%EC%8A%A4%EB%85%B8%EC%9A%B0%ED%94%BC%ED%81%AC%20%EC%84%9C%EC%9A%B8%EB%AA%85%EB%8F%99%EC%A0%90"
-        },
-        {
-          "emoji": "📍",
-          "label": "더현대서울",
-          "url": "https://map.naver.com/p/search/%EC%8A%A4%EB%85%B8%EC%9A%B0%ED%94%BC%ED%81%AC%20%EB%8D%94%ED%98%84%EB%8C%80%EC%84%9C%EC%9A%B8"
-        },
-        {
-          "emoji": "📍",
-          "label": "木洞 HQ Lounge",
-          "url": "https://map.naver.com/p/search/%EC%8A%A4%EB%85%B8%EC%9A%B0%ED%94%BC%ED%81%AC%20HQLounge"
-        }
-      ]
+      "type": "購物",
+      "category": "威佐想去"
+    },
+    {
+      "name": "Snow Peak 樂天百貨建大 Star City",
+      "area": "建大",
+      "tagline": "住處走 5 分",
+      "address": "서울 광진구 능동로 92 롯데백화점 7층",
+      "hours": "週一–四 10:30–20:00、週五–日 10:30–20:30",
+      "note": "韓國的 Snow Peak 服飾是授權品牌 Snow Peak Apparel（代言人 BTS V），款式跟日本、台灣不一樣。建大入口站旁的樂天百貨 7 樓專櫃，11/5 從南怡島回來已排進行程。",
+      "map_query": "스노우피크 롯데백화점 건대스타시티점",
+      "naver_query": "스노우피크 롯데백화점 건대스타시티점",
+      "type": "購物",
+      "category": "威佐想去"
+    },
+    {
+      "name": "Snow Peak 서울명동점",
+      "area": "明洞",
+      "tagline": "服飾・包包",
+      "address": "서울 중구 명동6길 14 1층",
+      "hours": "週五營業到 22:20（Google），其他天去前確認",
+      "note": "韓國的 Snow Peak 服飾是授權品牌 Snow Peak Apparel（代言人 BTS V），款式跟日本、台灣不一樣。主要是服飾和包包，2025 年曾掛滿 BTS V 的大海報。Google 4.1，有幾則評論說店員沒耐心。",
+      "map_query": "스노우피크 서울명동점 명동6길 14",
+      "naver_query": "스노우피크 서울명동점",
+      "type": "購物",
+      "category": "威佐想去"
+    },
+    {
+      "name": "Snow Peak 더현대서울",
+      "area": "汝矣島",
+      "tagline": "百貨專櫃",
+      "address": "서울 영등포구 여의대로 108 더현대서울 4층",
+      "note": "韓國的 Snow Peak 服飾是授權品牌 Snow Peak Apparel（代言人 BTS V），款式跟日本、台灣不一樣。汝矣島 The Hyundai 百貨 4 樓，Kakao 歸在戶外用品。",
+      "map_query": "스노우피크 더현대서울",
+      "naver_query": "스노우피크 더현대서울",
+      "type": "購物",
+      "category": "威佐想去"
+    },
+    {
+      "name": "Snow Peak 新世界百貨本店",
+      "area": "明洞／會賢",
+      "tagline": "露營用品",
+      "address": "서울 중구 퇴계로 77 신세계백화점 본점 신관 5층",
+      "note": "新世界百貨本店新館 5 樓，Kakao 歸在露營用品。",
+      "map_query": "스노우피크 신세계 본점",
+      "naver_query": "스노우피크 신세계 본점",
+      "type": "購物",
+      "category": "威佐想去"
+    },
+    {
+      "name": "Snow Peak 現代百貨新村店",
+      "area": "新村",
+      "tagline": "百貨專櫃",
+      "address": "서울 서대문구 신촌로 83 현대백화점 8층",
+      "note": "韓國的 Snow Peak 服飾是授權品牌 Snow Peak Apparel（代言人 BTS V），款式跟日本、台灣不一樣。新村站旁的現代百貨 8 樓，離 11/6 的延禧洞、弘大約 1.5 公里。",
+      "map_query": "스노우피크 현대백화점신촌점",
+      "naver_query": "스노우피크 현대백화점 신촌점",
+      "type": "購物",
+      "category": "威佐想去"
+    },
+    {
+      "name": "Snow Peak HQ Lounge（木洞）",
+      "area": "木洞",
+      "tagline": "日本原裝裝備",
+      "address": "서울 양천구 공항대로 602 1층",
+      "hours": "10:30–19:30（Kakao）",
+      "note": "Snow Peak Korea 總部一樓的門市，有日本原裝進口品和韓國授權服飾，想看露營裝備來這裡。在首爾西南邊，離行程都很遠。",
+      "map_query": "스노우피크 HQLounge 공항대로 602",
+      "naver_query": "스노우피크 HQ라운지",
+      "type": "購物",
+      "category": "威佐想去"
     }
   ],
   "bookings": [
@@ -1639,8 +1675,8 @@
     {
       "day": 2,
       "when": "晚上",
-      "route": "聖水（Kodak Corner Shop）→ 建大入口",
-      "at": "18:50",
+      "route": "聖水（無垢屋）→ 建大入口",
+      "at": "17:45",
       "options": [
         {
           "label": "2 號線 1 站",
@@ -1660,7 +1696,7 @@
           "to_ll": "37.540363,127.069266",
           "steps": [
             {
-              "text": "從 Kodak Corner Shop 走到聖水站，約 5 分",
+              "text": "從無垢屋走到聖水站，約 5 分",
               "img": "img/mugu-ok-seongsu.jpg",
               "alt": "無垢屋聖水店一帶（Kakao 로드뷰 2026 年 6–7 月）"
             },
