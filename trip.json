@@ -202,7 +202,12 @@
           "duration": "1h",
           "next_transit": "計程車回建大（건대）約 10 分；或纛島站（뚝섬역）搭 2 號線回建大入口",
           "priority": "optional",
-          "naver_query": "할머니의레시피 서울숲"
+          "naver_query": "할머니의레시피 서울숲",
+          "photo": {
+            "img": "img/p-ssambap.jpg",
+            "alt": "包飯用的各式生菜葉（示意）",
+            "credit": "圖：Junho Jung／Wikimedia Commons（CC BY-SA 3.0）"
+          }
         },
         {
           "time": "21:00",
@@ -313,7 +318,12 @@
           "duration": "3h20m",
           "priority": "must",
           "next_transit": "渡輪 5 分回加平碼頭（入島票含回程）",
-          "naver_query": "남이섬"
+          "naver_query": "남이섬",
+          "photo": {
+            "img": "img/p-nami.jpg",
+            "alt": "南怡島沿著北漢江的林蔭步道",
+            "credit": "圖：Jocelyndurrey／Wikimedia Commons（CC BY-SA 4.0）"
+          }
         },
         {
           "time": "13:00",
@@ -327,7 +337,12 @@
           "duration": "1h10m",
           "priority": "must",
           "next_transit": "計程車回加平站，京春線＋7 號線回建大入口",
-          "naver_query": "한옥닭갈비 본점"
+          "naver_query": "한옥닭갈비 본점",
+          "photo": {
+            "img": "img/p-dakgalbi.jpg",
+            "alt": "鐵鍋春川辣炒雞排（示意）",
+            "credit": "圖：Hye-youngJung／Wikimedia Commons（CC0）"
+          }
         },
         {
           "time": "15:50",
@@ -352,7 +367,12 @@
           "duration": "1h",
           "priority": "must",
           "next_transit": "聖水站搭 2 號線 1 站回建大入口",
-          "naver_query": "무구옥 성수점"
+          "naver_query": "무구옥 성수점",
+          "photo": {
+            "img": "img/p-samgye-baekban.jpg",
+            "alt": "一整隻雞的蔘雞湯（示意）",
+            "credit": "圖：Korea.net／KOCIS／Wikimedia Commons（CC BY-SA 2.0）"
+          }
         },
         {
           "time": "18:45",
@@ -442,7 +462,12 @@
           "duration": "1h",
           "priority": "must",
           "next_transit": "步行 10 分到延南洞北邊",
-          "naver_query": "연남그곳"
+          "naver_query": "연남그곳",
+          "photo": {
+            "img": "img/p-miyeokguk.jpg",
+            "alt": "海帶湯（示意）",
+            "credit": "圖：karendotcom127／Wikimedia Commons（CC BY 2.0）"
+          }
         },
         {
           "time": "13:00",
@@ -478,7 +503,12 @@
           "duration": "1.5h",
           "priority": "must",
           "next_transit": "步行到弘大入口站 → 2 號線回建大入口",
-          "naver_query": "한우다움 홍대"
+          "naver_query": "한우다움 홍대",
+          "photo": {
+            "img": "img/p-hanwoo.jpg",
+            "alt": "炭火上的霜降韓牛（示意）",
+            "credit": "圖：Yujinbaek／Wikimedia Commons（CC BY-SA 4.0）"
+          }
         },
         {
           "time": "20:30",
@@ -566,7 +596,12 @@
           "duration": "45m",
           "priority": "must",
           "next_transit": "步行 5 分到北村",
-          "naver_query": "아티스트베이커리 안국"
+          "naver_query": "아티스트베이커리 안국",
+          "photo": {
+            "img": "img/p-salt-bread.jpg",
+            "alt": "剛出爐的鹽麵包（示意）",
+            "credit": "圖：Jung Subin／Wikimedia Commons（CC BY-SA 4.0）"
+          }
         },
         {
           "time": "10:10",
@@ -577,7 +612,12 @@
           "duration": "1h45m",
           "priority": "optional",
           "next_transit": "從三清洞走到景福宮站 3 號出口（約 15 分），搭 7022 公車 6 站到부암동",
-          "naver_query": "북촌한옥마을"
+          "naver_query": "북촌한옥마을",
+          "photo": {
+            "img": "img/p-bukchon.jpg",
+            "alt": "北村韓屋村的坡道巷子，遠方是市區大樓",
+            "credit": "圖：Bgag／Wikimedia Commons（CC0）"
+          }
         },
         {
           "time": "12:45",
@@ -613,7 +653,12 @@
           "duration": "50m",
           "priority": "optional",
           "next_transit": "步行 5 分到李福姬解酲湯",
-          "naver_query": "익선동 한옥거리"
+          "naver_query": "익선동 한옥거리",
+          "photo": {
+            "img": "img/p-ikseon.jpg",
+            "alt": "益善洞的窄巷，兩旁是韓屋改的小店",
+            "credit": "圖：S h y numis／Wikimedia Commons（CC BY-SA 4.0）"
+          }
         },
         {
           "time": "17:00",
@@ -624,7 +669,12 @@
           "duration": "1.5h",
           "priority": "must",
           "next_transit": "鍾路3街站 → 3 號線 1 站 → 乙支路3街轉 2 號線",
-          "naver_query": "이복희해장 종로"
+          "naver_query": "이복희해장 종로",
+          "photo": {
+            "img": "img/p-kkori-suyuk.jpg",
+            "alt": "鋪滿韭菜的牛尾燉肉 꼬리수육（示意）",
+            "credit": "圖：lazy fri13th／Wikimedia Commons（CC BY 2.0）"
+          }
         },
         {
           "time": "19:15",
@@ -712,7 +762,12 @@
           "duration": "1h",
           "priority": "must",
           "next_transit": "麻浦站 5 號線 1 站 → 孔德轉 6 號線 → 綠莎坪",
-          "naver_query": "마포원조옻닭삼계탕"
+          "naver_query": "마포원조옻닭삼계탕",
+          "photo": {
+            "img": "img/p-samgyetang-ogye.jpg",
+            "alt": "烏骨雞蔘雞湯（示意）",
+            "credit": "圖：ayustety／Wikimedia Commons（CC BY-SA 2.0）"
+          }
         },
         {
           "time": "13:30",
@@ -734,7 +789,12 @@
           "duration": "30m",
           "priority": "optional",
           "next_transit": "6 號線 綠莎坪 → 新堂轉 2 號線 → 建大入口",
-          "naver_query": "녹사평역"
+          "naver_query": "녹사평역",
+          "photo": {
+            "img": "img/p-noksapyeong.jpg",
+            "alt": "從梨泰院一帶的天橋看南山塔，下面是車流",
+            "credit": "圖：Aatu Dorochenko／Wikimedia Commons（CC BY-SA 4.0）"
+          }
         },
         {
           "time": "18:30",

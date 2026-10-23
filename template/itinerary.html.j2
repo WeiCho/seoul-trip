@@ -529,6 +529,8 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .dlg-links .more{width:100%;font-size:14px}
 .info-dlg .em-meta{padding-top:12px;border-top:1px solid var(--line)}
 .info-dlg .em-close{margin-top:18px}
+.em-photo{margin:0 0 16px}
+.em-photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:8px}
 .em-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:13.5px}
 .em-meta dt{color:var(--muted)}
 .em-meta dd{margin:0}
@@ -867,6 +869,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           {%- elif item.map_url %}<a class="nav-btn gm" href="{{ item.map_url }}" target="_blank" rel="noopener" aria-label="用 Google 地圖開啟 {{ item.name }}">G</a>{% else %}<span class="nav-btn is-none" aria-hidden="true"></span>{% endif %}
           <dialog class="em-dlg info-dlg" id="{{ did }}" aria-labelledby="{{ did }}-t">
             <div class="em-dlg-in">
+              {%- if item.photo %}
+              <figure class="em-photo"><img src="{{ item.photo.img }}" alt="{{ item.photo.alt or item.name }}" loading="lazy" decoding="async">{% if item.photo.credit %}<figcaption class="ride-credit">{{ item.photo.credit }}</figcaption>{% endif %}</figure>
+              {%- endif %}
               <p class="dlg-kicker">{{ day.date_short }} {{ day.weekday }}・{{ item.time }}</p>
               <h3 id="{{ did }}-t" tabindex="-1" autofocus>{{ item.name }}</h3>
               {% if item.note %}<p class="em-desc">{{ item.note }}</p>{% endif %}
