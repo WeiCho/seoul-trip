@@ -2630,5 +2630,158 @@
       "label": "首爾地鐵路線圖（中文版 PDF）",
       "url": "https://doc.settour.com.tw/01500002/erp_01500002_%E9%A6%96%E7%88%BE%E5%9C%B0%E9%90%B5%E5%9C%96.pdf"
     }
+  ],
+  "transit_tabs": [
+    {
+      "key": "hike",
+      "tab": "爬山",
+      "sub": "峨嵯山",
+      "title": "峨嵯山（아차산）",
+      "note": "不綁哪一天，哪天早上有空就去。海拔 296m、入門等級，上下山加拍照約 2 小時。稜線上沒有廁所、沒有水，每人帶 1 公升水；岩石路段遇雨或露水會滑，11 月早上冷、風大要帶防風外套。",
+      "transit": [
+        {
+          "when": "出發",
+          "route": "住處 → 峨嵯山登山口（廣渡口站）",
+          "options": [
+            {
+              "label": "7 號線＋5 號線",
+              "summary": "建大入口 7 號線 2 站到君子，轉 5 號線 2 站到廣渡口，1 號出口走到生態公園；約 35 分",
+              "mode": "subway",
+              "line": "7 號線 建大入口 → 君子（군자）轉 5 號線 → 廣渡口（광나루）",
+              "line_color": "#996cac",
+              "platform": "建大入口站 7 號線，往長岩方向（장암 방면）",
+              "time": "步行到站 5 分＋地鐵約 10 分＋轉乘 5 分＋步行 15 分",
+              "fare": "₩1,550／人",
+              "headway": "7、5 號線都約 5–8 分一班",
+              "minutes": 35,
+              "warn": "5 號線到君子之後會分岔，往하남검단산或마천的車都會停廣渡口，哪班都可以上",
+              "from": "住處",
+              "to": "峨嵯山生態公園",
+              "from_ll": "37.540363,127.069266",
+              "to_ll": "37.551190,127.101035",
+              "steps": [
+                {
+                  "text": "走到建大入口站 5 號出口，下到地下的 7 號線",
+                  "img": "img/kondae-exit5.jpg",
+                  "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
+                },
+                {
+                  "text": "往長岩方向（장암 방면），下一站是兒童大公園；坐 2 站到君子",
+                  "img": "img/c-kondae-l7-jangam.jpg",
+                  "alt": "建大入口站 7 號線站名牌，箭頭指向 726 어린이대공원（往長岩方向）",
+                  "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+                },
+                {
+                  "text": "在君子站跟著紫色 5 號線指標，往천호 · 하남검단산 · 마천方向",
+                  "img": "img/c-gunja-l5-transfer.jpg",
+                  "alt": "君子站 7 號線月台，上方指標右邊是 5 號線「천호 · 하남검단산 · 마천」",
+                  "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+                },
+                {
+                  "text": "坐 2 站（經過峨嵯山站），廣渡口下車",
+                  "img": "img/c-gwangnaru-sign.jpg",
+                  "alt": "廣渡口站 5 號線站名牌（546）",
+                  "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+                },
+                {
+                  "text": "走 1 號出口",
+                  "img": "img/c-gwangnaru-exit1.jpg",
+                  "alt": "廣渡口站 1 號出口",
+                  "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
+                },
+                {
+                  "text": "出站往北走約 10–15 分到峨嵯山生態公園，上山前先在公園裡上廁所",
+                  "img": "img/achasan-stone.jpg",
+                  "alt": "峨嵯山登山口的「아차산 峨嵯山」刻石",
+                  "credit": "圖：Sadopaul／Wikimedia Commons（CC BY-SA 4.0）"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "when": "上山",
+          "route": "生態公園 → 高句麗亭 → 해맞이광장 → 頂峰",
+          "options": [
+            {
+              "label": "步行上山",
+              "summary": "登山口到高句麗亭 15–20 分、再 5 分到해맞이광장；頂峰再 15 分",
+              "mode": "walk",
+              "time": "上山 30–50 分，下山 30 分",
+              "minutes": 90,
+              "warn": "下半段是木棧道和階梯，往上有一大片花崗岩斜坡。天亮前或天黑後要帶頭燈，步道沒有路燈",
+              "from": "峨嵯山生態公園",
+              "to": "峨嵯山站",
+              "from_ll": "37.551190,127.101035",
+              "to_ll": "37.551709,127.090093",
+              "steps": [
+                {
+                  "text": "從生態公園跟著「고구려정」指標上山，約 15–20 分到高句麗亭",
+                  "img": "img/achasan-goguryeojeong.jpg",
+                  "alt": "峨嵯山高句麗亭，蓋在花崗岩上的八角亭",
+                  "credit": "圖：Sadopaul／Wikimedia Commons（CC BY-SA 4.0）"
+                },
+                {
+                  "text": "再走 5 分到해맞이광장（看日出的廣場），可以看到漢江和樂天世界塔",
+                  "img": "img/achasan-view.jpg",
+                  "alt": "峨嵯山觀景台，遠方是漢江與樂天世界塔",
+                  "credit": "圖：Sadopaul／Wikimedia Commons（CC BY-SA 4.0）"
+                },
+                {
+                  "text": "體力夠的話沿稜線再走 12–15 分到頂峰，這一段有一座座高句麗時代堡壘遺址；第 4 堡壘視野最開闊",
+                  "img": "img/achasan-forts.jpg",
+                  "alt": "峨嵯山一帶堡壘群的解說牌",
+                  "credit": "圖：Sadopaul／Wikimedia Commons（CC BY-SA 4.0）"
+                },
+                "回到해맞이광장，往「아차산역」或「영화사」方向下山，約 30 分到峨嵯山站"
+              ]
+            }
+          ]
+        },
+        {
+          "when": "回程",
+          "route": "峨嵯山站 → 建大入口",
+          "options": [
+            {
+              "label": "5 號線＋7 號線",
+              "summary": "峨嵯山站 5 號線 1 站到君子，轉 7 號線 2 站到建大入口；約 20 分",
+              "mode": "subway",
+              "line": "5 號線 峨嵯山（아차산）→ 君子（군자）轉 7 號線 → 建大入口",
+              "line_color": "#747f00",
+              "platform": "峨嵯山站 5 號線，往君子方向（군자 · 방화 방면）",
+              "time": "地鐵約 8 分＋轉乘 5 分＋步行 5 分",
+              "fare": "₩1,550／人",
+              "headway": "5、7 號線都約 5–8 分一班",
+              "minutes": 20,
+              "warn": "下山後可以先吃峨嵯山站旁的원조할아버지손두부（元祖爺爺手工豆腐）當早餐，06:00 開、週一休",
+              "from": "峨嵯山站",
+              "to": "住處",
+              "from_ll": "37.551709,127.090093",
+              "to_ll": "37.540363,127.069266",
+              "steps": [
+                "從 2 號出口進峨嵯山站",
+                {
+                  "text": "5 號線往君子方向（군자 방면），坐 1 站",
+                  "img": "img/c-achasan-l5-gunja.jpg",
+                  "alt": "峨嵯山站 5 號線站名牌，箭頭指向군자（往君子方向）",
+                  "credit": "圖：Kaitak89／Wikimedia Commons（CC BY-SA 3.0）"
+                },
+                {
+                  "text": "轉 7 號線，往石南方向，坐 2 站到建大入口（석남 방면）",
+                  "img": "img/c-gunja-l7.jpg",
+                  "alt": "君子站 7 號線站名牌，箭頭指向어린이대공원（往石南方向）",
+                  "credit": "圖：Banwol／Wikimedia Commons（CC BY-SA 3.0）"
+                },
+                {
+                  "text": "出站走回住處約 4 分",
+                  "img": "img/kondae-exit5.jpg",
+                  "alt": "建大入口站 5 號出口（Kakao 로드뷰 2026 年 6–7 月）"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

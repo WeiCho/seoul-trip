@@ -284,6 +284,25 @@ def validate(data):
         _require(link, "label", ctx)
         _require(link, "url", ctx)
 
+    # 不屬於哪一天的交通分頁（例如「爬山」：哪天早上有空再去），排在每天的分頁後面
+    transit_tabs = data.get("transit_tabs") or []
+    if not isinstance(transit_tabs, list):
+        raise TripError("transit_tabs 必須是陣列")
+    for g_idx, g in enumerate(transit_tabs, 1):
+        gctx = f"transit_tabs 第 {g_idx} 頁"
+        _require(g, "key", gctx)
+        _require(g, "tab", gctx)
+        legs = g.get("transit")
+        if not isinstance(legs, list) or not legs:
+            raise TripError(f"{gctx} 的 transit 必須是非空陣列")
+        for t_idx, t in enumerate(legs, 1):
+            tctx = f"{gctx}的第 {t_idx} 段"
+            _require(t, "route", tctx)
+            for o_idx, o in enumerate(t.get("options") or [t], 1):
+                if t.get("options"):
+                    _require(o, "label", f"{tctx}的方案 {o_idx}")
+                _check_transit(o, tctx)
+
     wishlist = data.get("wishlist") or []
     if not isinstance(wishlist, list):
         raise TripError("wishlist 必須是陣列")
@@ -640,6 +659,16 @@ def enrich(data):
                 if t.get("at") and item["time"] == t["at"]:
                     item.setdefault("legs", []).append(t)
     transit_days = [day for day in days if day["transit"]]
+    for g in data.get("transit_tabs") or []:
+        legs = []
+        for k, raw in enumerate(g["transit"], 1):
+            t = dict(raw)
+            t["options"] = [enrich_option(o) for o in (raw.get("options") or [raw])]
+            t["anchor"] = f"leg-{g['key']}-{k}"
+            legs.append(t)
+        transit_days.append({"tab": g["tab"], "tab_key": g["key"], "tab_sub": g.get("sub") or "",
+                             "theme": g.get("title") or "", "note": g.get("note") or "",
+                             "transit": legs})
 
     wishlist = []
     for raw in data.get("wishlist") or []:

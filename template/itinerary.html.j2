@@ -251,6 +251,9 @@ main{display:block}
 .dp[aria-current="page"]{color:var(--ink)}
 .dp[aria-current="page"]::after{transform:scaleX(1)}
 .dp.is-today small::after{content:" · 今日";color:var(--sky-d)}
+.dp-tab b{font-family:var(--sans);font-size:17px;letter-spacing:.12em;line-height:1.4}
+.dp-tab b::before{content:none}
+.tday-note{width:fit-content;max-width:34em;margin:-6px auto 18px;padding:8px 16px;border-radius:6px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);color:#fff;font-size:13.5px;line-height:1.7}
 .js .day:not(.is-on){display:none}
 .day-grid{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(0,2fr);gap:clamp(24px,4vw,64px);align-items:start}
 /* 左欄是一張浮在淡色上的白卡，對應參考站「事業內容」浮在照片上的卡 */
@@ -623,6 +626,7 @@ body.editing>#editor{display:block !important}
   .band-photo .dp{color:var(--soft)}
   .band-photo .dp:hover,.band-photo .dp[aria-current="page"]{color:var(--ink)}
   .tday-date{text-align:left;color:var(--ink)}
+  .tday-note{margin:-6px 0 18px;background:var(--sage);backdrop-filter:none;color:var(--muted)}
   .transit-row{box-shadow:none;border:1px solid var(--line)}
   /* 彈窗在 iPhone 上從底部升起，單手拇指就按得到關閉 */
   .em-dlg{width:100%;max-width:100%;margin:auto 0 0;border-radius:16px 16px 0 0;max-height:88vh}
@@ -916,17 +920,30 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
   <nav class="daypick" aria-label="選擇交通日期">
   {% for day in transit_days %}
+    {%- if day.tab %}
+    <a class="dp dp-tab" href="#transit-{{ day.tab_key }}" aria-label="{{ day.tab }}的交通">
+      <b>{{ day.tab }}</b>
+      <small>{{ day.tab_sub }}</small>
+    </a>
+    {%- else %}
     <a class="dp" href="#transit-day-{{ day.day_no }}" aria-label="Day {{ day.day_no }} {{ day.date_label }} {{ day.weekday }}">
       <b>{{ "%02d" | format(day.day_no) }}</b>
       <small>{{ day.date_short }}<i>{{ day.weekday }}</i></small>
     </a>
+    {%- endif %}
   {% endfor %}
   </nav>
   <div class="tdays">
   {% for day in transit_days %}
+    {%- if day.tab %}
+    <section class="tday" id="transit-{{ day.tab_key }}" aria-label="{{ day.tab }}的交通">
+      <p class="tday-date">{{ day.tab }}<span>{{ day.theme }}</span></p>
+      {%- if day.note %}<p class="tday-note">{{ day.note }}</p>{% endif %}
+    {%- else %}
     <section class="tday" id="transit-day-{{ day.day_no }}" data-date="{{ day.date }}"
              data-theme-text="Day {{ day.day_no }}" aria-label="Day {{ day.day_no }} {{ day.date_label }} 的交通">
       <p class="tday-date">{{ day.date_short }} {{ day.weekday }}<span>{{ day.theme or "自由安排" }}</span></p>
+    {%- endif %}
       <div class="transit-list">
       {% for t in day.transit %}
       {#- 一段交通有兩個方案時：先列兩行讓人選，選了只留那張大卡，按 ✕ 回到兩行 -#}
