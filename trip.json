@@ -1027,18 +1027,6 @@
       "naver_query": "연남그곳"
     },
     {
-      "name": "Millet 밀레 I'Park Mall 龍山店",
-      "type": "購物",
-      "area": "龍山",
-      "category": "威佐想去",
-      "tagline": "Millet 門市",
-      "address": "서울 용산구 한강대로23길 55（아이파크몰）",
-      "hours": "依 I'Park Mall 營業時間，去之前在 Naver 確認",
-      "note": "龍山站直通的 I'Park Mall 裡的 Millet。11/8 下午在龍山，從新龍山走過去約 5 分鐘。",
-      "map_query": "서울 용산구 한강대로23길 55 밀레",
-      "naver_query": "밀레 아이파크용산점"
-    },
-    {
       "name": "Millet 밀레 清溪山旗艦店",
       "type": "購物",
       "area": "清溪山（瑞草）",
@@ -1046,9 +1034,9 @@
       "tagline": "Millet 旗艦",
       "address": "서울 서초구 원터길 15",
       "hours": "每日 09:00–18:00",
-      "note": "Millet 在首爾唯一掛旗艦名號的店，開在清溪山登山口，新盆唐線清溪山入口站。離行程都很遠。",
+      "note": "Millet 在首爾市區的店不多，這家是唯一的旗艦店，開在清溪山登山口，搭新盆唐線到清溪山入口站。離行程都很遠。Naver 上搜「밀레」會混到德國家電 Miele，要搜全名。",
       "map_query": "서울 서초구 원터길 15",
-      "naver_query": "밀레 청계산 플래그쉽 스토어"
+      "naver_query": "밀레 청계산 플래그십스토어"
     },
     {
       "name": "On Store 漢南",
