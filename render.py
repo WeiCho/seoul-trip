@@ -95,7 +95,7 @@ MAX_ROUTE_POINTS = 10
 # 結構化交通（items[].transit）
 TRANSIT_MODES = {
     "subway": "🚇", "train": "🚆", "bus": "🚌", "walk": "🚶", "taxi": "🚕",
-    "flight": "✈️", "boat": "⛴️",
+    "flight": "✈️", "boat": "⛴️", "zipline": "🪂",
 }
 MAP_APPS = ("google", "kakao", "naver")
 PRIORITIES = ("must", "optional")
