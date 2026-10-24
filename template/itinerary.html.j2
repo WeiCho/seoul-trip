@@ -227,7 +227,7 @@ main{display:block}
 .band{position:relative}
 .section{padding:clamp(72px,12vh,140px) var(--gut) clamp(32px,6vh,64px);max-width:1360px;margin:0 auto}
 .section-heading{margin-bottom:clamp(30px,5vh,56px)}
-.section-heading h2{font-family:var(--latin);font-weight:400;font-size:clamp(34px,4.4vw,64px);line-height:1.1;letter-spacing:.005em}
+.section-heading h2{font-family:var(--sans);font-weight:500;font-size:clamp(26px,3vw,40px);line-height:1.2;letter-spacing:.08em}
 .section-heading .zh{display:block;margin-top:8px;font-size:13px;letter-spacing:.2em}
 .section-heading p{margin-top:16px;max-width:44em;color:var(--muted);font-size:14.5px}
 .handoff{display:flex;justify-content:center;padding:clamp(16px,3vh,32px) var(--gut)}
@@ -412,12 +412,18 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .tr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lc);margin-right:8px;vertical-align:1px}
 .transit-links{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:clamp(26px,4vh,40px)}
 .transit-links .more{font-size:13.5px}
-.tr-bg-credit{margin-top:18px;font-size:11px;color:var(--soft)}
 
 /* ── 跑步：住處出發的路線，地圖在上、三格數字、步驟，跟交通卡同一張白卡 ── */
 .run-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(14px,2vw,24px);align-items:start}
 .run-card{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
-.run-card>img{display:block;width:100%;height:auto;aspect-ratio:1000/760;object-fit:cover;border-bottom:1px solid var(--line)}
+.run-map{display:block;width:100%;padding:0;border:0;border-bottom:1px solid var(--line);background:none;cursor:zoom-in}
+.run-map img{display:block;width:100%;height:auto;aspect-ratio:1000/760;object-fit:cover}
+.run-map:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+/* 放大的路線圖：彈窗寬到螢幕邊，圖本身可以再用手指縮放 */
+.em-dlg.run-zoom{width:fit-content;max-width:calc(100% - 24px);max-height:none;padding:0;overflow:hidden}
+.run-zoom img{display:block;width:auto;max-width:100%;height:auto;max-height:calc(100dvh - 110px)}
+.em-dlg.run-zoom[open]{display:grid}
+.run-zoom .em-close{width:auto;margin:12px 16px 16px}
 .run-body{padding:clamp(18px,2.2vw,26px);display:grid;gap:14px;min-width:0}
 .run-head{display:flex;align-items:center;gap:12px}
 .run-head h3{flex:1;min-width:0;font-size:16.5px;font-weight:500;line-height:1.5}
@@ -535,7 +541,7 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .ov-inner{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding:clamp(56px,9vh,96px) var(--gut) clamp(40px,6vh,64px)}
 .em-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(28px,5vw,80px)}
 .em-head .mark{fill:var(--on-black);width:56px;height:38px}
-.em-head h2{margin-top:18px;font-family:var(--latin);font-weight:400;font-size:clamp(28px,3vw,40px)}
+.em-head h2{margin-top:18px;font-family:var(--sans);font-weight:500;font-size:clamp(26px,3vw,40px);letter-spacing:.08em}
 .em-sub{font-size:12.5px;letter-spacing:.2em;color:var(--on-black-mute);margin-top:4px}
 .em-head p:last-child{margin-top:16px;font-size:13px;line-height:1.9;color:var(--on-black-mute)}
 .em-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(20px,3vw,44px);align-content:start}
@@ -844,7 +850,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <div class="band band-b">
 <section class="section" id="itinerary">
   <div class="section-heading">
-    <h2>Itinerary</h2><span class="zh">行程</span>
+    <h2>行程</h2>
   </div>
   <nav class="daypick" aria-label="選擇日期">
   {% for day in days %}
@@ -968,9 +974,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 {%- set line_colors = {"1":"#0052a4","2":"#00a84d","3":"#ef7c1c","4":"#00a5de","5":"#996cac","6":"#cd7c2f","7":"#747f00","水仁盆唐":"#f5a200","AREX":"#0090d2"} %}
 <section class="section" id="transit">
   <div class="section-heading">
-    <h2>Transit</h2><span class="zh">交通</span>
-    <p>要自己搭車的區間：哪條線、往哪個方向、幾號出口。（共 {{ transit | length }} 段）</p>
-    {% if transit_note %}<p class="tr-note">{{ transit_note }}</p>{% endif %}
+    <h2>交通</h2>
   </div>
   <nav class="daypick" aria-label="選擇交通日期">
   {% for day in transit_days %}
@@ -991,12 +995,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   {% for day in transit_days %}
     {%- if day.tab %}
     <section class="tday" id="transit-{{ day.tab_key }}" aria-label="{{ day.tab }}的交通">
-      <p class="tday-date">{{ day.tab }}<span>{{ day.theme }}</span></p>
       {%- if day.note %}<p class="tday-note">{{ day.note }}</p>{% endif %}
     {%- else %}
     <section class="tday" id="transit-day-{{ day.day_no }}" data-date="{{ day.date }}"
              data-theme-text="Day {{ day.day_no }}" aria-label="Day {{ day.day_no }} {{ day.date_label }} 的交通">
-      <p class="tday-date">{{ day.date_short }} {{ day.weekday }}<span>{{ day.theme or "自由安排" }}</span></p>
     {%- endif %}
       <div class="transit-list">
       {% for t in day.transit %}
@@ -1082,7 +1084,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     {%- for l in transit_links %}<a class="more" href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }}{{ pill() }}</a>{%- endfor %}
   </div>
   {%- endif %}
-  {%- if transit_bg.credit %}<p class="tr-bg-credit">{{ transit_bg.credit }}</p>{% endif %}
 </section>
 </div>
 {% endif %}
@@ -1091,17 +1092,20 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 {% if runs.routes %}
 <section class="section" id="run">
   <div class="section-heading">
-    <h2>Run</h2><span class="zh">跑步</span>
-    {% if runs.note %}<p>{{ runs.note }}</p>{% endif %}
+    <h2>跑步</h2>
   </div>
   <div class="run-list">
   {%- for r in runs.routes %}
     <article class="run-card">
-      <img src="{{ r.img }}" alt="{{ r.alt or r.title }}" width="1000" height="760" loading="lazy" decoding="async">
+      <button type="button" class="run-map" data-dlg="run-zoom-{{ loop.index }}" aria-haspopup="dialog" aria-label="放大 {{ r.title }} 的路線圖"><img src="{{ r.img }}" alt="{{ r.alt or r.title }}" width="1000" height="760" loading="lazy" decoding="async"></button>
+      <dialog class="em-dlg run-zoom" id="run-zoom-{{ loop.index }}" aria-label="{{ r.title }} 路線圖">
+        <img src="{{ r.img }}" alt="{{ r.alt or r.title }}" width="1000" height="760" loading="lazy" decoding="async">
+        <button type="button" class="em-close" data-em-close>關閉</button>
+      </dialog>
       <div class="run-body">
         <div class="run-head">
           <h3>{% if r.tag %}<span class="run-tag{% if r.night %} night{% endif %}">{{ r.tag }}</span><br>{% endif %}{{ r.title }}</h3>
-          {%- if r.nav_url %}<a class="nav-btn" href="{{ r.nav_url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟 {{ r.title }}">N</a>{% endif %}
+          {%- if r.nav_url %}<a class="nav-btn" href="{{ r.nav_url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖導航：住處到 {{ r.title }}">N</a>{% endif %}
         </div>
         {%- if r.stats %}
         <dl class="run-stats">
@@ -1132,7 +1136,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <div class="wish-wrap">
     <div class="wish-side">
       <div class="section-heading">
-        <h2>Pocket list</h2><span class="zh">口袋名單</span>
+        <h2>口袋名單</h2>
         <p>想去、但還沒排進行程的地方。（共 {{ wishlist | length }} 處）</p>
       </div>
       {#- 只有一類時跳轉列沒有意義 -#}
@@ -1195,8 +1199,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <div class="inner">
 <section class="section" id="budget">
   <div class="section-heading">
-    <h2>Budget</h2><span class="zh">花費</span>
-    <p>自己的記帳，只存在這支手機、不會上傳。</p>
+    <h2>花費</h2>
   </div>
   <div class="panel">
   <div class="ledger" id="ledger" hidden
@@ -1225,8 +1228,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 {% if trip.packing %}
 <section class="section" id="packing">
   <div class="section-heading">
-    <h2>Checklist</h2><span class="zh">出發前檢查</span>
-    <p>出發前一項一項勾，勾選狀態會記在這台裝置。</p>
+    <h2>出發前檢查</h2>
   </div>
   <div class="panel">
   <div class="packing">
@@ -1258,9 +1260,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <div class="em-wrap">
       <div class="em-head">
         {{ mark() }}
-        <h2>Emergency</h2>
-        <p class="em-sub">緊急聯絡</p>
-        <p><span class="em-hint">點任一項目看說明與電話。</span>韓國境內撥號不需國碼。</p>
+        <h2>緊急聯絡</h2>
       </div>
       <ul class="em-cards">
       {% for e in trip.emergency %}

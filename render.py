@@ -695,8 +695,17 @@ def enrich(data):
 
     runs = dict(data.get("runs") or {})
     if runs.get("routes"):
-        runs["routes"] = [dict(r, nav_url=naver_url(r["naver_query"])) if r.get("naver_query") else dict(r)
-                          for r in runs["routes"]]
+        home = runs.get("home") or {}
+
+        def run_nav(r):
+            # 有住處和目的地座標就開 Naver 步行導航（住處→起跑點），不然退回搜尋
+            if home.get("ll") and r.get("to_ll"):
+                (alat, alng), (blat, blng) = home["ll"].split(","), r["to_ll"].split(",")
+                return (f"https://map.naver.com/p/directions/{alng},{alat},{quote(home.get('name', '숙소'))},,/"
+                        f"{blng},{blat},{quote(r.get('to') or r['title'])},,/-/walk")
+            return naver_url(r["naver_query"]) if r.get("naver_query") else None
+
+        runs["routes"] = [dict(r, nav_url=run_nav(r)) for r in runs["routes"]]
 
     budget = trip["budget"]
     travelers = trip["travelers"] or 1
