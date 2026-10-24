@@ -524,6 +524,12 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .em-dlg-in{padding:26px}
 .em-dlg h3{font-size:18px}
 .em-desc{margin-top:10px;font-size:15px;line-height:1.9;white-space:pre-line}
+.em-shops{list-style:none;margin:14px 0 0;padding:0;border-top:1px solid var(--line)}
+.em-shops li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.em-shops li>div{flex:1;min-width:0}
+.em-shops b{display:block;font-weight:500;font-size:15px;line-height:1.6}
+.em-shops small{display:block;margin-top:2px;font-size:13px;line-height:1.7;color:var(--muted)}
+.nav-btn.sm{flex:none;width:32px;height:32px;font-size:13px}
 .em-dlg{max-height:86vh;overflow:auto;overscroll-behavior:contain}
 .dlg-kicker{font-family:var(--latin);font-size:12.5px;letter-spacing:.14em;color:var(--sky-d)}
 .dlg-kicker+h3{margin-top:4px}
@@ -880,6 +886,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               <p class="dlg-kicker">{{ day.date_short }} {{ day.weekday }}・{{ item.time }}</p>
               <h3 id="{{ did }}-t" tabindex="-1" autofocus>{{ item.name }}</h3>
               {% if item.note %}<p class="em-desc">{{ item.note }}</p>{% endif %}
+              {#- 自由逛：這一區要逛的店，每家一行（位置・營業），右邊綠色 N 直接導航 -#}
+              {%- if item.shops %}
+              <ul class="em-shops">
+              {%- for s in item.shops %}
+                <li><div><b>{{ s.name }}</b>{% if s.info %}<small>{{ s.info }}</small>{% endif %}</div>
+                  {%- if s.nav_url %}<a class="nav-btn sm" href="{{ s.nav_url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟 {{ s.name }}">N</a>{% endif %}</li>
+              {%- endfor %}
+              </ul>
+              {%- endif %}
               {#- 需要照圖操作的站（例如機場註冊 SES），跟搭車彈窗一樣列步驟配圖 -#}
               {%- if item.steps %}
               <ol class="ride-steps em-steps">

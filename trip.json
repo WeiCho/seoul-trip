@@ -411,39 +411,44 @@
         },
         {
           "time": "18:40",
-          "name": "EQL 聖水（EQL 성수점）",
+          "name": "聖水・首爾林自由逛",
           "type": "購物",
-          "note": "影片裡逛的那家 EQL 大店，同一排是 Nike、SKIMS；有 AZ／Alex Zoro 的跑步襪、RUNNING 愛心 T。",
-          "booking": {
-            "hours": "每日 11:00–20:00（Naver）"
-          },
-          "map_query": "EQL 성수점 서울 성동구 연무장15길 11",
-          "duration": "45m",
+          "note": "無垢屋走 3 分就是 EQL；首爾林三家跑步店在纛島站一帶（聖水站坐 2 號線 1 站，或走 20 分）。EQL 和 goodrunner 都 20:00 關，先逛這兩家，FILA、Musinsa Run 開到 21:00 放最後。",
+          "map_query": "서울 성동구 서울숲2길",
+          "duration": "2h",
           "priority": "optional",
-          "next_transit": "聖水站 2 號線 1 站到纛島，約 15 分",
-          "naver_query": "EQL 성수점"
-        },
-        {
-          "time": "19:30",
-          "name": "首爾林跑步店：goodrunner、FILA Running Club、Musinsa Run",
-          "type": "購物",
-          "note": "三家都在纛島站和首爾林之間，走路 5 分以內。goodrunner 首爾林店週四開到 20:00，先去；FILA Running Club（서울숲2길 8-1，2026/9 新開，可以在店裡試跑）和 Musinsa Run 首爾林（서울숲2길 22-1）都開到 21:00。",
-          "booking": {
-            "hours": "goodrunner 11:30–20:00（週一休）；FILA、Musinsa Run 每日 11:00–21:00（Naver）"
-          },
-          "map_query": "굿러너컴퍼니 서울숲점 서울 성동구 서울숲길 47",
-          "duration": "1h15m",
-          "priority": "must",
           "next_transit": "纛島站 2 號線 2 站回建大入口",
-          "naver_query": "굿러너컴퍼니 서울숲점",
+          "naver_query": "서울숲2길",
+          "shops": [
+            {
+              "name": "EQL 聖水",
+              "info": "聖水站走 5 分，연무장15길 11・11:00–20:00・影片裡那家，有 AZ 跑步襪",
+              "naver_query": "EQL 성수점"
+            },
+            {
+              "name": "goodrunner 首爾林",
+              "info": "纛島站 8 號出口走 5 分，서울숲길 47・週四 11:30–20:00（週一休）",
+              "naver_query": "굿러너컴퍼니 서울숲점"
+            },
+            {
+              "name": "FILA Running Club",
+              "info": "서울숲2길 8-1・11:00–21:00・2026/9 新開，可以在店裡試跑",
+              "naver_query": "휠라 러닝 클럽"
+            },
+            {
+              "name": "Musinsa Run 首爾林",
+              "info": "서울숲2길 22-1・11:00–21:00",
+              "naver_query": "무신사 런 서울숲"
+            }
+          ],
           "photo": {
-            "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLdVTi71ev7MWTYxgXKiTgYf0aUACN5mWxM45mzK9Z3skqzu787xV-IDcsMsaVc6Ec58inONjtgRIfTMQJjoaQIpfdVcelRBZQpSVqd06GbskoVZkP2dZkynkw4bJqXLmBEa_AnsFTnL29z2=w900-k-no",
-            "alt": "goodrunner 首爾林店門口，櫥窗貼著 THE BIG SO 海報",
-            "credit": "圖：Ji Heon Ahn／Google 地圖（2025/8）"
+            "img": "img/p-seongsu.jpg",
+            "alt": "聖水洞街上一排小店",
+            "credit": "圖：CartoonChess／Wikimedia Commons（CC BY-SA 4.0）"
           }
         },
         {
-          "time": "20:55",
+          "time": "21:00",
           "name": "回 Airbnb",
           "type": "住宿",
           "note": "早點睡，明天 08:30 出門去延南洞。",
@@ -518,39 +523,40 @@
         },
         {
           "time": "09:15",
-          "name": "京義線林道・延南洞早餐",
-          "type": "景點",
-          "note": "弘大入口 3 號出口出來就是京義線林道（연트럴파크），沿著公園往北走；早餐在路上找咖啡廳或麵包店，10:00 去연남필름。",
+          "name": "延南洞自由逛（上午）",
+          "type": "購物",
+          "note": "弘大入口 3 號出口出來就是京義線林道，沿著公園往北走，早餐路上找咖啡廳。這一帶小店多半 11–12 點才開，연남필름 10:00 開可以先去。11:45 往午餐走。",
           "map_query": "경의선숲길 연남동",
-          "duration": "45m",
-          "priority": "optional",
-          "next_transit": "步行約 8 分到연남필름",
-          "naver_query": "경의선숲길 연남동"
-        },
-        {
-          "time": "10:00",
-          "name": "연남필름 延南膠卷（底片）",
-          "type": "購物",
-          "note": "延南洞的底片沖洗店，也賣底片、拋棄式相機、電池，可以買或租底片相機；在 2 樓。",
-          "booking": {
-            "hours": "週三–日 10:00–19:00（週一、二休，Naver）"
-          },
-          "map_query": "연남필름 서울 마포구 성미산로29안길 11",
-          "duration": "40m",
-          "priority": "must",
-          "next_transit": "附近的巷子自由逛",
-          "naver_query": "연남필름 현상소"
-        },
-        {
-          "time": "10:40",
-          "name": "延南洞自由逛",
-          "type": "購物",
-          "note": "flots 在성미산로，附近小店多半 11–12 點才開；ayadz studio 週五 14:00 才開，想逛的人下午留在延南。11:45 往午餐走。",
-          "map_query": "서울 마포구 성미산로31길 13",
-          "duration": "1h",
+          "duration": "2h30m",
           "priority": "optional",
           "next_transit": "步行約 10 分到연남그곳",
-          "naver_query": "서울 마포구 성미산로31길 13"
+          "naver_query": "경의선숲길 연남동",
+          "shops": [
+            {
+              "name": "연남필름 延南膠卷（底片）",
+              "info": "성미산로29안길 11，2 樓・10:00–19:00（週一、二休）・底片、拋棄式相機、沖洗",
+              "naver_query": "연남필름 현상소"
+            },
+            {
+              "name": "flots",
+              "info": "성미산로一帶的 2 樓・營業時間出發前在 Naver 確認"
+            },
+            {
+              "name": "ayadz studio",
+              "info": "성미산로31길 13，2 樓・週四–日 14:00–20:00・早上還沒開，下午留在延南的人再去",
+              "naver_query": "아야즈스튜디오"
+            },
+            {
+              "name": "京義線林道（연트럴파크）",
+              "info": "弘大入口 3 號出口・公園步道，兩旁咖啡廳和麵包店",
+              "naver_query": "경의선숲길 연남동"
+            }
+          ],
+          "photo": {
+            "img": "img/p-yeonnam.jpg",
+            "alt": "延南洞的京義線林道，步道兩旁是行道樹和小店",
+            "credit": "圖：azer0／Wikimedia Commons（CC BY 2.0 kr）"
+          }
         },
         {
           "time": "11:45",
@@ -560,7 +566,7 @@
           "map_query": "연남그곳 서울 마포구 연희로1길 19",
           "duration": "1h",
           "priority": "must",
-          "next_transit": "步行約 20 分到 out of all 西橋（或計程車 5 分）",
+          "next_transit": "步行約 15 分到西橋洞（out of all）",
           "naver_query": "연남그곳",
           "photo": {
             "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sf0A70-zdsJYdSGsq7GIY1RLhy9w3Eq1yCQF_XqPRnuPyZfIvJTMKsst0IwgexToR8_mLs5SQE1TkAvPEB-4Hxyylsge6uFVhETxtKVn5JXKUNjJSDkDr2wuFIOuAMBiXDcNJ8-jdz62s=w900-k-no-rw",
@@ -572,67 +578,88 @@
           }
         },
         {
-          "time": "13:00",
-          "name": "out of all 西橋（아웃오브올 서교점）",
+          "time": "12:50",
+          "name": "弘大・西橋自由逛",
           "type": "購物",
-          "note": "就是影片裡那棟木造建築，跑鞋、跑步服、配件都很齊，店裡的賽事地圖牆也很好拍。",
-          "booking": {
-            "hours": "每日 12:00–21:00（Naver）"
-          },
-          "map_query": "아웃오브올 서교점 서울 마포구 잔다리로3안길 11",
-          "duration": "40m",
-          "priority": "must",
+          "note": "吃完往南走到西橋洞的 out of all。14:00 起分頭：要去龍山的從上水站出發；想逛 ayadz、延禧洞的留在延南，18:30 在한우다움會合。",
+          "map_query": "아웃오브올 서교점",
+          "duration": "1h",
+          "priority": "optional",
           "next_transit": "上水站 6 號線 5 站到三角地，約 25 分",
           "naver_query": "아웃오브올 서교점",
+          "shops": [
+            {
+              "name": "out of all 西橋（跑步）",
+              "info": "잔다리로3안길 11・12:00–21:00・影片裡那棟木造建築，跑鞋、跑步服很齊",
+              "naver_query": "아웃오브올 서교점"
+            },
+            {
+              "name": "ayadz studio",
+              "info": "延南，성미산로31길 13 2 樓・14:00 開",
+              "naver_query": "아야즈스튜디오"
+            },
+            {
+              "name": "延禧洞散步",
+              "info": "從延南洞穿過地下道約 15 分・選物店、書店、咖啡廳都小小的",
+              "naver_query": "서울 서대문구 연희동 190-21"
+            }
+          ],
           "photo": {
-            "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLc-WBAt7OUrZ8eNgMDsQ5h48eXCPpVOQWouNSG7tj3nZF9K6ADDm4swrP0PgI9qiQ1Z4kbAPo92V89TCqsQOmFpirgihx-TuSkI9p0qhuuqFaPVZ3DMw8mytjQy5i2BntVCN4f6WLHoNC4=w900-k-no",
-            "alt": "out of all 西橋店：黑色木造兩層樓，門口一排柏樹",
-            "credit": "圖：제이오오엔／Google 地圖（2025/7）"
+            "img": "img/p-hongdae.jpg",
+            "alt": "弘大街頭，招牌和霓虹燈",
+            "credit": "圖：lumoplank／Wikimedia Commons（CC0）"
           }
         },
         {
           "time": "14:10",
-          "name": "pixel per inch（底片・海報・文具）",
+          "name": "龍山・梨泰院自由逛",
           "type": "購物",
-          "note": "三角地站旁한강대로54길 7 的 3 樓，底片、海報、文具都有。隔壁的 EXIT6 general store（한강대로 179 2 樓，居家雜貨）可以順便逛。",
-          "booking": {
-            "hours": "週二–五 13:00–19:00、週末 13:00–19:30（週一休，Naver）"
-          },
-          "map_query": "픽셀퍼인치 서울 용산구 한강대로54길 7",
-          "duration": "50m",
-          "priority": "must",
-          "next_transit": "三角地站 6 號線 1 站到綠莎坪，走 10 分到 eou",
-          "naver_query": "픽셀퍼인치",
-          "photo": {
-            "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfXIa2wYSRU6XRxaTK48ZuBIDv2ijyRkfnsaGSU7CylhBkU-YlHwNIrqMBc_3100xIP3BJ2SOYrsm8HeQ4vczgdlZ9JWsXniQmX7lmAP1YA7-OMIPCLzEr86txKMsVyUaZGZ3LO=w900-k-no",
-            "alt": "pixel per inch 店內，綠色和黃色書架上擺滿雜誌、海報",
-            "credit": "圖：아침엔사과／Google 地圖（2023/7）"
-          }
-        },
-        {
-          "time": "15:20",
-          "name": "eou（이오유，跑步）",
-          "type": "購物",
-          "note": "韓國跑步品牌 eou 的店：logo T、背心、短褲、跑帽。綠莎坪站 3 號出口走 435 公尺、約 10 分，有點上坡；招牌不明顯，找門牌 48-16。官網寫週末公休，平日去最保險。",
-          "booking": {
-            "hours": "每日 11:00–18:00（Naver）"
-          },
-          "map_query": "이오유 서울 용산구 녹사평대로40나길 48-16",
-          "duration": "40m",
-          "priority": "must",
-          "next_transit": "步行約 10 分到梨泰院一帶",
-          "naver_query": "이오유"
-        },
-        {
-          "time": "16:10",
-          "name": "梨泰院・龍山自由逛",
-          "type": "購物",
-          "note": "kamadeva（녹사평대로 208-1，3 樓）、jean and juice 都在附近。另外兩位如果下午在龍山，可以先去 LOFA Seoul（新龍山，週五 13:00–19:00）、APMA 美術館（10:00–18:00，要先在官網預約時段）。17:15 往綠莎坪天橋走。",
-          "map_query": "서울 용산구 녹사평대로 208-1",
-          "duration": "1h",
+          "note": "三角地、綠莎坪、新龍山彼此都只差 1 站（6、4 號線），走路也 15 分以內。建議順序：三角地 pixel per inch → 綠莎坪 eou（18:00 關）→ 梨泰院；17:15 往綠莎坪天橋。",
+          "map_query": "픽셀퍼인치",
+          "duration": "3h05m",
           "priority": "optional",
           "next_transit": "走到綠莎坪天橋",
-          "naver_query": "서울 용산구 녹사평대로 208-1"
+          "naver_query": "픽셀퍼인치",
+          "shops": [
+            {
+              "name": "pixel per inch（底片・海報・文具）",
+              "info": "三角地站旁，한강대로54길 7 3 樓・13:00–19:00（週一休）",
+              "naver_query": "픽셀퍼인치"
+            },
+            {
+              "name": "EXIT6 general store",
+              "info": "三角地站 6 號出口旁，한강대로 179 2 樓・居家雜貨・營業時間 Naver 確認"
+            },
+            {
+              "name": "eou（跑步）",
+              "info": "綠莎坪站 3 號出口走 10 分上坡，녹사평대로40나길 48-16・11:00–18:00・招牌不明顯，找門牌 48-16",
+              "naver_query": "이오유"
+            },
+            {
+              "name": "kamadeva",
+              "info": "綠莎坪，녹사평대로 208-1 3 樓・營業時間 Naver 確認",
+              "naver_query": "서울 용산구 녹사평대로 208-1"
+            },
+            {
+              "name": "jean and juice",
+              "info": "梨泰院，從 kamadeva 走約 10 分、坡有點陡"
+            },
+            {
+              "name": "LOFA Seoul",
+              "info": "新龍山，한강대로11길 21 3–4 樓・13:00–19:00・兩層樓選物",
+              "naver_query": "로파서울"
+            },
+            {
+              "name": "APMA 愛茉莉太平洋美術館",
+              "info": "新龍山站 1 號出口直通・10:00–18:00・要先在官網預約時段",
+              "naver_query": "아모레퍼시픽미술관"
+            }
+          ],
+          "photo": {
+            "img": "img/p-haebangchon.jpg",
+            "alt": "解放村的觀景台，遠方是南山塔",
+            "credit": "圖：Lee Jeong Woo（이정우）／文化體育觀光部／Wikimedia Commons（CC BY-SA 4.0）"
+          }
         },
         {
           "time": "17:20",
@@ -781,7 +808,14 @@
             "img": "img/p-bukchon.jpg",
             "alt": "北村韓屋村的坡道巷子，遠方是市區大樓",
             "credit": "圖：Bgag／Wikimedia Commons（CC0）"
-          }
+          },
+          "shops": [
+            {
+              "name": "goodrunner 北村",
+              "info": "북촌로 56・週六 11:30–19:00・跑步選物",
+              "naver_query": "굿러너컴퍼니 북촌점"
+            }
+          ]
         },
         {
           "time": "12:45",
@@ -818,47 +852,31 @@
         },
         {
           "time": "15:45",
-          "name": "On Store 漢南（온 스토어 한남）",
+          "name": "漢南洞自由逛",
           "type": "購物",
-          "note": "On 在韓國第一間路面店，1 樓是跑鞋和服飾；地下室是跑者聚會空間 Run Hub（週四才有活動）。同棟 3–5 樓是 Anthracite 咖啡，可以上去休息。",
-          "booking": {
-            "hours": "每日 11:00–20:00（런마일，2026/6）"
-          },
-          "map_query": "온 스토어 한남 서울 용산구 이태원로 240",
-          "duration": "45m",
-          "priority": "must",
-          "next_transit": "步行約 5 分到 Outdoor Voices",
-          "naver_query": "온 스토어 한남",
+          "note": "漢江鎮站 3 號出口往梨泰院方向走，이태원로大街和巷子都是品牌店與咖啡廳，其他照你們自己的清單逛；18:10 從漢江鎮站出發去吃晚餐。",
+          "map_query": "한강진역",
+          "duration": "2h25m",
+          "priority": "optional",
+          "next_transit": "漢江鎮站 6 號線 3 站到三角地，轉 4 號線 1 站到新龍山，約 35 分",
+          "naver_query": "한강진역",
+          "shops": [
+            {
+              "name": "On Store 漢南",
+              "info": "이태원로 240・11:00–20:00・韓國第一間 On 路面店；同棟 3–5 樓是 Anthracite 咖啡",
+              "naver_query": "온 스토어 한남"
+            },
+            {
+              "name": "Outdoor Voices 漢南",
+              "info": "이태원로55가길 26-4・11:30–21:00",
+              "naver_query": "아웃도어보이스 한남"
+            }
+          ],
           "photo": {
             "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLebTxhUr3HFhaGZl-DgrTUcW4r_FK2X46w__UBIlILJJwpIrZNmXD0DQhkFDTkVYYmFKdKZKViKpd0EEmwnhlNG2VQ6cbwYAoB_JKojk269sLLklJl7VHpCecVe9GSv2v9KbbTtIYZoCV1k=w900-k-no",
             "alt": "On Store 漢南的櫥窗，牆上一整排跑鞋",
             "credit": "圖：QIAN XIANG／Google 地圖（2026/6）"
           }
-        },
-        {
-          "time": "16:30",
-          "name": "Outdoor Voices 漢南（아웃도어보이스）",
-          "type": "購物",
-          "note": "美國運動服品牌的漢南旗艦店。",
-          "booking": {
-            "hours": "每日 11:30–21:00（런마일，2026/6）"
-          },
-          "map_query": "아웃도어보이스 한남 서울 용산구 이태원로55가길 26-4",
-          "duration": "40m",
-          "priority": "optional",
-          "next_transit": "沿이태원로逛",
-          "naver_query": "아웃도어보이스 한남"
-        },
-        {
-          "time": "17:10",
-          "name": "漢南洞自由逛",
-          "type": "景點",
-          "note": "이태원로大街和兩旁巷子都是品牌店與咖啡廳，照你們自己的清單逛；18:10 從漢江鎮站出發去吃晚餐。",
-          "map_query": "한남동 이태원로",
-          "duration": "1h",
-          "priority": "optional",
-          "next_transit": "漢江鎮站 6 號線 3 站到三角地，轉 4 號線 1 站到新龍山，約 35 分",
-          "naver_query": "한강진역"
         },
         {
           "time": "18:45",
@@ -982,14 +1000,19 @@
         },
         {
           "time": "12:45",
-          "name": "狎鷗亭羅德奧・島山公園一帶自由逛",
+          "name": "狎鷗亭羅德奧・島山公園自由逛",
           "type": "購物",
           "note": "羅德奧站到島山公園一帶：Tamburins、Gentle Monster 和本地設計師選品店，各自逛，晚餐再會合。",
           "map_query": "압구정로데오역 5번 출구",
           "duration": "5h",
           "priority": "optional",
           "next_transit": "附近找晚餐",
-          "naver_query": "압구정로데오역"
+          "naver_query": "압구정로데오역",
+          "photo": {
+            "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLcCvae0z3ChhG6PdsOUmaRaeG3om5dq5IY97SVo5suLOIWi5zTmHa2ckepc8U7J6XIYxl7-Sf-uCpB7tQymEnm60qyb23mTv6KAQUeKhAPNh_IvZLfmBctG6evpnE6w8eNdLKM=w900-k-no",
+            "alt": "狎鷗亭羅德奧街口的金色大樓",
+            "credit": "圖：priyanka pandey／Google 地圖（2025/3）"
+          }
         },
         {
           "time": "18:00",
@@ -1630,58 +1653,9 @@
     },
     {
       "day": 2,
-      "when": "晚上",
-      "route": "聖水（EQL）→ 纛島（首爾林）",
-      "at": "18:40",
-      "options": [
-        {
-          "label": "2 號線 1 站",
-          "summary": "聖水站坐 1 站到纛島，約 2 分；走路約 20 分",
-          "mode": "subway",
-          "line": "2 號線 聖水（성수）→ 纛島（뚝섬），1 站",
-          "line_color": "#00a84d",
-          "platform": "聖水站，往「纛島（뚝섬）・往十里（왕십리）」方向月台（高架）",
-          "time": "步行到站 5 分＋地鐵 2 分＋步行 5 分",
-          "fare": "₩1,550／人",
-          "headway": "約 5 分一班",
-          "minutes": 15,
-          "warn": "不想進站也可以沿연무장길往西走，約 20 分到首爾林一帶",
-          "from": "EQL 聖水",
-          "to": "goodrunner 首爾林",
-          "from_ll": "37.542862,127.058918",
-          "to_ll": "37.548157,127.042798",
-          "steps": [
-            {
-              "text": "從 EQL 走到聖水站，約 5 分",
-              "img": "img/mugu-ok-seongsu.jpg",
-              "alt": "無垢屋聖水店一帶，EQL 也在這附近（Kakao 로드뷰 2026 年 6–7 月）"
-            },
-            {
-              "text": "上高架月台，往往十里方向（왕십리 방면），坐 1 站",
-              "img": "img/c-seongsu-l2.jpg",
-              "alt": "聖水站 2 號線高架月台",
-              "credit": "圖：분당선M／Wikimedia Commons（CC BY-SA 3.0）"
-            },
-            {
-              "text": "纛島下車，走 8 號出口",
-              "img": "img/ttukseom-exit8.jpg",
-              "alt": "纛島站 8 號出口一帶，高架橋下的手扶梯（Kakao 로드뷰 2026 年 6–7 月）"
-            },
-            {
-              "text": "往西走約 5 分到 goodrunner",
-              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLdVTi71ev7MWTYxgXKiTgYf0aUACN5mWxM45mzK9Z3skqzu787xV-IDcsMsaVc6Ec58inONjtgRIfTMQJjoaQIpfdVcelRBZQpSVqd06GbskoVZkP2dZkynkw4bJqXLmBEa_AnsFTnL29z2=w900-k-no",
-              "alt": "goodrunner 首爾林店門口",
-              "credit": "圖：Ji Heon Ahn／Google 地圖（2025/8）"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "day": 2,
       "when": "回程",
       "route": "纛島（뚝섬）→ 建大入口",
-      "at": "19:30",
+      "at": "18:40",
       "options": [
         {
           "label": "2 號線 2 站",
@@ -1776,7 +1750,7 @@
       "day": 3,
       "when": "中午",
       "route": "out of all 西橋 → 三角地（pixel per inch）",
-      "at": "13:00",
+      "at": "12:50",
       "options": [
         {
           "label": "6 號線 5 站",
@@ -1820,52 +1794,6 @@
               "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfXIa2wYSRU6XRxaTK48ZuBIDv2ijyRkfnsaGSU7CylhBkU-YlHwNIrqMBc_3100xIP3BJ2SOYrsm8HeQ4vczgdlZ9JWsXniQmX7lmAP1YA7-OMIPCLzEr86txKMsVyUaZGZ3LO=w900-k-no",
               "alt": "pixel per inch 店內",
               "credit": "圖：아침엔사과／Google 地圖（2023/7）"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "day": 3,
-      "when": "下午",
-      "route": "三角地 → 綠莎坪（녹사평）・eou",
-      "at": "14:10",
-      "options": [
-        {
-          "label": "6 號線 1 站",
-          "summary": "三角地站坐 6 號線 1 站到綠莎坪，3 號出口走 10 分到 eou；約 25 分",
-          "mode": "subway",
-          "line": "6 號線 三角地（삼각지）→ 綠莎坪（녹사평），1 站",
-          "line_color": "#cd7c2f",
-          "platform": "三角地站 6 號線，往新內方向（신내 방면）月台",
-          "time": "走到月台 4 分＋地鐵 3 分＋手扶梯 3 分＋步行 10 分",
-          "fare": "₩1,550／人",
-          "headway": "約 6–8 分一班",
-          "minutes": 25,
-          "warn": "綠莎坪站很深，出站要搭好幾段長手扶梯；eou 在上坡的住宅巷子裡",
-          "from": "三角地站",
-          "to": "eou",
-          "from_ll": "37.534830,126.973050",
-          "to_ll": "37.536481,126.988928",
-          "steps": [
-            "逛完 pixel per inch，走回三角地站，進 6 號線",
-            {
-              "img": "img/c-samgakji-l6.jpg",
-              "alt": "三角地站 6 號線站名牌，上方寫 4호선 갈아타는 곳（往 4 號線轉乘），右下是下一站녹사평",
-              "credit": "圖：Striker9498／Wikimedia Commons（CC0）",
-              "text": "6 號線往新內方向（신내 방면），下一站就是綠莎坪"
-            },
-            {
-              "text": "綠莎坪下車，搭長手扶梯上去",
-              "img": "img/c-noksapyeong-esc.jpg",
-              "alt": "綠莎坪站的長手扶梯",
-              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
-            },
-            "走 3 號出口，Naver 步行導航到 eou，約 435 公尺、上坡 10 分",
-            {
-              "text": "eou 在門牌 48 這棟，招牌不明顯",
-              "img": "img/eou-haebangchon.jpg",
-              "alt": "eou 所在的紅磚樓，門牌 48，一樓是房仲和車庫（Kakao 로드뷰 2026 年 7 月）"
             }
           ]
         }
@@ -2173,7 +2101,7 @@
       "day": 4,
       "when": "傍晚",
       "route": "漢江鎮（한강진）→ 新龍山（적토발효구이）",
-      "at": "17:10",
+      "at": "15:45",
       "options": [
         {
           "label": "6 號線＋4 號線",

@@ -569,6 +569,10 @@ def enrich(data):
             # 首爾的行程導航一律開 Naver：Google 在韓國不能步行導航
             if item.get("naver_query"):
                 item["nav_url"] = naver_url(item["naver_query"])
+            # 自由逛的店家清單：每家各自一顆 Naver 導航
+            if item.get("shops"):
+                item["shops"] = [dict(s, nav_url=naver_url(s["naver_query"])) if s.get("naver_query") else dict(s)
+                                 for s in item["shops"]]
             reason = _pending_reason(item)
             if reason:
                 pending.append({
