@@ -604,9 +604,9 @@
     },
     {
       "date": "2026-11-07",
-      "theme": "安國鹽麵包早餐・北村散步・부암동 ODCS RUN（rnrn）・益善洞・李福姬解酲湯",
+      "theme": "安國鹽麵包早餐・北村散步・부암동 ODCS RUN（rnrn）・漢南洞 On／Outdoor Voices・烤豬尾巴",
       "weather": "首爾約 6–15°C",
-      "note": "週六人多，早餐早點到；北村、三清洞坡多，走慢一點。中午搭公車上부암동吃午餐、逛 ODCS RUN，再回益善洞",
+      "note": "週六人多，早餐早點到；北村、三清洞坡多，走慢一點。中午搭公車上부암동吃午餐、逛 ODCS RUN，下午移到漢南洞，晚上 9 點後再回住處",
       "items": [
         {
           "time": "08:00",
@@ -676,53 +676,84 @@
           "map_query": "ODCS RUN 서울 종로구 창의문로11길 4",
           "duration": "50m",
           "priority": "must",
-          "next_transit": "7022 公車回景福宮站，轉 3 號線 2 站到鍾路3街",
+          "next_transit": "7022 公車回景福宮站，3 號線到藥水轉 6 號線到漢江鎮，約 50 分",
           "naver_query": "서울 종로구 창의문로11길 4"
         },
         {
           "time": "15:45",
-          "name": "益善洞韓屋巷",
-          "type": "景點",
-          "note": "韓屋改建的咖啡廳和小店，巷子窄、週末人多，挑一兩條逛，16:40 往晚餐走。",
-          "map_query": "익선동 한옥거리",
-          "duration": "50m",
-          "priority": "optional",
-          "next_transit": "步行 5 分到李福姬解酲湯",
-          "naver_query": "익선동 한옥거리",
+          "name": "On Store 漢南（온 스토어 한남）",
+          "type": "購物",
+          "note": "On 在韓國第一間路面店，1 樓是跑鞋和服飾；地下室是跑者聚會空間 Run Hub（週四才有活動）。同棟 3–5 樓是 Anthracite 咖啡，可以上去休息。",
+          "booking": {
+            "hours": "每日 11:00–20:00（런마일，2026/6）"
+          },
+          "map_query": "온 스토어 한남 서울 용산구 이태원로 240",
+          "duration": "45m",
+          "priority": "must",
+          "next_transit": "沿이태원로往梨泰院方向逛",
+          "naver_query": "온 스토어 한남",
           "photo": {
-            "img": "img/p-ikseon.jpg",
-            "alt": "益善洞的窄巷，兩旁是韓屋改的小店",
-            "credit": "圖：S h y numis／Wikimedia Commons（CC BY-SA 4.0）"
+            "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLebTxhUr3HFhaGZl-DgrTUcW4r_FK2X46w__UBIlILJJwpIrZNmXD0DQhkFDTkVYYmFKdKZKViKpd0EEmwnhlNG2VQ6cbwYAoB_JKojk269sLLklJl7VHpCecVe9GSv2v9KbbTtIYZoCV1k=w900-k-no",
+            "alt": "On Store 漢南的櫥窗，牆上一整排跑鞋",
+            "credit": "圖：QIAN XIANG／Google 地圖（2026/6）"
           }
         },
         {
-          "time": "17:00",
-          "name": "晚餐：이복희해장 李福姬解酲湯 鍾路直營店",
+          "time": "16:30",
+          "name": "漢南洞自由逛",
+          "type": "景點",
+          "note": "이태원로大街和兩旁巷子都是品牌店與咖啡廳，照你們自己的清單逛；17:50 往晚餐走。",
+          "map_query": "한남동 이태원로",
+          "duration": "1h20m",
+          "priority": "optional",
+          "next_transit": "步行約 8 分到털보네꼼장어（대사관로）",
+          "naver_query": "한강진역"
+        },
+        {
+          "time": "18:00",
+          "name": "晚餐：털보네꼼장어（烤豬尾巴）",
           "type": "餐廳",
-          "note": "招牌牛尾燉肉（꼬리수육）和熬 48 小時的解酲湯；17:30 就客滿，17:00 前到。",
-          "map_query": "이복희해장 서울 종로구 삼일대로 385",
+          "note": "店名是烤盲鰻，但招牌其實是烤豬尾巴（돼지 꼬랑지구이），外脆內嫩，有原味和辣味；章魚、雞頸肉也可以加點。週六晚上可能要排。備選：솔솥 釜飯（이태원로54가길 26 B1）、소소막창 烤腸（대사관로 56 2 樓，就在附近）。",
+          "booking": {
+            "hours": "每日 16:00–翌日 01:40（Threads，2026/3）"
+          },
+          "map_query": "털보네꼼장어 서울 용산구 대사관로 63",
           "duration": "1.5h",
           "priority": "must",
-          "next_transit": "鍾路3街站 → 3 號線 1 站 → 乙支路3街轉 2 號線",
-          "naver_query": "이복희해장 종로",
+          "next_transit": "步行約 10 分到 Outdoor Voices",
+          "naver_query": "털보네꼼장어 대사관로",
           "photo": {
-            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SDol9halSPi1Q00BnMJuIshyEaQTDL6wfJ6W6LSMiwjga4vapDbF_7oNB-huec1_u6wmVmalAVtpX51oHSTCXJVz7lDsgCdmxvOCB987WRcrFvNLW2UyBtWLOBCVleiFM7kPAUKcOEmTc_=w900-k-no-rw",
-            "alt": "牛尾燉肉鍋（꼬리수육）",
-            "credit": "圖：현환／Google 地圖（2026/7）"
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SZr7m4e-PJILpdES0pVJnLUytg9-7OZb7GfTZA9VYbXg9tefIkuqBORBvtCSXN8SVEp5vRfxWFTvBtcySQ9WkeuH8JqEnr4HvKIUDWWytzkUDpmNZZ1lf_L6tmIUA5RbyRSyLIehkAdWv6=w900-k-no-rw",
+            "alt": "炭火網上烤得焦脆的豬尾巴",
+            "credit": "圖：김민경／Google 地圖（2025/7）"
           }
         },
         {
-          "time": "19:15",
+          "time": "19:40",
+          "name": "Outdoor Voices 漢南（아웃도어보이스）",
+          "type": "購物",
+          "note": "美國運動服品牌的漢南旗艦店，開到 21:00，吃完飯慢慢逛，附近再走走。",
+          "booking": {
+            "hours": "每日 11:30–21:00（런마일，2026/6）"
+          },
+          "map_query": "아웃도어보이스 한남 서울 용산구 이태원로55가길 26-4",
+          "duration": "1h20m",
+          "priority": "optional",
+          "next_transit": "步行 5 分到漢江鎮站，6 號線到新堂轉 2 號線，約 40 分",
+          "naver_query": "아웃도어보이스 한남"
+        },
+        {
+          "time": "21:40",
           "name": "回 Airbnb",
           "type": "住宿",
-          "note": "回去休息，晚上想再出門就在建大附近逛。",
+          "note": "回去休息。",
           "map_query": "서울 광진구 동일로18길 69",
           "naver_query": "서울 광진구 동일로18길 69",
           "status": "confirmed"
         }
       ],
       "weather_area": {
-        "label": "首爾（鍾路）",
+        "label": "首爾（鍾路・漢南）",
         "lat": 37.57,
         "lon": 126.99
       },
@@ -1877,25 +1908,25 @@
     {
       "day": 4,
       "when": "下午",
-      "route": "부암동 → 益善洞（鍾路3街）",
+      "route": "부암동 → 漢南洞（漢江鎮 한강진）",
       "at": "14:00",
       "options": [
         {
-          "label": "7022 公車＋3 號線",
-          "summary": "公車 6 站回景福宮站，3 號線 2 站到鍾路3街，約 35 分",
+          "label": "7022 公車＋3 號線＋6 號線",
+          "summary": "公車 6 站回景福宮站，3 號線 6 站到藥水轉 6 號線 2 站到漢江鎮，約 50 分",
           "mode": "bus",
-          "line": "7022 公車 → 景福宮站 3 號線 → 鍾路3街",
+          "line": "7022 公車 → 景福宮站 3 號線 → 藥水（약수）轉 6 號線 → 漢江鎮",
           "line_color": "#3cb44a",
           "platform": "「부암동주민센터.무계원」往市區方向的站牌（站號 01138，在路的另一側）",
-          "time": "公車約 12 分＋地鐵約 5 分＋步行",
+          "time": "公車約 12 分＋地鐵約 20 分＋轉乘、步行約 15 分",
           "fare": "₩1,500／人（公車轉地鐵 30 分內免費或只補差額）",
-          "headway": "公車約 10 分一班；3 號線約 6 分一班",
-          "minutes": 35,
-          "warn": "回程站牌在對面，車頭朝景福宮方向那一側。\n3 個人搭 Kakao T 直接到益善洞約 15 分、₩8,000 上下，平分比較省時間",
+          "headway": "公車約 10 分一班；3 號線約 6 分、6 號線約 8 分一班",
+          "minutes": 50,
+          "warn": "回程站牌在對面，車頭朝景福宮方向那一側。\n3 個人搭 Kakao T 直接到 On Store 約 25–30 分、₩15,000 上下，平分比較省時間",
           "from": "ODCS RUN",
-          "to": "益善洞",
+          "to": "On Store 漢南",
           "from_ll": "37.594212,126.963047",
-          "to_ll": "37.574300,126.989700",
+          "to_ll": "37.536147,127.000117",
           "steps": [
             {
               "text": "走回부암동주민센터，到對面往市區的站牌（01138）",
@@ -1914,114 +1945,94 @@
               "alt": "景福宮站 2 號出口，玻璃上寫著大大的 2（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "3 號線往梧琴方向，坐 2 站到鍾路3街（오금 방면）",
+              "text": "3 號線往梧琴方向，坐 6 站到藥水（오금 방면）",
               "img": "img/c-gyeongbokgung-l3.jpg",
               "alt": "景福宮站 3 號線月台",
               "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "走 4 號或 6 號出口，益善洞就在旁邊",
-              "img": "img/jongno3ga-exit4.jpg",
-              "alt": "鍾路3街站 4 號出口的站柱（Kakao 로드뷰 2026 年 6–7 月）"
+              "text": "藥水下車，跟著「6 환승」指標走約 80 公尺",
+              "img": "img/c-yaksu-l3-transfer.jpg",
+              "alt": "藥水站 3 號線站名柱，下方指標寫 6 號線轉乘往左 80m",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+            },
+            {
+              "text": "6 號線往應岩方向，坐 2 站到漢江鎮",
+              "sign": {
+                "line": "6",
+                "ko": "버티고개 · 한강진 · 응암 방면",
+                "zh": "往應岩方向，坐 2 站"
+              }
+            },
+            {
+              "text": "走 3 號出口，沿이태원로往梨泰院方向走約 5 分",
+              "img": "img/c-hangangjin-exit3.jpg",
+              "alt": "漢江鎮站 3 號出口",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
+            },
+            {
+              "text": "On Store 在路邊，黑色金屬網外牆",
+              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLebTxhUr3HFhaGZl-DgrTUcW4r_FK2X46w__UBIlILJJwpIrZNmXD0DQhkFDTkVYYmFKdKZKViKpd0EEmwnhlNG2VQ6cbwYAoB_JKojk269sLLklJl7VHpCecVe9GSv2v9KbbTtIYZoCV1k=w900-k-no",
+              "alt": "On Store 漢南的櫥窗",
+              "credit": "圖：QIAN XIANG／Google 地圖（2026/6）"
             }
-          ],
-          "last": "23:50",
-          "last_note": "景福宮 3 號線（週六）；公車起點末班 23:10"
+          ]
         }
       ]
     },
     {
       "day": 4,
       "when": "晚上",
-      "route": "鍾路3街（종로3가）→ 建大入口",
-      "at": "17:00",
+      "route": "漢江鎮（한강진）→ 建大入口",
+      "at": "19:40",
       "options": [
         {
-          "label": "3 號線＋2 號線",
-          "summary": "3 號線 1 站，乙支路3街轉 2 號線 9 站，約 30 分",
+          "label": "6 號線＋2 號線",
+          "summary": "6 號線 4 站到新堂，轉 2 號線 6 站到建大入口，約 40 分",
           "mode": "subway",
-          "line": "3 號線 鍾路3街 → 乙支路3街 轉 2 號線 → 建大入口",
+          "line": "6 號線 漢江鎮 → 新堂（신당）轉 2 號線 → 建大入口",
           "line_color": "#00a84d",
-          "platform": "鍾路3街站 3 號線，往「梧琴（오금）」方向月台",
-          "time": "地鐵約 25 分＋轉乘 5 分",
+          "platform": "漢江鎮站 6 號線，往「新內（신내）」方向月台",
+          "time": "步行 5 分＋地鐵約 25 分＋轉乘 5 分",
           "fare": "₩1,550／人",
-          "headway": "3 號線約 6 分一班；2 號線約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
-          "minutes": 35,
-          "warn": "鍾路3街是 1、3、5 號線三線站，進站先找橘色「3 號線」。\n累了或趕時間就用 Kakao T 叫計程車，約 25 分",
-          "from": "鍾路3街站",
-          "to": "建大入口站",
-          "from_ll": "37.570410,126.991806",
-          "to_ll": "37.540363,127.069266",
-          "steps": [
-            {
-              "text": "走到鍾路3街站，進橘色 3 號線",
-              "img": "img/c-jongno-entrance.jpg",
-              "alt": "鍾路3街站出入口，招牌上有 1、3、5 號線",
-              "credit": "圖：hyolee2／Wikimedia Commons（CC BY-SA 3.0）"
-            },
-            {
-              "text": "往梧琴方向，坐 1 站到乙支路3街（오금 방면）",
-              "img": "img/c-jongno-l3.jpg",
-              "alt": "鍾路3街站 3 號線月台，箭頭指向乙支路3街（往梧琴方向）",
-              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
-            },
-            {
-              "text": "轉 2 號線，往往十里方向（동대문역사문화공원 · 왕십리 방면）",
-              "img": "img/c-euljiro-transfer2.jpg",
-              "alt": "乙支路3街站往 2 號線的轉乘指標",
-              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
-            },
-            {
-              "text": "坐 9 站，建大入口下車，走回住處約 4 分",
-              "img": "img/kondae-exit5.jpg",
-              "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
-            }
-          ],
-          "last": "23:08",
-          "last_note": "鍾路3街（週六）"
-        },
-        {
-          "label": "5 號線＋7 號線",
-          "summary": "5 號線 10 站，君子轉 7 號線 2 站，約 35 分",
-          "mode": "subway",
-          "line": "5 號線 鍾路3街 → 君子（군자）轉 7 號線 → 建大入口",
-          "line_color": "#996cac",
-          "platform": "鍾路3街站 5 號線，往「河南檢丹山（하남검단산）・馬川（마천）」方向月台",
-          "time": "地鐵約 30 分＋轉乘 5 分",
-          "fare": "₩1,550／人",
-          "headway": "5 號線約 6 分一班；7 號線約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
+          "headway": "6 號線約 8 分一班；2 號線約 5 分一班",
           "minutes": 40,
-          "warn": "5 號線過了君子才分岔，往河南檢丹山或馬川的車都會停君子，不用挑車",
-          "from": "鍾路3街站",
+          "warn": "新堂站 6 號線轉 2 號線要走一段，跟著綠色「2」指標。\n累了就用 Kakao T 叫計程車，約 20 分、₩12,000 上下",
+          "from": "Outdoor Voices 漢南",
           "to": "建大入口站",
-          "from_ll": "37.570410,126.991806",
+          "from_ll": "37.537365,126.999968",
           "to_ll": "37.540363,127.069266",
           "steps": [
             {
-              "text": "走到鍾路3街站，進紫色 5 號線",
-              "img": "img/jongno3ga-exit4.jpg",
-              "alt": "鍾路3街站 5 號線 4 號出口（Kakao 로드뷰 2026 年 6–7 月）"
-            },
-            {
-              "text": "往河南檢丹山・馬川方向，坐 10 站到君子（하남검단산 · 마천 방면）",
-              "img": "img/c-jongno-l5.jpg",
-              "alt": "鍾路3街站 5 號線月台",
+              "text": "走到漢江鎮站 3 號出口，約 5 分",
+              "img": "img/c-hangangjin-exit3.jpg",
+              "alt": "漢江鎮站 3 號出口",
               "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "轉 7 號線，往石南方向，坐 2 站到建大入口（석남 방면）",
-              "img": "img/c-gunja-l7.jpg",
-              "alt": "君子站 7 號線站名牌，箭頭指向어린이대공원（往石南方向）",
-              "credit": "圖：Banwol／Wikimedia Commons（CC BY-SA 3.0）"
+              "text": "6 號線往新內方向，坐 4 站到新堂（신내 방면）",
+              "img": "img/c-hangangjin-l6.jpg",
+              "alt": "漢江鎮站 6 號線月台，站名牌箭頭指向버티고개（往新內方向）",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "出站走回住處約 4 分",
+              "text": "新堂下車，跟著綠色「2」轉乘指標走",
+              "img": "img/c-sindang-l6-transfer.jpg",
+              "alt": "新堂站 6 號線月台，上方指標寫 갈아타는 곳 2",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
+            },
+            {
+              "text": "2 號線往上往十里・聖水方向，坐 6 站到建大入口（상왕십리 · 성수 방면）",
+              "img": "img/c-sindang-l2.jpg",
+              "alt": "新堂站 2 號線站名牌，箭頭指向上往十里",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
+            },
+            {
+              "text": "建大入口下車，走回住處約 4 分",
               "img": "img/kondae-exit5.jpg",
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             }
-          ],
-          "last": "23:38",
-          "last_note": "鍾路3街（週六，比 A 方案晚半小時）"
+          ]
         }
       ]
     },
