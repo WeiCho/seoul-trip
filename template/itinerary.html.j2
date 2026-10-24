@@ -334,12 +334,14 @@ a.go span{font-family:var(--latin);font-size:11px;letter-spacing:.14em;color:var
 .band-photo::before{
   content:"";position:absolute;inset:0;z-index:-1;background-image:var(--tr-img,var(--img));background-size:cover;background-position:var(--tr-pos,50% 22%);
 }
-.band-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(15,30,45,.35),rgba(15,30,45,.15) 40%,color-mix(in srgb,var(--paper) 92%,transparent) 100%)}
-.band-photo .section-heading{color:#fff;text-align:center}
+/* 照片上的白字要讀得到：上半部壓暗（標題、日期列都在這段），往下才退回紙色 */
+.band-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(12,22,34,.68),rgba(12,22,34,.55) 45%,rgba(12,22,34,.3) 70%,color-mix(in srgb,var(--paper) 92%,transparent) 100%)}
+.band-photo .section-heading{color:#fff;text-align:center;text-shadow:0 1px 14px rgba(0,0,0,.45)}
+.band-photo .daypick,.band-photo .tday-date{text-shadow:0 1px 10px rgba(0,0,0,.5)}
 .band-photo .section-heading p{color:rgba(255,255,255,.92);margin-inline:auto}
-.band-photo .tr-note{display:inline-block;margin-top:14px;padding:8px 16px;border-radius:6px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);color:#fff;font-size:13.5px}
+.band-photo .tr-note{display:inline-block;margin-top:14px;padding:8px 16px;border-radius:6px;background:rgba(0,0,0,.32);text-shadow:none;backdrop-filter:blur(6px);color:#fff;font-size:13.5px}
 .band-photo .daypick{justify-content:center;border-bottom-color:rgba(255,255,255,.35)}
-.band-photo .dp{color:rgba(255,255,255,.7)}
+.band-photo .dp{color:rgba(255,255,255,.82)}
 .band-photo .dp:hover,.band-photo .dp[aria-current="page"]{color:#fff}
 .js .tday:not(.is-on){display:none}
 .tday-date{text-align:center;font-family:var(--latin);font-size:13px;letter-spacing:.14em;color:#fff;margin-bottom:18px}
@@ -651,7 +653,8 @@ body.editing>#editor{display:block !important}
   .day-name{font-size:17px}
   /* 交通：照片只鋪在標題區，路線卡放回淺色底 */
   .band-photo::before,.band-photo::after{bottom:auto;height:var(--photo-h,400px)}
-  .band-photo::after{background:linear-gradient(180deg,rgba(15,30,45,.5),rgba(15,30,45,.35) 70%,var(--paper))}
+  .band-photo::after{background:linear-gradient(180deg,rgba(12,22,34,.7),rgba(12,22,34,.55) 70%,var(--paper))}
+  .band-photo .daypick,.band-photo .tday-date{text-shadow:none}
   .band-photo .daypick{justify-content:flex-start;border-bottom-color:var(--line)}
   .band-photo .dp{color:var(--soft)}
   .band-photo .dp:hover,.band-photo .dp[aria-current="page"]{color:var(--ink)}
