@@ -64,6 +64,8 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html sw.js manifest.webmanifest icon.svg "行程表.html" _site/
+          # 跟 deploy.yml 一樣要帶圖，不然每次更新天氣，交通與彈窗圖片就全部 404
+          if [ -d img ]; then cp -r img _site/; fi
           touch _site/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
