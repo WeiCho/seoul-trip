@@ -693,6 +693,11 @@ def enrich(data):
         else:
             wishlist_groups.append({"label": cat, "items": [w]})
 
+    runs = dict(data.get("runs") or {})
+    if runs.get("routes"):
+        runs["routes"] = [dict(r, nav_url=naver_url(r["naver_query"])) if r.get("naver_query") else dict(r)
+                          for r in runs["routes"]]
+
     budget = trip["budget"]
     travelers = trip["travelers"] or 1
     by_category = sorted(
@@ -710,6 +715,9 @@ def enrich(data):
         # 不綁哪一天的一句話（付款方式），放在交通大標下當說明
         "transit_note": data.get("transit_note") or "",
         "transit_links": data.get("transit_links") or [],
+        # 交通大圖另外指定，不跟封面用同一張
+        "transit_bg": data.get("transit_bg") or {},
+        "runs": runs,
         "wishlist": wishlist,
         "wishlist_groups": wishlist_groups,
         "highlights": data.get("highlights") or [],

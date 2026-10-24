@@ -332,7 +332,7 @@ a.go span{font-family:var(--latin);font-size:11px;letter-spacing:.14em;color:var
 /* ── 交通：滿版照片＋浮在上面的白卡（參考站的 Business） ── */
 .band-photo{position:relative;isolation:isolate}
 .band-photo::before{
-  content:"";position:absolute;inset:0;z-index:-1;background-image:var(--img);background-size:cover;background-position:50% 22%;
+  content:"";position:absolute;inset:0;z-index:-1;background-image:var(--tr-img,var(--img));background-size:cover;background-position:var(--tr-pos,50% 22%);
 }
 .band-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(15,30,45,.35),rgba(15,30,45,.15) 40%,color-mix(in srgb,var(--paper) 92%,transparent) 100%)}
 .band-photo .section-heading{color:#fff;text-align:center}
@@ -410,6 +410,29 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .tr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lc);margin-right:8px;vertical-align:1px}
 .transit-links{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:clamp(26px,4vh,40px)}
 .transit-links .more{font-size:13.5px}
+.tr-bg-credit{margin-top:18px;font-size:11px;color:var(--soft)}
+
+/* ── 跑步：住處出發的路線，地圖在上、三格數字、步驟，跟交通卡同一張白卡 ── */
+.run-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(14px,2vw,24px);align-items:start}
+.run-card{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.run-card>img{display:block;width:100%;height:auto;aspect-ratio:1000/760;object-fit:cover;border-bottom:1px solid var(--line)}
+.run-body{padding:clamp(18px,2.2vw,26px);display:grid;gap:14px;min-width:0}
+.run-head{display:flex;align-items:center;gap:12px}
+.run-head h3{flex:1;min-width:0;font-size:16.5px;font-weight:500;line-height:1.5}
+.run-tag{display:inline-block;margin-bottom:2px;font-family:var(--sans);font-size:12px;letter-spacing:.12em;color:var(--sky-d)}
+.run-tag.night{color:var(--muted)}
+.run-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;border-block:1px solid var(--line)}
+.run-stats div{padding:10px 0 8px}
+.run-stats div+div{padding-left:12px;border-left:1px solid var(--line)}
+.run-stats dt{font-size:11.5px;color:var(--soft);letter-spacing:.08em}
+.run-stats dd{margin:0;font-family:var(--latin);font-size:24px;line-height:1.2;font-variant-numeric:tabular-nums}
+.run-stats dd small{margin-left:3px;font-family:var(--sans);font-size:12px;color:var(--muted)}
+.run-steps{margin:0;padding-left:1.4em;font-size:14.5px;line-height:1.85}
+.run-tip{margin:0;font-size:13.5px;line-height:1.8;color:var(--muted)}
+.run-when{margin-top:clamp(22px,3vh,32px);padding:clamp(18px,2.2vw,26px);border-radius:var(--r);background:var(--sky-t)}
+.run-when h3{font-size:14px;font-weight:500;letter-spacing:.12em;margin-bottom:8px}
+.run-when ul{margin:0;padding-left:1.2em;font-size:14px;line-height:1.9}
+.run-credit{margin-top:14px;font-size:11px;color:var(--soft)}
 
 /* ── 口袋名單：參考站「Company」的列表——左欄標題，右欄一列一列，線＋箭頭 ── */
 .wish-wrap{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,2fr);gap:clamp(24px,5vw,80px)}
@@ -700,6 +723,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <div class="nav-links">
       <a href="#itinerary">行程</a>
       {%- if transit %}<a href="#transit">交通</a>{% endif %}
+      {%- if runs.routes %}<a href="#run">跑步</a>{% endif %}
       {%- if wishlist %}<a href="#wishlist">口袋名單</a>{% endif %}
       <a href="#budget">花費</a>
       {%- if trip.packing %}<a href="#packing">出發前檢查</a>{% endif %}
@@ -711,6 +735,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <div class="drawer-links">
           <a href="#itinerary">行程{{ pill() }}</a>
           {%- if transit %}<a href="#transit">交通{{ pill() }}</a>{% endif %}
+          {%- if runs.routes %}<a href="#run">跑步{{ pill() }}</a>{% endif %}
           {%- if wishlist %}<a href="#wishlist">口袋名單{{ pill() }}</a>{% endif %}
           <a href="#budget">花費{{ pill() }}</a>
           {%- if trip.packing %}<a href="#packing">出發前檢查{{ pill() }}</a>{% endif %}
@@ -935,7 +960,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 {# ── 交通：滿版照片＋白卡 ── #}
 {% if transit %}
-<div class="band band-photo">
+<div class="band band-photo"{% if transit_bg.img %} style="--tr-img:url('{{ transit_bg.img }}');--tr-pos:{{ transit_bg.pos or '50% 22%' }}"{% endif %}>
 {#- 首爾地鐵各線官方色，給搭車步驟的指標牌用 -#}
 {%- set line_colors = {"1":"#0052a4","2":"#00a84d","3":"#ef7c1c","4":"#00a5de","5":"#996cac","6":"#cd7c2f","7":"#747f00","水仁盆唐":"#f5a200","AREX":"#0090d2"} %}
 <section class="section" id="transit">
@@ -1054,8 +1079,46 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     {%- for l in transit_links %}<a class="more" href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }}{{ pill() }}</a>{%- endfor %}
   </div>
   {%- endif %}
+  {%- if transit_bg.credit %}<p class="tr-bg-credit">{{ transit_bg.credit }}</p>{% endif %}
 </section>
 </div>
+{% endif %}
+
+{# ── 跑步：住處出發的路線 ── #}
+{% if runs.routes %}
+<section class="section" id="run">
+  <div class="section-heading">
+    <h2>Run</h2><span class="zh">跑步</span>
+    {% if runs.note %}<p>{{ runs.note }}</p>{% endif %}
+  </div>
+  <div class="run-list">
+  {%- for r in runs.routes %}
+    <article class="run-card">
+      <img src="{{ r.img }}" alt="{{ r.alt or r.title }}" width="1000" height="760" loading="lazy" decoding="async">
+      <div class="run-body">
+        <div class="run-head">
+          <h3>{% if r.tag %}<span class="run-tag{% if r.night %} night{% endif %}">{{ r.tag }}</span><br>{% endif %}{{ r.title }}</h3>
+          {%- if r.nav_url %}<a class="nav-btn" href="{{ r.nav_url }}" target="_blank" rel="noopener" aria-label="用 Naver 地圖開啟 {{ r.title }}">N</a>{% endif %}
+        </div>
+        {%- if r.stats %}
+        <dl class="run-stats">
+          {%- for s in r.stats %}<div><dt>{{ s[0] }}</dt><dd>{{ s[1] }}{% if s[2] %}<small>{{ s[2] }}</small>{% endif %}</dd></div>{% endfor %}
+        </dl>
+        {%- endif %}
+        <ol class="run-steps">{% for st in r.steps %}<li>{{ st }}</li>{% endfor %}</ol>
+        {%- if r.tip %}<p class="run-tip">{{ r.tip }}</p>{% endif %}
+      </div>
+    </article>
+  {%- endfor %}
+  </div>
+  {%- if runs.when %}
+  <div class="run-when">
+    <h3>排在哪幾天</h3>
+    <ul>{% for w in runs.when %}<li>{{ w }}</li>{% endfor %}</ul>
+  </div>
+  {%- endif %}
+  {%- if runs.credit %}<p class="run-credit">{{ runs.credit }}</p>{% endif %}
+</section>
 {% endif %}
 
 {# ── 口袋名單 ── #}
