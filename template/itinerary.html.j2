@@ -233,10 +233,6 @@ main{display:block}
 .handoff{display:flex;justify-content:center;padding:clamp(16px,3vh,32px) var(--gut)}
 .handoff span{display:inline-flex;align-items:center;gap:14px;font-size:13px;letter-spacing:.2em;color:var(--muted)}
 .handoff span::before,.handoff span::after{content:"";width:40px;height:1px;background:var(--line)}
-.pending-banner{max-width:1360px;margin:0 auto;padding:96px var(--gut) 0}
-.pending-banner details{background:var(--sky-t);border-radius:var(--r);padding:12px 18px}
-.pending-banner summary{cursor:pointer;font-weight:500}
-.pending-banner ul{margin:6px 0 0;padding-left:1.2em;font-size:14px}
 
 /* ── 行程 ── */
 .daypick{display:flex;gap:clamp(18px,3vw,40px);overflow-x:auto;scrollbar-width:none;margin-bottom:clamp(26px,4vh,40px);border-bottom:1px solid var(--line)}
@@ -336,11 +332,11 @@ a.go span{font-family:var(--latin);font-size:11px;letter-spacing:.14em;color:var
 }
 /* 照片上的白字要讀得到：上半部壓暗（標題、日期列都在這段），往下才退回紙色 */
 .band-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(12,22,34,.68),rgba(12,22,34,.55) 45%,rgba(12,22,34,.3) 70%,color-mix(in srgb,var(--paper) 92%,transparent) 100%)}
-.band-photo .section-heading{color:#fff;text-align:center;text-shadow:0 1px 14px rgba(0,0,0,.45)}
+.band-photo .section-heading{color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.45)}
 .band-photo .daypick,.band-photo .tday-date{text-shadow:0 1px 10px rgba(0,0,0,.5)}
 .band-photo .section-heading p{color:rgba(255,255,255,.92);margin-inline:auto}
 .band-photo .tr-note{display:inline-block;margin-top:14px;padding:8px 16px;border-radius:6px;background:rgba(0,0,0,.32);text-shadow:none;backdrop-filter:blur(6px);color:#fff;font-size:13.5px}
-.band-photo .daypick{justify-content:center;border-bottom-color:rgba(255,255,255,.35)}
+.band-photo .daypick{border-bottom-color:rgba(255,255,255,.35)}
 .band-photo .dp{color:rgba(255,255,255,.82)}
 .band-photo .dp:hover,.band-photo .dp[aria-current="page"]{color:#fff}
 .js .tday:not(.is-on){display:none}
@@ -475,10 +471,11 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .wl-links{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:6px}
 
 /* ── 花費＋檢查：天藍漸層圓角大板，內放白卡（參考站中段那塊藍色橫幅） ── */
-.band-sky{padding:0 var(--gut)}
-.band-sky>.inner{max-width:1360px;margin:0 auto;border-radius:16px;background:linear-gradient(115deg,var(--sky-l),var(--sky) 70%);overflow:hidden}
+/* 天藍框往外推 --sky-m，框內再補回 --gut − --sky-m：標題就跟其他章節同一條左邊線 */
+.band-sky{--sky-m:clamp(8px,2vw,24px);padding:0 var(--sky-m)}
+.band-sky>.inner{max-width:calc(1360px - 2 * var(--sky-m));margin:0 auto;border-radius:16px;background:linear-gradient(115deg,var(--sky-l),var(--sky) 70%);overflow:hidden}
 :root[data-theme="dark"] .band-sky>.inner{background:linear-gradient(115deg,#173246,#1d5576 70%)}
-.band-sky .section{padding:clamp(48px,8vh,88px) clamp(18px,4vw,56px) clamp(24px,4vh,40px)}
+.band-sky .section{padding:clamp(48px,8vh,88px) calc(var(--gut) - var(--sky-m)) clamp(24px,4vh,40px)}
 .band-sky .section-heading{color:#0b0b0e}
 :root[data-theme="dark"] .band-sky .section-heading{color:var(--ink)}
 .band-sky .section-heading p{color:#1e2a36}
@@ -837,15 +834,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </header>
 
 <main>
-{% if pending %}
-<div class="pending-banner">
-  <details>
-    <summary>還有 {{ pending | length }} 項待確認</summary>
-    <ul>{% for p in pending %}<li><a href="#{{ p.anchor }}">{{ p.where }}</a> — {{ p.reason }}</li>{% endfor %}</ul>
-  </details>
-</div>
-{% endif %}
-
+{#- 待確認項目不放頁面上，render.py 仍會在終端機列出 -#}
 {# ── 行程 ── #}
 <div class="band band-b">
 <section class="section" id="itinerary">
