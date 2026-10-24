@@ -506,7 +506,7 @@
     },
     {
       "date": "2026-11-06",
-      "theme": "延南膠卷・明太子海帶湯・out of all・龍山底片與跑步店・綠莎坪看南山塔・弘大韓牛",
+      "theme": "延南膠卷・鍋巴雞湯・out of all・龍山底片與跑步店・綠莎坪看南山塔・弘大韓牛",
       "weather": "首爾約 6–15°C",
       "note": "08:30 出門。早上在延南、弘大，下午到龍山・梨泰院，晚上回弘大吃韓牛。14:00 起可以分頭：要逛 ayadz、flots、延禧洞的留在延南（ayadz 週五 14:00 才開）；要逛 LOFA、APMA、kamadeva 的跟去龍山；18:30 在한우다움會合",
       "items": [
@@ -525,11 +525,11 @@
           "time": "09:15",
           "name": "延南洞自由逛（上午）",
           "type": "購物",
-          "note": "弘大入口 3 號出口出來就是京義線林道，沿著公園往北走，早餐路上找咖啡廳。這一帶小店多半 11–12 點才開，연남필름 10:00 開可以先去。11:45 往午餐走。",
+          "note": "弘大入口 3 號出口出來就是京義線林道，沿著公園往北走，早餐路上找咖啡廳。這一帶小店多半 11–12 點才開，연남필름 10:00 開可以先去。11:40 往午餐走。",
           "map_query": "경의선숲길 연남동",
           "duration": "2h30m",
           "priority": "optional",
-          "next_transit": "步行約 10 分到연남그곳",
+          "next_transit": "步行約 5 分到온행",
           "naver_query": "경의선숲길 연남동",
           "shops": [
             {
@@ -560,21 +560,21 @@
         },
         {
           "time": "11:45",
-          "name": "午餐：연남그곳 延南那裡（明太子海帶湯定食）",
+          "name": "午餐：온행 溫行（鍋巴雞湯）",
           "type": "餐廳",
-          "note": "招牌明太子海帶湯定食（명란미역국），11:00 開，15:00–16:00 休息。",
-          "map_query": "연남그곳 서울 마포구 연희로1길 19",
+          "note": "一人一份的雞湯定食：鍋巴蔘雞白飯（누룽지 삼계백반）、清燉雞湯（닭곰탕）、雞湯刀削麵，湯裡加了店家自己做的鍋巴；加點雞肉手工餃子、涼拌雞。11:30 開。備選：연남그곳 明太子海帶湯。",
+          "map_query": "온행 서울 마포구 동교로52길 4-3",
           "duration": "1h",
           "priority": "must",
           "next_transit": "步行約 15 分到西橋洞（out of all）",
-          "naver_query": "연남그곳",
+          "naver_query": "온행 연남",
           "photo": {
-            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sf0A70-zdsJYdSGsq7GIY1RLhy9w3Eq1yCQF_XqPRnuPyZfIvJTMKsst0IwgexToR8_mLs5SQE1TkAvPEB-4Hxyylsge6uFVhETxtKVn5JXKUNjJSDkDr2wuFIOuAMBiXDcNJ8-jdz62s=w900-k-no-rw",
-            "alt": "定食托盤：雜糧飯、燉肉、玉子燒和小菜",
-            "credit": "圖：연남그곳（店家）／Google 地圖（2025/5）"
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rusf0JgRYhFPMZdtXUAbxMUmC_b8grFwB6rD4CSblSzpKCj604rGTMOy0M0veS5xKdqcxX9gGQ_04CjSG1tMPESkjeose0cGLWMaKxhQ9Vkx-9dDbzkn0QqJZvl2sNkoFxrkRuQNz-LW5q=w900-k-no",
+            "alt": "一碗清燉雞湯，旁邊是涼拌雞和泡菜小菜",
+            "credit": "圖：H D／Google 地圖（2026/10）"
           },
           "booking": {
-            "hours": "週二–五 11:00–20:00（15:00–16:00 休息，Naver）"
+            "hours": "週一–五 11:30–21:00（15:00–17:00 休息，14:30 最後點餐）、週六到 20:00、週日休（Naver）"
           }
         },
         {
