@@ -319,9 +319,9 @@
     },
     {
       "date": "2026-11-05",
-      "theme": "南怡島（水杉路・銀杏）・韓屋辣炒雞排・Snow Peak・無垢屋・EQL・首爾林跑步店",
+      "theme": "南怡島（水杉路・銀杏）・韓屋辣炒雞排・Snow Peak・海帶湯或炸醬麵・EQL・首爾林跑步店",
       "weather": "加平約 2–14°C，比首爾冷 2–3 度，島上江邊風大；發熱衣、圍巾都帶",
-      "note": "平日去人比較少，不用早起，09:00 出門。去程 7 號線＋京春線都刷 T-money，不用先買票；進島可以坐渡輪或滑索，回建大順路逛 Snow Peak，接著去聖水吃無垢屋",
+      "note": "平日去人比較少，不用早起，09:00 出門。去程 7 號線＋京春線都刷 T-money，不用先買票；進島可以坐渡輪或滑索，回建大順路逛 Snow Peak，接著去聖水吃晚餐",
       "items": [
         {
           "time": "09:00",
@@ -392,28 +392,40 @@
         },
         {
           "time": "17:35",
-          "name": "晚餐：무구옥 無垢屋 聖水店",
+          "name": "晚餐：海帶湯定食 或 炸醬麵（到時候決定）",
           "type": "餐廳",
-          "note": "北韓式蔘雞白飯（이북식 삼계백반），17:30 開門，可先用 Catch Table 遠端候位；吃完走 3 分到 EQL。",
-          "booking": {
-            "hours": "11:30–21:00（休息 15:00–17:30）"
-          },
-          "map_query": "무구옥 성수점 아차산로11길 11",
+          "note": "兩家都在聖水站旁、不用訂位，到了再決定。풍조미역是韓國人常去的海帶湯定食，配烤魚和一排小菜；보배반점是老派韓式中華，乾炒炸醬、古早味炸醬，三個人可以加一盤糖醋肉。",
+          "map_query": "풍조미역 성수본점 성수일로8길 60",
           "duration": "1h",
           "priority": "must",
-          "next_transit": "步行約 3 分到 EQL 聖水",
-          "naver_query": "무구옥 성수점",
+          "next_transit": "步行 3–8 分到 EQL 聖水",
+          "naver_query": "풍조미역 성수본점",
+          "shops": [
+            {
+              "name": "풍조미역 風潮海帶（海帶湯定食）",
+              "info": "聖水站 2 號出口走 1 分，성수일로8길 60・11:00–23:00",
+              "naver_query": "풍조미역 성수본점"
+            },
+            {
+              "name": "보배반점 寶貝飯店（炸醬麵）",
+              "info": "聖水站 4 號出口走約 6 分，성수이로7길 27・11:00–22:00・常排隊但翻桌快",
+              "naver_query": "보배반점 성수점"
+            }
+          ],
           "photo": {
-            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S_PProsJd8G2fPyZ-nmFrEYJ46xcQlgvBFj8CUMnAbWUcxA1RkauM8MvqzDTKmKNe6zqQTF5XJ8bbzRA0wK2M9eSpBHHYoENJo8MKykSAob9-Inf9oMeZ-QdLHrXFyZ853U5JQGzKcjDeo=w900-k-no-rw",
-            "alt": "蔘雞白飯：雞湯、手撕雞肉和白飯",
-            "credit": "圖：무구옥 성수점（店家）／Google 地圖（2025/9）"
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q8XnDCXYSCDXC6tv1vYZjmIop8A6IYzbAL5nSNqvj8YUNuoaKwpNyKHVgq_ENGaCaFZZE-RmoJyoGrF6IRXgVROJN1PA77-K0TuvPFGBLKXFSgEyPcvqA2u9nDAiD39auZVHUflWd5E00I=w900-k-no",
+            "alt": "一碗海帶湯，旁邊是白飯、烤魚和一排小菜",
+            "credit": "圖：Chloe Wang／Google 地圖（2026/10）"
+          },
+          "booking": {
+            "hours": "풍조미역 11:00–23:00、보배반점 11:00–22:00（週四，Naver）"
           }
         },
         {
           "time": "18:40",
           "name": "聖水・首爾林自由逛",
           "type": "購物",
-          "note": "無垢屋走 3 分就是 EQL；首爾林三家跑步店在纛島站一帶（聖水站坐 2 號線 1 站，或走 20 分）。EQL 和 goodrunner 都 20:00 關，先逛這兩家，FILA、Musinsa Run 開到 21:00 放最後。",
+          "note": "吃完走到 EQL 約 3–8 分；首爾林三家跑步店在纛島站一帶（聖水站坐 2 號線 1 站，或走 20 分）。EQL 和 goodrunner 都 20:00 關，先逛這兩家，FILA、Musinsa Run 開到 21:00 放最後。",
           "map_query": "서울 성동구 서울숲2길",
           "duration": "2h",
           "priority": "optional",
@@ -1616,7 +1628,7 @@
     {
       "day": 2,
       "when": "傍晚",
-      "route": "建大入口 → 聖水（無垢屋）",
+      "route": "建大入口 → 聖水（晚餐）",
       "at": "16:50",
       "options": [
         {
@@ -1626,11 +1638,11 @@
           "line": "2 號線 建大入口（건대입구）→ 聖水（성수），1 站",
           "line_color": "#00a84d",
           "platform": "建大入口站 2 號線（高架），往「聖水（성수）」方向月台",
-          "time": "步行到站 4 分＋地鐵 2 分＋步行 5 分",
+          "time": "步行到站 4 分＋地鐵 2 分＋步行 1–6 分",
           "fare": "₩1,550／人",
           "headway": "約 5 分一班",
           "minutes": 15,
-          "warn": "無垢屋 17:30 開門，可以先用 Catch Table 遠端候位；逛完 Snow Peak 17:30 前後出發剛好",
+          "warn": "兩家都不用訂位；逛完 Snow Peak 17:30 前後出發剛好",
           "from": "建大入口站",
           "to": "聖水站",
           "from_ll": "37.540363,127.069266",
@@ -1648,9 +1660,16 @@
               "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
-              "text": "聖水下車，走約 5 分到無垢屋",
-              "img": "img/mugu-ok-seongsu.jpg",
-              "alt": "無垢屋聖水店一帶（Kakao 로드뷰 2026 年 6–7 月）"
+              "text": "吃海帶湯：聖水站 2 號出口出來，走 1 分（約 80m）就是풍조미역",
+              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLf1yQ9gzl_ZWh_qGd9nB1xSP2OjeIHpYtQN2oRA0Wxxo8IxrCMCXSt5FM6-qDrTynto7Wg81CAecaQGWOZFd5hRKDPIQzEE2d9DYLRkRlHFEOSpzBQ-8FJ1WT8wYVitnHnAK_la=w900-k-no",
+              "alt": "풍조미역聖水本店的藍色招牌和木門",
+              "credit": "圖：Zoe Kim／Google 地圖（2025/5）"
+            },
+            {
+              "text": "吃炸醬麵：4 號出口出來往南走約 6 分（約 400m），서울숲코오롱디지털타워 2 차 1 樓",
+              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLeFGKI3I67VyQEkhT_4u7HdnXdO84BPosWyX0LKL17swqGNcIOgAsaOlChDl3TWDJNRZezENzvTKdx7bcO104JWG9EswjwsMUPKy5xvkSP0VusS62LNq0dLMACofuxN3DM7e86YPAhCc5k=w900-k-no",
+              "alt": "보배반점聖水店門口的白色招牌和排隊人潮",
+              "credit": "圖：YOYO TSENG／Google 地圖（2026/3）"
             }
           ]
         }
