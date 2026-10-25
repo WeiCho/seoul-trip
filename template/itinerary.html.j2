@@ -571,7 +571,7 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .em-photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:8px}
 /* 商品圖多半是直的包裝照，整張放進來不裁 */
 .buy-photo img{aspect-ratio:auto;max-height:62vh;object-fit:contain}
-.buy-ko{margin-top:6px;font-size:18px;font-weight:500;letter-spacing:.02em}
+.buy-ko{margin-top:6px;word-break:keep-all;font-size:18px;font-weight:500;letter-spacing:.02em}
 .em-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:13.5px}
 .em-meta dt{color:var(--muted)}
 .em-meta dd{margin:0}
@@ -1199,13 +1199,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <li>
       <button type="button" class="wl-btn" data-dlg="{{ sid }}" aria-haspopup="dialog">
         <span class="wl-name">{{ s.name }}</span>
-        {%- if s.ko %}<span class="wl-sub" lang="ko">{{ s.ko }}</span>{% endif %}
+        {%- if s.where %}<span class="wl-sub"><span class="area">{{ s.where }}</span></span>{% endif %}
       </button>
       <dialog class="em-dlg info-dlg" id="{{ sid }}" aria-labelledby="{{ sid }}-t">
         <div class="em-dlg-in">
           {%- if s.img %}<figure class="em-photo buy-photo"><img src="{{ s.img }}" alt="{{ s.name }}" loading="lazy" decoding="async"></figure>{% endif %}
           <h3 id="{{ sid }}-t" tabindex="-1" autofocus>{{ s.name }}</h3>
           {%- if s.ko %}<p class="buy-ko" lang="ko">{{ s.ko }}</p>{% endif %}
+          {%- if s.where %}
+          <dl class="em-meta"><dt>哪裡買</dt><dd>{{ s.where }}{% if s.where_ko %}（<span lang="ko">{{ s.where_ko }}</span>）{% endif %}</dd></dl>
+          {%- endif %}
           <button type="button" class="em-close" data-em-close>關閉</button>
         </div>
       </dialog>
