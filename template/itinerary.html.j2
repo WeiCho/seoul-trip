@@ -531,6 +531,7 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .pack-items input:checked{background:var(--sky);border-color:var(--sky)}
 .pack-items input:checked::after{opacity:1}
 .pack-items input:checked+span{color:var(--soft);text-decoration:line-through}
+.pack-link{white-space:nowrap;color:var(--sky-d);text-decoration:underline;text-underline-offset:3px}
 
 /* ── 緊急：參考站的黑色頁尾——左邊字標與一句說明，右邊一欄一欄的名稱 ── */
 #emergency{position:relative;margin-top:clamp(64px,10vh,120px);color:var(--on-black)}
@@ -1265,7 +1266,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <div class="pack-group">
       {% if group.group %}<h3>{{ group.group }}</h3>{% endif %}
       <ul class="pack-items">
-      {% for it in group["items"] %}<li><label><input type="checkbox" data-pack="{{ group.group }}:{{ loop.index }}"><span>{{ it }}</span></label></li>{% endfor %}
+      {#- 項目可以是字串，或 {text, url, link}：後面多一個開官網的連結 -#}
+      {% for it in group["items"] %}<li><label><input type="checkbox" data-pack="{{ group.group }}:{{ loop.index }}"><span>{% if it is mapping %}{{ it.text }}{% if it.url %} <a class="pack-link" href="{{ it.url }}" target="_blank" rel="noopener">{{ it.link or "開網頁" }} ↗</a>{% endif %}{% else %}{{ it }}{% endif %}</span></label></li>{% endfor %}
       </ul>
     </div>
     {% endfor %}

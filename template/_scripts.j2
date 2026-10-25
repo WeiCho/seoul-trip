@@ -1023,8 +1023,12 @@
       box.innerHTML = "";
       arr.forEach(function(s, i){
         var row = document.createElement("div"); row.className = "ed-strrow";
-        var inp = document.createElement("textarea"); inp.value = s;
-        inp.addEventListener("input", function(){ arr[i] = inp.value; touch(); });
+        // 帶連結的項目（{text, url}）只改文字，連結保留
+        var inp = document.createElement("textarea"); inp.value = (s && typeof s === "object") ? s.text : s;
+        inp.addEventListener("input", function(){
+          if (arr[i] && typeof arr[i] === "object") arr[i].text = inp.value; else arr[i] = inp.value;
+          touch();
+        });
         var del = document.createElement("button"); del.className = "ed-del"; del.type = "button"; del.textContent = "刪除";
         del.addEventListener("click", function(){ arr.splice(i, 1); touch(); redraw(); });
         row.appendChild(inp); row.appendChild(del); box.appendChild(row);
