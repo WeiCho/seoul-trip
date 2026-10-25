@@ -2837,5 +2837,12 @@
       "11/8 要爬峨嵯山，不建議再跑。"
     ],
     "credit": "路線用 OpenStreetMap 步行路網算出，距離四捨五入到 0.1 km。地圖 © OpenStreetMap contributors。"
-  }
+  },
+  "shopping": [
+    {
+      "name": "JW 中外製藥 Friends 眼藥水",
+      "ko": "JW중외제약 프렌즈 아이드롭 점안액",
+      "img": "https://cdn.shopify.com/s/files/1/0750/1211/2701/files/F682279B-A56E-4E9C-B472-CC3847307E0E.jpg?width=900"
+    }
+  ]
 }

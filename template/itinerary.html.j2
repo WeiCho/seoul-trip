@@ -569,6 +569,9 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .info-dlg .em-close{margin-top:18px}
 .em-photo{margin:0 0 16px}
 .em-photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:8px}
+/* 商品圖多半是直的包裝照，整張放進來不裁 */
+.buy-photo img{aspect-ratio:auto;max-height:62vh;object-fit:contain}
+.buy-ko{margin-top:6px;font-size:18px;font-weight:500;letter-spacing:.02em}
 .em-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:13.5px}
 .em-meta dt{color:var(--muted)}
 .em-meta dd{margin:0}
@@ -731,6 +734,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       {%- if transit %}<a href="#transit">交通</a>{% endif %}
       {%- if runs.routes %}<a href="#run">跑步</a>{% endif %}
       {%- if wishlist %}<a href="#wishlist">口袋名單</a>{% endif %}
+      {%- if shopping %}<a href="#shopping">購買清單</a>{% endif %}
       <a href="#budget">花費</a>
       {%- if trip.packing %}<a href="#packing">出發前檢查</a>{% endif %}
       {%- if trip.emergency %}<a class="nav-urgent" href="#emergency">緊急聯絡</a>{% endif %}
@@ -743,6 +747,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           {%- if transit %}<a href="#transit">交通{{ pill() }}</a>{% endif %}
           {%- if runs.routes %}<a href="#run">跑步{{ pill() }}</a>{% endif %}
           {%- if wishlist %}<a href="#wishlist">口袋名單{{ pill() }}</a>{% endif %}
+          {%- if shopping %}<a href="#shopping">購買清單{{ pill() }}</a>{% endif %}
           <a href="#budget">花費{{ pill() }}</a>
           {%- if trip.packing %}<a href="#packing">出發前檢查{{ pill() }}</a>{% endif %}
         </div>
@@ -1181,6 +1186,34 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 </section>
 </div>
+{% endif %}
+
+{# ── 購買清單：只列名字，點開是商品圖＋中韓文名（拿給店員看） ── #}
+{% if shopping %}
+<section class="section" id="shopping">
+  <div class="section-heading">
+    <h2>購買清單</h2>
+  </div>
+  <ul class="wl">
+  {%- for s in shopping %}
+    {%- set sid = "buy-" ~ loop.index %}
+    <li>
+      <button type="button" class="wl-btn" data-dlg="{{ sid }}" aria-haspopup="dialog">
+        <span class="wl-name">{{ s.name }}</span>
+        {%- if s.ko %}<span class="wl-sub" lang="ko">{{ s.ko }}</span>{% endif %}
+      </button>
+      <dialog class="em-dlg info-dlg" id="{{ sid }}" aria-labelledby="{{ sid }}-t">
+        <div class="em-dlg-in">
+          {%- if s.img %}<figure class="em-photo buy-photo"><img src="{{ s.img }}" alt="{{ s.name }}" loading="lazy" decoding="async"></figure>{% endif %}
+          <h3 id="{{ sid }}-t" tabindex="-1" autofocus>{{ s.name }}</h3>
+          {%- if s.ko %}<p class="buy-ko" lang="ko">{{ s.ko }}</p>{% endif %}
+          <button type="button" class="em-close" data-em-close>關閉</button>
+        </div>
+      </dialog>
+    </li>
+  {%- endfor %}
+  </ul>
+</section>
 {% endif %}
 
 {# ── 花費＋檢查：天藍漸層大板 ── #}

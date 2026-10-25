@@ -729,6 +729,8 @@ def enrich(data):
         "runs": runs,
         "wishlist": wishlist,
         "wishlist_groups": wishlist_groups,
+        # 要買的東西：列表只有名字，點開看圖（中文＋韓文名，拿給店員看）
+        "shopping": data.get("shopping") or [],
         "highlights": data.get("highlights") or [],
         "pending": pending,
         "warnings": warnings,
