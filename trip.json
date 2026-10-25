@@ -62,11 +62,10 @@
         "items": [
           "護照（效期 6 個月以上）",
           {
-            "text": "電子入境卡 e-Arrival Card：抵達前 72 小時內才能填（11/1 下午 2:40 以後），免費，三人各填一份",
+            "text": "e-Arrival Card：",
             "url": "https://www.e-arrivalcard.go.kr/",
-            "link": "官方申請網頁"
+            "link": "www.e-arrivalcard.go.kr"
           },
-          "K-ETA 不用辦：台灣護照免申請到 2026/12/31",
           "機票電子行程單",
           "Airbnb 地址與入住指引（截圖存手機）",
           "旅遊保險資料"
