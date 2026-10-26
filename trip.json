@@ -541,7 +541,7 @@
       "date": "2026-11-06",
       "theme": "延南洞・龍山・弘大",
       "weather": "首爾約 6–15°C",
-      "note": "08:30 出門。早上在延南、弘大，下午到龍山・梨泰院，晚上回弘大吃韓牛。14:00 起可以分頭：要逛 ayadz、flots、延禧洞的留在延南（ayadz 週五 14:00 才開）；要逛 LOFA、APMA、kamadeva 的跟去龍山；18:30 在한우다움會合",
+      "note": "08:30 出門。早上在延南、弘大，下午到龍山・梨泰院，晚上回弘大吃韓牛。13:45 起可以分頭：要逛 ayadz、flots、延禧洞的留在延南（ayadz 週五 14:00 才開）；要逛 LOFA、APMA、kamadeva 的跟去龍山；18:30 在한우다움會合",
       "items": [
         {
           "time": "08:30",
@@ -556,9 +556,9 @@
         },
         {
           "time": "09:15",
-          "name": "延南洞自由逛（上午）",
+          "name": "延南・弘大自由逛",
           "type": "購物",
-          "note": "弘大入口 3 號出口出來就是京義線林道，沿著公園往北走，早餐路上找咖啡廳。這一帶小店多半 11–12 點才開，연남필름 10:00 開可以先去。11:40 往午餐走。",
+          "note": "弘大入口 3 號出口出來就是京義線林道，往北逛延南（연남필름 10:00 開，其他小店多半 11–12 點才開），11:40 往午餐走；吃完往南走 15 分到西橋 out of all。13:45 起分頭：去龍山的從上水站出發，留下的逛 ayadz、延禧洞，18:30 在한우다움會合。",
           "map_query": "경의선숲길 연남동",
           "duration": "2h30m",
           "priority": "optional",
@@ -576,13 +576,23 @@
             },
             {
               "name": "ayadz studio",
-              "info": "성미산로31길 13，2 樓・週四–日 14:00–20:00・早上還沒開，下午留在延南的人再去",
+              "info": "성미산로31길 13，2 樓・週四–日 14:00–20:00・下午留在延南的人再去",
               "naver_query": "아야즈스튜디오"
+            },
+            {
+              "name": "out of all 西橋（跑步）",
+              "info": "잔다리로3안길 11・12:00–21:00・影片裡那棟木造建築，跑鞋、跑步服很齊",
+              "naver_query": "아웃오브올 서교점"
             },
             {
               "name": "京義線林道（연트럴파크）",
               "info": "弘大入口 3 號出口・公園步道，兩旁咖啡廳和麵包店",
               "naver_query": "경의선숲길 연남동"
+            },
+            {
+              "name": "延禧洞散步",
+              "info": "從延南洞穿過地下道約 15 分・選物店、書店、咖啡廳都小小的",
+              "naver_query": "서울 서대문구 연희동 190-21"
             }
           ],
           "photo": {
@@ -599,7 +609,7 @@
           "map_query": "온행 서울 마포구 동교로52길 4-3",
           "duration": "1h",
           "priority": "must",
-          "next_transit": "步行約 15 分到西橋洞（out of all）",
+          "next_transit": "步行約 15 分到西橋 out of all；13:45 從上水站搭 6 號線 5 站到三角地，約 25 分",
           "naver_query": "온행 연남",
           "photo": {
             "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rusf0JgRYhFPMZdtXUAbxMUmC_b8grFwB6rD4CSblSzpKCj604rGTMOy0M0veS5xKdqcxX9gGQ_04CjSG1tMPESkjeose0cGLWMaKxhQ9Vkx-9dDbzkn0QqJZvl2sNkoFxrkRuQNz-LW5q=w900-k-no",
@@ -608,39 +618,6 @@
           },
           "booking": {
             "hours": "週一–五 11:30–21:00（15:00–17:00 休息，14:30 最後點餐）、週六到 20:00、週日休（Naver）"
-          }
-        },
-        {
-          "time": "12:50",
-          "name": "弘大・西橋自由逛",
-          "type": "購物",
-          "note": "吃完往南走到西橋洞的 out of all。14:00 起分頭：要去龍山的從上水站出發；想逛 ayadz、延禧洞的留在延南，18:30 在한우다움會合。",
-          "map_query": "아웃오브올 서교점",
-          "duration": "1h",
-          "priority": "optional",
-          "next_transit": "上水站 6 號線 5 站到三角地，約 25 分",
-          "naver_query": "아웃오브올 서교점",
-          "shops": [
-            {
-              "name": "out of all 西橋（跑步）",
-              "info": "잔다리로3안길 11・12:00–21:00・影片裡那棟木造建築，跑鞋、跑步服很齊",
-              "naver_query": "아웃오브올 서교점"
-            },
-            {
-              "name": "ayadz studio",
-              "info": "延南，성미산로31길 13 2 樓・14:00 開",
-              "naver_query": "아야즈스튜디오"
-            },
-            {
-              "name": "延禧洞散步",
-              "info": "從延南洞穿過地下道約 15 分・選物店、書店、咖啡廳都小小的",
-              "naver_query": "서울 서대문구 연희동 190-21"
-            }
-          ],
-          "photo": {
-            "img": "img/p-hongdae.jpg",
-            "alt": "弘大街頭，招牌和霓虹燈",
-            "credit": "圖：lumoplank／Wikimedia Commons（CC0）"
           }
         },
         {
@@ -1847,7 +1824,7 @@
       "day": 3,
       "when": "中午",
       "route": "out of all 西橋 → 三角地（pixel per inch）",
-      "at": "12:50",
+      "at": "13:45",
       "options": [
         {
           "label": "6 號線 5 站",
