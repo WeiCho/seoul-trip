@@ -55,7 +55,6 @@
   try{
   var t=localStorage.getItem("theme")||(window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
   d.setAttribute("data-theme",t);
-  if(localStorage.getItem("textsize")==="large")d.setAttribute("data-theme-size","large");
 }catch(e){d.setAttribute("data-theme","light");}})();
 </script>
 <style>
@@ -144,13 +143,13 @@ html.scrolled .sticky-nav::before{opacity:1}
   position:absolute;right:0;top:calc(100% + 8px);min-width:220px;display:grid;gap:6px;padding:14px;
   background:var(--card);border-radius:var(--r);box-shadow:0 20px 40px -18px rgba(41,45,51,.35);
 }
-.drawer-links{display:none}
-.nav-tool{
-  min-height:44px;border:1px solid var(--line);border-radius:6px;background:none;color:var(--ink);
-  font-family:var(--latin);font-size:13px;letter-spacing:.14em;cursor:pointer;transition:border-color .3s,background .3s;
-}
-.nav-tool:hover{border-color:var(--ink)}
-.nav-tool[aria-pressed="true"]{background:var(--sky-t);border-color:var(--sky)}
+/* 三條線只在手機出現，裡面只放章節連結；桌機的章節都在頂列上 */
+.nav-tools{display:none}
+/* 深色切換：頂列一顆小圖示，不收進選單 */
+.theme-btn{display:grid;place-items:center;width:40px;height:40px;margin:0 -6px;background:none;border:0;border-radius:50%;color:var(--ink);cursor:pointer}
+.theme-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.theme-btn .i-sun,[data-theme="dark"] .theme-btn .i-moon{display:none}
+[data-theme="dark"] .theme-btn .i-sun{display:inline}
 
 /* 右下角直式浮標：參考站的「物件情報」，這裡跳到交通 */
 .float-tab{
@@ -629,16 +628,11 @@ body.editing>#editor{display:block !important}
 .draft-banner{width:min(920px,100% - 40px);margin:22px auto 0;background:var(--sky-t);border-radius:var(--r);padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .draft-banner span{flex:1;font-size:14px;min-width:60%}
 
-/* ── 大字模式 ── */
-[data-theme-size="large"] body{font-size:17.5px}
-[data-theme-size="large"] .stop .desc,[data-theme-size="large"] .wl-note,[data-theme-size="large"] .tr-meta dd{font-size:16.5px;color:var(--ink)}
-[data-theme-size="large"] .stop h4,[data-theme-size="large"] .wl-name{font-size:19px}
-[data-theme-size="large"] .stop time{font-size:23px}
-
 /* ── RWD ── */
 @media (width<=980px){
   .nav-links a:not(.nav-urgent){display:none}
-  .drawer-links{display:grid;gap:2px;padding-bottom:8px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+  .nav-tools{display:block}
+  .drawer-links{display:grid;gap:2px}
   .drawer-links a{display:flex;align-items:center;justify-content:space-between;min-height:46px;text-decoration:none;font-size:15px;letter-spacing:.1em}
   .day-grid{grid-template-columns:minmax(0,1fr)}
   .day-aside{position:static}
@@ -656,7 +650,6 @@ body.editing>#editor{display:block !important}
   .stop time{font-size:15.5px}
   .stop-name{font-size:15.5px}
   .float-tab{display:none}
-  .nav-tool[data-toggle="edit"]{display:none}
   .day-aside{padding:18px;box-shadow:0 10px 30px -24px rgba(41,45,51,.5)}
   .day-name{font-size:17px}
   /* 交通：照片只鋪在標題區，路線卡放回淺色底 */
@@ -741,6 +734,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       {%- if trip.packing %}<a href="#packing">出發前檢查</a>{% endif %}
       {%- if trip.emergency %}<a class="nav-urgent" href="#emergency">緊急聯絡</a>{% endif %}
     </div>
+    <button class="theme-btn" type="button" data-toggle="theme" aria-pressed="false" aria-label="切換深色模式"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/><g class="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button>
     <div class="nav-tools">
       <button class="tools-toggle" id="tools-toggle" type="button" aria-expanded="false" aria-controls="tools-menu" aria-label="開啟工具選單"><i></i><i></i><i></i></button>
       <div class="tools-menu" id="tools-menu">
@@ -753,9 +747,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           <a href="#budget">花費{{ pill() }}</a>
           {%- if trip.packing %}<a href="#packing">出發前檢查{{ pill() }}</a>{% endif %}
         </div>
-        <button class="nav-tool" type="button" data-toggle="edit" aria-label="編輯行程資料">EDIT</button>
-        <button class="nav-tool" type="button" data-toggle="theme" aria-pressed="false" aria-label="切換深色模式">DARK</button>
-        <button class="nav-tool" type="button" data-toggle="size" aria-pressed="false" aria-label="切換大字模式">A+ 大字</button>
       </div>
     </div>
   </div>

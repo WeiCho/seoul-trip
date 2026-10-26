@@ -386,20 +386,14 @@
     todayMode(new Date());
   }
 
-  // 深色 / 大字 切換（偏好記在 localStorage；亮色與一般字為預設）
+  // 深色切換（偏好記在 localStorage；沒設過就跟系統）
   var root = document.documentElement;
   var themeBtn = document.querySelector('[data-toggle="theme"]');
-  var sizeBtn = document.querySelector('[data-toggle="size"]');
   function syncTools(){
     if (themeBtn){
       var dark = root.getAttribute("data-theme") === "dark";
       themeBtn.setAttribute("aria-pressed", dark ? "true" : "false");
-      themeBtn.textContent = dark ? "LIGHT" : "DARK";
       themeBtn.setAttribute("aria-label", dark ? "切換淺色模式" : "切換深色模式");
-    }
-    if (sizeBtn){
-      var large = root.getAttribute("data-theme-size") === "large";
-      sizeBtn.setAttribute("aria-pressed", large ? "true" : "false");
     }
   }
   syncTools();
@@ -409,17 +403,6 @@
     try { localStorage.setItem("theme", next); } catch (e) {}
     syncTools();
   });
-  if (sizeBtn) sizeBtn.addEventListener("click", function(){
-    var large = root.getAttribute("data-theme-size") === "large";
-    if (large){ root.removeAttribute("data-theme-size"); }
-    else { root.setAttribute("data-theme-size", "large"); }
-    try { localStorage.setItem("textsize", large ? "normal" : "large"); } catch (e) {}
-    syncTools();
-  });
-  var editBtn = document.querySelector('[data-toggle="edit"]');
-  if (editBtn) editBtn.addEventListener("click", function(){
-    window.open(location.pathname + "?edit=1", "_blank");
-  });
 
   // 所有外部連結一律另開分頁（# 頁內跳轉維持原分頁）
   Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function(a){
@@ -427,7 +410,7 @@
     if (h && h.charAt(0) !== "#") { a.target = "_blank"; a.rel = "noopener"; }
   });
 
-  // ── 工具列：三顆鈕收在三條線圖示裡 ──
+  // ── 手機選單：章節連結收在三條線裡 ──
   var toolsToggle = document.getElementById("tools-toggle");
   var toolsMenu = document.getElementById("tools-menu");
   if (toolsToggle && toolsMenu) {
