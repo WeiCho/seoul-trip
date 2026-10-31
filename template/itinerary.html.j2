@@ -162,6 +162,17 @@ html.scrolled .sticky-nav::before{opacity:1}
 .float-tab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5}
 .float-tab span{writing-mode:vertical-rl}
 .float-tab:hover{transform:translateY(-4px)}
+button.float-tab{border:0;font-family:inherit;cursor:pointer}
+/* 交通只在封面出現、穿著只在行程出現；同一個位置，捲到哪段換哪顆 */
+.js .float-tab{transition:transform .5s var(--out),opacity .3s,visibility .3s}
+.js .float-tab:not(.is-on){opacity:0;visibility:hidden;transform:translateY(12px)}
+/* 穿著彈窗：依最低溫分四級，下面列這趟每天落在哪一級 */
+.wear-list{list-style:none;margin:14px 0 0;padding:0;font-size:14px}
+.wear-list li{display:grid;grid-template-columns:5.5em minmax(0,1fr);gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.wear-list b{font-family:var(--latin);font-weight:500;color:var(--sky-d)}
+.wear-days li{grid-template-columns:5.5em 5.5em minmax(0,1fr)}
+.wear-days span{font-family:var(--latin);color:var(--muted)}
+.wear-h{margin-top:20px;font-size:12.5px;letter-spacing:.14em;color:var(--muted)}
 
 /* ── 封面：左邊細體英文＋一行中文，右邊彎曲照片帶 ── */
 .hero{
@@ -762,6 +773,40 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </a>
 {% endif %}
 
+{#- 穿著：看最低溫分級（早晚出門那段最冷），地鐵、商場暖氣強，所以裡薄外厚 -#}
+{%- set WEAR = [(12, "薄外套", "薄長袖＋風衣或牛仔外套", "12°C 以上"),
+                (7, "針織／風衣", "長袖＋針織或風衣，圍巾帶著", "7–11°C"),
+                (3, "厚外套", "薄長袖或薄針織＋羽絨或厚大衣、圍巾", "3–6°C"),
+                (-99, "發熱衣＋羽絨", "薄發熱衣＋薄長袖＋羽絨，圍巾、手套", "2°C 以下")] %}
+<button class="float-tab float-wear" type="button" data-dlg="wear-dlg" aria-haspopup="dialog" aria-label="看怎麼穿">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 4 6l-1 6 3 1v8h12v-8l3-1-1-6-5-3c0 1.7-1.3 3-3 3S9 4.7 9 3Z"/></svg>
+  <span>穿著</span>
+</button>
+<dialog class="em-dlg info-dlg" id="wear-dlg" aria-labelledby="wear-dlg-t">
+  <div class="em-dlg-in">
+    <p class="dlg-kicker">Layering</p>
+    <h3 id="wear-dlg-t" tabindex="-1" autofocus>怎麼穿</h3>
+    <p class="em-desc">地鐵、商場暖氣很強，不要洋蔥式穿很多層：裡面薄、外面一件厚外套，進室內就拉開或脫下拿著。早晚比中午冷 6–10 度，照最低溫選外套。</p>
+    <ul class="wear-list">
+    {%- for t, label, how, range in WEAR %}
+      <li><b>{{ range }}</b><div>{{ how }}</div></li>
+    {%- endfor %}
+    </ul>
+    {%- set wdays = days | selectattr("forecast") | list %}
+    {%- if wdays %}
+    <p class="wear-h">這趟每天</p>
+    <ul class="wear-list wear-days">
+    {%- for d in wdays %}
+      {%- set lo = d.forecast.tmin %}
+      {%- set band = WEAR | selectattr(0, "le", lo) | first %}
+      <li><b>{{ d.date_short }} {{ d.weekday }}</b><span>{{ lo }}–{{ d.forecast.tmax }}°C</span><div>{{ band[1] }}</div></li>
+    {%- endfor %}
+    </ul>
+    {%- endif %}
+    <button type="button" class="em-close" data-em-close>關閉</button>
+  </div>
+</dialog>
+
 <header class="hero" id="top">
   <div class="hero-copy">
     <h1>Have a good trip<br>in {{ (trip.hero_en or "Seoul") | title }}.</h1>
@@ -1343,6 +1388,22 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open", "");
   });
 });
+/* 右下浮標：畫面中間是封面就出交通，是行程就出穿著 */
+(function(){
+  var pairs = [[document.getElementById("top"), document.querySelector(".float-tab:not(.float-wear)")],
+               [document.getElementById("itinerary"), document.querySelector(".float-wear")]]
+    .filter(function(p){ return p[0] && p[1]; });
+  if (!pairs.length || !("IntersectionObserver" in window)) {
+    pairs.forEach(function(p){ p[1].classList.add("is-on"); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      pairs.forEach(function(p){ if (p[0] === e.target) p[1].classList.toggle("is-on", e.isIntersecting); });
+    });
+  }, {rootMargin:"-45% 0px -45% 0px"});
+  pairs.forEach(function(p){ obs.observe(p[0]); });
+})();
 </script>
 <script>
 /* 頂列：一捲動就加上半透明底，蓋在內容上也看得清楚 */
