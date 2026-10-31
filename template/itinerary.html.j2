@@ -173,6 +173,11 @@ button.float-tab{border:0;font-family:inherit;cursor:pointer}
 .wear-days li{grid-template-columns:5.5em 5.5em minmax(0,1fr)}
 .wear-days span{font-family:var(--latin);color:var(--muted)}
 .wear-h{margin-top:20px;font-size:12.5px;letter-spacing:.14em;color:var(--muted)}
+/* 一般／登山裝備切換：兩種穿法都輸出，靠 data-mode 只顯示一種 */
+.wear-seg{display:inline-flex;margin:14px 0 4px;padding:3px;border-radius:999px;background:var(--sage)}
+.wear-seg button{min-height:34px;padding:0 16px;border:0;border-radius:999px;background:none;color:var(--muted);font:inherit;font-size:13.5px;cursor:pointer}
+.wear-seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 2px 6px -3px rgba(41,45,51,.35)}
+.wear-dlg[data-mode="city"] .w-gear,.wear-dlg[data-mode="gear"] .w-city{display:none}
 
 /* ── 封面：左邊細體英文＋一行中文，右邊彎曲照片帶 ── */
 .hero{
@@ -775,22 +780,28 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 {% endif %}
 
 {#- 穿著：看最低溫分級（早晚出門那段最冷），地鐵、商場暖氣強，所以裡薄外厚 -#}
-{%- set WEAR = [(12, "薄外套", "薄長袖＋風衣或牛仔外套", "12°C 以上"),
-                (7, "針織／風衣", "長袖＋針織或風衣，圍巾帶著", "7–11°C"),
-                (3, "厚外套", "薄長袖或薄針織＋羽絨或厚大衣、圍巾", "3–6°C"),
-                (-99, "發熱衣＋羽絨", "薄發熱衣＋薄長袖＋羽絨，圍巾、手套", "2°C 以下")] %}
+{#- 每級：(最低溫門檻, 溫度帶, 一般穿法, 一般簡稱, 登山裝備穿法, 登山簡稱) -#}
+{%- set WEAR = [(12, "12°C 以上", "薄長袖＋風衣或牛仔外套", "薄外套", "排汗長袖＋防風外套（軟殼或風衣）", "排汗衣＋防風"),
+                (7, "7–11°C", "長袖＋針織或風衣，圍巾帶著", "針織／風衣", "排汗長袖＋防風外套，輕羽絨塞包包，傍晚冷了再加", "防風＋羽絨備著"),
+                (3, "3–6°C", "薄長袖或薄針織＋羽絨或厚大衣、圍巾", "厚外套", "排汗長袖＋輕羽絨外穿，風大再套風衣", "輕羽絨外穿"),
+                (-99, "2°C 以下", "薄發熱衣＋薄長袖＋羽絨，圍巾、手套", "發熱衣＋羽絨", "薄美麗諾（150 g）＋輕羽絨＋防風外套，手套、毛帽", "美麗諾＋羽絨＋防風")] %}
 <button class="float-tab float-wear" type="button" data-dlg="wear-dlg" aria-haspopup="dialog" aria-label="看怎麼穿">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 4 6l-1 6 3 1v8h12v-8l3-1-1-6-5-3c0 1.7-1.3 3-3 3S9 4.7 9 3Z"/></svg>
   <span>穿著</span>
 </button>
-<dialog class="em-dlg info-dlg" id="wear-dlg" aria-labelledby="wear-dlg-t">
+<dialog class="em-dlg info-dlg wear-dlg" id="wear-dlg" aria-labelledby="wear-dlg-t" data-mode="city">
   <div class="em-dlg-in">
     <p class="dlg-kicker">Layering</p>
     <h3 id="wear-dlg-t" tabindex="-1" autofocus>怎麼穿</h3>
-    <p class="em-desc">地鐵、商場暖氣很強，不要洋蔥式穿很多層：裡面薄、外面一件厚外套，進室內就拉開或脫下拿著。早晚比中午冷 6–10 度，照最低溫選外套。</p>
+    <div class="wear-seg" role="group" aria-label="穿法">
+      <button type="button" data-wear="city" aria-pressed="true">一般</button>
+      <button type="button" data-wear="gear" aria-pressed="false">登山裝備</button>
+    </div>
+    <p class="em-desc w-city">地鐵、商場暖氣很強，不要洋蔥式穿很多層：裡面薄、外面一件厚外套，進室內就拉開或脫下拿著。早晚比中午冷 6–10 度，照最低溫選外套。</p>
+    <p class="em-desc w-gear">排汗層當內衣、輕羽絨當保暖、風衣擋風。輕羽絨進地鐵就脫下塞包包；刷毛在室內最悶，留給爬山那天。爬山時一開始爬就脫羽絨，休息拍照馬上穿回；江邊、稜線風大加防風外套。</p>
     <ul class="wear-list">
-    {%- for t, label, how, range in WEAR %}
-      <li><b>{{ range }}</b><div>{{ how }}</div></li>
+    {%- for t, range, how, short, ghow, gshort in WEAR %}
+      <li><b>{{ range }}</b><div><span class="w-city">{{ how }}</span><span class="w-gear">{{ ghow }}</span></div></li>
     {%- endfor %}
     </ul>
     {%- set wdays = days | selectattr("forecast") | list %}
@@ -800,7 +811,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     {%- for d in wdays %}
       {%- set lo = d.forecast.tmin %}
       {%- set band = WEAR | selectattr(0, "le", lo) | first %}
-      <li><b>{{ d.date_short }} {{ d.weekday }}</b><span>{{ lo }}–{{ d.forecast.tmax }}°C</span><div>{{ band[1] }}</div></li>
+      <li><b>{{ d.date_short }} {{ d.weekday }}</b><span>{{ lo }}–{{ d.forecast.tmax }}°C</span><div><span class="w-city">{{ band[3] }}</span><span class="w-gear">{{ band[5] }}</span></div></li>
     {%- endfor %}
     </ul>
     {%- endif %}
@@ -1389,6 +1400,23 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open", "");
   });
 });
+/* 穿著彈窗：一般／登山裝備切換，記住上次選的 */
+(function(){
+  var dlg = document.getElementById("wear-dlg");
+  if (!dlg) return;
+  var btns = [].slice.call(dlg.querySelectorAll("[data-wear]"));
+  function set(m){
+    dlg.setAttribute("data-mode", m);
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-wear") === m)); });
+  }
+  try { var saved = localStorage.getItem("wear-mode"); if (saved === "gear") set(saved); } catch (e) {}
+  btns.forEach(function(b){
+    b.addEventListener("click", function(){
+      var m = b.getAttribute("data-wear"); set(m);
+      try { localStorage.setItem("wear-mode", m); } catch (e) {}
+    });
+  });
+})();
 /* 右下浮標：畫面中間是封面就出交通，是行程就出穿著 */
 (function(){
   var pairs = [[document.getElementById("top"), document.querySelector(".float-tab:not(.float-wear)")],
