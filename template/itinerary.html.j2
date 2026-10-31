@@ -661,7 +661,6 @@ body.editing>#editor{display:block !important}
   .stop{grid-template-columns:50px minmax(0,1fr) auto;gap:10px}
   .stop time{font-size:15.5px}
   .stop-name{font-size:15.5px}
-  .float-tab{display:none}
   .day-aside{padding:18px;box-shadow:0 10px 30px -24px rgba(41,45,51,.5)}
   .day-name{font-size:17px}
   /* 交通：照片只鋪在標題區，路線卡放回淺色底 */
@@ -685,7 +684,9 @@ body.editing>#editor{display:block !important}
   .lg-edit{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);justify-content:stretch}
   .ed-grid{grid-template-columns:1fr}
   .section{padding-top:56px}
-  .float-tab{width:40px;font-size:12px;padding:10px 0 12px}
+  .float-tab{width:40px;font-size:12px;padding:10px 0 12px;bottom:calc(14px + var(--nowbar-h,0px) + env(safe-area-inset-bottom))}
+  /* 行程右邊是綠色 N，手機上穿著改放左下，壓在時間欄上，不擋導航鈕 */
+  .float-wear{right:auto;left:8px}
   .nav-links a.nav-urgent{height:36px;padding:0 14px;font-size:13px}
   .tr-meta div{grid-template-columns:minmax(0,1fr);gap:0}
 }
