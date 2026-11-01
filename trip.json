@@ -272,7 +272,7 @@
           "time": "22:05",
           "name": "回 Airbnb",
           "type": "住宿",
-          "note": "洗澡休息，隔天 09:20 出門。",
+          "note": "洗澡休息，隔天 08:30 出門。",
           "map_query": "서울 광진구 동일로18길 69",
           "naver_query": "서울 광진구 동일로18길 69",
           "status": "confirmed"
@@ -287,7 +287,7 @@
         "model": "ECMWF",
         "text": "霧",
         "tmin": 6,
-        "tmax": 16,
+        "tmax": 17,
         "pop": 0,
         "step": 1,
         "hours": [
@@ -338,7 +338,7 @@
           },
           {
             "h": "15",
-            "t": 16,
+            "t": 17,
             "p": 0
           },
           {
@@ -348,7 +348,7 @@
           },
           {
             "h": "17",
-            "t": 14,
+            "t": 15,
             "p": 0
           },
           {
@@ -363,7 +363,7 @@
           },
           {
             "h": "20",
-            "t": 13,
+            "t": 12,
             "p": 0
           },
           {
@@ -377,213 +377,14 @@
           "lo": 6,
           "hi": 10
         },
-        "updated": "11/01 09:04"
+        "updated": "11/01 17:02"
       }
     },
     {
       "date": "2026-11-05",
-      "theme": "南怡島・聖水",
-      "weather": "加平約 2–14°C，比首爾冷 2–3 度，島上江邊風大；發熱衣、圍巾都帶",
-      "note": "平日去人比較少，不用早起，09:00 出門。去程 7 號線＋京春線都刷 T-money，不用先買票；進島可以坐渡輪或滑索，回建大順路逛 Snow Peak，接著去聖水吃晚餐",
-      "items": [
-        {
-          "time": "09:00",
-          "name": "從 Airbnb 出發",
-          "type": "住宿",
-          "note": "出門前確認 T-money 每人餘額 ₩5,000 以上（來回加平約 ₩5,000）、帶行動電源和保暖外套。",
-          "map_query": "서울 광진구 동일로18길 69",
-          "duration": "5m",
-          "status": "confirmed",
-          "next_transit": "7 號線到上鳳轉京春線，約 1 小時 30 分到加平",
-          "naver_query": "서울 광진구 동일로18길 69"
-        },
-        {
-          "time": "10:35",
-          "name": "加平站（가평역）：搭計程車到南怡島碼頭",
-          "type": "交通",
-          "note": "出 1 號出口，站前有計程車招呼站，跟司機說「남이섬」，5 分鐘、約 ₩5,000。",
-          "map_query": "가평역 택시승강장",
-          "duration": "15m",
-          "next_transit": "計程車 5 分到碼頭，坐渡輪或滑索進島",
-          "naver_query": "가평역"
-        },
-        {
-          "time": "10:55",
-          "name": "南怡島（남이섬）：水杉路・銀杏路・中央紅松路",
-          "type": "景點",
-          "note": "11 月初是楓葉尾聲、銀杏落成金黃地毯；水杉路、松坡銀杏路、中央紅松路、百楓密苑都在步行範圍內，可以租腳踏車。",
-          "map_query": "남이섬",
-          "duration": "3h",
-          "priority": "must",
-          "next_transit": "渡輪 5 分回加平碼頭（入島票含回程）",
-          "naver_query": "남이섬",
-          "photo": {
-            "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfWE54GCgOsd0BuZrcIB1MI9GpPPBc8FHX0K61BgM2mUSBwC8-bPL-zc5MnFQAVNg737hvDCAEU2_lIzCFIqrAwnvJwE0TsJngk6yK1l6pGd9EXhL1YhH8tvN54iF8kAl67HLEeAQ=w900-k-no-rw",
-            "alt": "11 月的南怡島銀杏路，整條金黃",
-            "credit": "圖：성옥／Google 地圖（2021/11）"
-          }
-        },
-        {
-          "time": "14:00",
-          "name": "午餐：한옥닭갈비 韓屋辣炒雞排 本店",
-          "type": "餐廳",
-          "note": "碼頭售票處對面，春川鐵板辣炒雞排 ₩16,000／人，辣度三級可選；配蕎麥冷麵（막국수），最後加炒飯。",
-          "booking": {
-            "hours": "平日 09:30–20:00（最後點餐 19:10）"
-          },
-          "map_query": "한옥닭갈비 본점 가평읍 북한강변로 1025",
-          "duration": "1h10m",
-          "priority": "must",
-          "next_transit": "計程車回加平站，京春線＋7 號線回建大入口",
-          "naver_query": "한옥닭갈비 본점",
-          "photo": {
-            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Ts3usrB2wh6QAYo2y2sIFxvR4P90mol2R3elgxap58EuTqlNLuyGGiO6Y4ygF-PfMlq-36m7sWEy58Z7GDpnPsh8oGqkiW0O6fvH5gmA75q5o7Ez1pyh8XGKC-H7Utwc-4bIihOM_QSv5q=w900-k-no-rw",
-            "alt": "大鐵鍋辣炒雞排加烏龍麵",
-            "credit": "圖：Sunnia／Google 地圖（2026/8）"
-          }
-        },
-        {
-          "time": "16:50",
-          "name": "樂天百貨建大 Star City：Snow Peak（7 樓）",
-          "type": "購物",
-          "note": "從加平回到建大入口站，旁邊樂天百貨 7 樓就是 Snow Peak 專櫃，週四開到 20:00；逛 30–40 分鐘再去聖水吃晚餐。首爾最大、最好逛的是漢南的나인원한남점，但離這幾天的路線都遠。",
-          "map_query": "롯데백화점 건대스타시티점 서울 광진구 능동로 92",
-          "duration": "40m",
-          "priority": "optional",
-          "next_transit": "2 號線 1 站到聖水，約 15 分",
-          "naver_query": "스노우피크 롯데백화점 건대스타시티점"
-        },
-        {
-          "time": "17:35",
-          "name": "晚餐：海帶湯定食 或 炸醬麵（到時候決定）",
-          "type": "餐廳",
-          "note": "兩家都在聖水站旁、不用訂位，到了再決定。풍조미역是韓國人常去的海帶湯定食，配烤魚和一排小菜；보배반점是老派韓式中華，乾炒炸醬、古早味炸醬，三個人可以加一盤糖醋肉。",
-          "map_query": "풍조미역 성수본점 성수일로8길 60",
-          "duration": "1h",
-          "priority": "must",
-          "next_transit": "步行 3–8 分到 EQL 聖水",
-          "naver_query": "풍조미역 성수본점",
-          "shops": [
-            {
-              "name": "풍조미역 風潮海帶（海帶湯定食）",
-              "info": "聖水站 2 號出口走 1 分，성수일로8길 60・11:00–23:00",
-              "naver_query": "풍조미역 성수본점"
-            },
-            {
-              "name": "보배반점 寶貝飯店（炸醬麵）",
-              "info": "聖水站 4 號出口走約 6 分，성수이로7길 27・11:00–22:00・常排隊但翻桌快",
-              "naver_query": "보배반점 성수점"
-            }
-          ],
-          "photo": {
-            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q8XnDCXYSCDXC6tv1vYZjmIop8A6IYzbAL5nSNqvj8YUNuoaKwpNyKHVgq_ENGaCaFZZE-RmoJyoGrF6IRXgVROJN1PA77-K0TuvPFGBLKXFSgEyPcvqA2u9nDAiD39auZVHUflWd5E00I=w900-k-no",
-            "alt": "一碗海帶湯，旁邊是白飯、烤魚和一排小菜",
-            "credit": "圖：Chloe Wang／Google 地圖（2026/10）"
-          },
-          "booking": {
-            "hours": "풍조미역 11:00–23:00、보배반점 11:00–22:00（週四，Naver）"
-          }
-        },
-        {
-          "time": "18:40",
-          "name": "聖水・首爾林自由逛",
-          "type": "購物",
-          "note": "吃完走到 EQL 約 3–8 分；首爾林三家跑步店在纛島站一帶（聖水站坐 2 號線 1 站，或走 20 分）。EQL 和 goodrunner 都 20:00 關，先逛這兩家，FILA、Musinsa Run 開到 21:00 放最後。",
-          "map_query": "서울 성동구 서울숲2길",
-          "duration": "2h",
-          "priority": "optional",
-          "next_transit": "纛島站 2 號線 2 站回建大入口",
-          "naver_query": "서울숲2길",
-          "shops": [
-            {
-              "name": "EQL 聖水",
-              "info": "聖水站走 5 分，연무장15길 11・11:00–20:00・影片裡那家，有 AZ 跑步襪",
-              "naver_query": "EQL 성수점"
-            },
-            {
-              "name": "goodrunner 首爾林",
-              "info": "纛島站 8 號出口走 5 分，서울숲길 47・週四 11:30–20:00（週一休）",
-              "naver_query": "굿러너컴퍼니 서울숲점"
-            },
-            {
-              "name": "FILA Running Club",
-              "info": "서울숲2길 8-1・11:00–21:00・2026/9 新開，可以在店裡試跑",
-              "naver_query": "휠라 러닝 클럽"
-            },
-            {
-              "name": "Musinsa Run 首爾林",
-              "info": "서울숲2길 22-1・11:00–21:00",
-              "naver_query": "무신사 런 서울숲"
-            }
-          ],
-          "photo": {
-            "img": "img/p-seongsu.jpg",
-            "alt": "聖水洞街上一排小店",
-            "credit": "圖：CartoonChess／Wikimedia Commons（CC BY-SA 4.0）"
-          }
-        },
-        {
-          "time": "21:00",
-          "name": "回 Airbnb",
-          "type": "住宿",
-          "note": "早點睡，明天 08:30 出門去延南洞。",
-          "map_query": "서울 광진구 동일로18길 69",
-          "naver_query": "서울 광진구 동일로18길 69",
-          "status": "confirmed"
-        }
-      ],
-      "weather_area": {
-        "label": "加平（南怡島）",
-        "lat": 37.79,
-        "lon": 127.53
-      },
-      "forecast": {
-        "model": "ECMWF",
-        "text": "短暫毛毛雨",
-        "tmin": 9,
-        "tmax": 15,
-        "pop": 52,
-        "step": 3,
-        "hours": [
-          {
-            "h": "06",
-            "t": 9,
-            "p": 29
-          },
-          {
-            "h": "09",
-            "t": 11,
-            "p": 47
-          },
-          {
-            "h": "12",
-            "t": 14,
-            "p": 51
-          },
-          {
-            "h": "15",
-            "t": 14,
-            "p": 37
-          },
-          {
-            "h": "18",
-            "t": 11,
-            "p": 6
-          },
-          {
-            "h": "21",
-            "t": 9,
-            "p": 4
-          }
-        ],
-        "updated": "11/01 09:04"
-      }
-    },
-    {
-      "date": "2026-11-06",
       "theme": "延南洞・龍山・弘大",
-      "weather": "首爾約 6–15°C",
-      "note": "08:30 出門。早上在延南、弘大，下午到龍山・梨泰院，晚上回弘大吃韓牛。13:45 起可以分頭：要逛 ayadz、flots、延禧洞的留在延南（ayadz 週五 14:00 才開）；要逛 LOFA、APMA、kamadeva 的跟去龍山；18:30 在한우다움會合",
+      "weather": "首爾約 8–14°C，上午下雨；大多在室內逛，帶傘或防水外套",
+      "note": "08:30 出門。早上在延南、弘大，下午到龍山・梨泰院，晚上回弘大吃韓牛。13:45 起可以分頭：要逛 ayadz、flots、延禧洞的留在延南（ayadz 14:00 才開）；要逛 LOFA、APMA、kamadeva 的跟去龍山；18:30 在한우다움會合。原本排 11/6，因為 11/5 預報下雨和 11/6 南怡島對調",
       "items": [
         {
           "time": "08:30",
@@ -717,7 +518,7 @@
           "time": "17:20",
           "name": "綠莎坪天橋看南山塔",
           "type": "景點",
-          "note": "看得到南山塔的步行天橋，《梨泰院 Class》拍攝地；11/6 日落約 17:25，天色變暗、南山塔亮燈的時候最好看。",
+          "note": "看得到南山塔的步行天橋，《梨泰院 Class》拍攝地；11/5 日落約 17:26，天色變暗、南山塔亮燈的時候最好看。下雨看不清楚就跳過，直接去弘大。",
           "map_query": "녹사평 육교",
           "duration": "25m",
           "priority": "must",
@@ -733,7 +534,7 @@
           "time": "18:30",
           "name": "晚餐：한우다움 弘大本店（1++ 熟成韓牛代烤）",
           "type": "餐廳",
-          "note": "1++ 熟成韓牛炭烤，店員代烤；週五人多，先打電話或用 Catch Table 訂 3 人 18:30（0507-1391-5144）。",
+          "note": "1++ 熟成韓牛炭烤，店員代烤；先打電話或用 Catch Table 訂 3 人 11/5 18:30（原本訂 11/6 的要改日期）（0507-1391-5144）。",
           "booking": {
             "hours": "12:00–23:00（最後點餐 22:20）"
           },
@@ -752,7 +553,7 @@
           "time": "20:45",
           "name": "回 Airbnb",
           "type": "住宿",
-          "note": "回去休息，隔天 08:00 出門。",
+          "note": "回去休息，明天 09:00 出門去南怡島。",
           "map_query": "서울 광진구 동일로18길 69",
           "naver_query": "서울 광진구 동일로18길 69",
           "status": "confirmed"
@@ -765,50 +566,249 @@
       },
       "forecast": {
         "model": "ECMWF",
-        "text": "短暫毛毛雨",
+        "text": "毛毛雨",
+        "tmin": 10,
+        "tmax": 14,
+        "pop": 71,
+        "step": 3,
+        "hours": [
+          {
+            "h": "06",
+            "t": 10,
+            "p": 61
+          },
+          {
+            "h": "09",
+            "t": 11,
+            "p": 71
+          },
+          {
+            "h": "12",
+            "t": 11,
+            "p": 65
+          },
+          {
+            "h": "15",
+            "t": 14,
+            "p": 25
+          },
+          {
+            "h": "18",
+            "t": 12,
+            "p": 0
+          },
+          {
+            "h": "21",
+            "t": 10,
+            "p": 4
+          }
+        ],
+        "updated": "11/01 17:02"
+      }
+    },
+    {
+      "date": "2026-11-06",
+      "theme": "南怡島・聖水",
+      "weather": "加平約 0–12°C，大晴天但江邊風大；厚外套、毛帽、手套都帶",
+      "note": "平日去人比較少，不用早起，09:00 出門。去程 7 號線＋京春線都刷 T-money，不用先買票；進島可以坐渡輪或滑索，回建大順路逛 Snow Peak，接著去聖水吃晚餐。原本排 11/5，因為 11/5 預報下雨改到這天",
+      "items": [
+        {
+          "time": "09:00",
+          "name": "從 Airbnb 出發",
+          "type": "住宿",
+          "note": "出門前確認 T-money 每人餘額 ₩5,000 以上（來回加平約 ₩5,000）、帶行動電源和保暖外套。",
+          "map_query": "서울 광진구 동일로18길 69",
+          "duration": "5m",
+          "status": "confirmed",
+          "next_transit": "7 號線到上鳳轉京春線，約 1 小時 30 分到加平",
+          "naver_query": "서울 광진구 동일로18길 69"
+        },
+        {
+          "time": "10:35",
+          "name": "加平站（가평역）：搭計程車到南怡島碼頭",
+          "type": "交通",
+          "note": "出 1 號出口，站前有計程車招呼站，跟司機說「남이섬」，5 分鐘、約 ₩5,000。",
+          "map_query": "가평역 택시승강장",
+          "duration": "15m",
+          "next_transit": "計程車 5 分到碼頭，坐渡輪或滑索進島",
+          "naver_query": "가평역"
+        },
+        {
+          "time": "10:55",
+          "name": "南怡島（남이섬）：水杉路・銀杏路・中央紅松路",
+          "type": "景點",
+          "note": "11 月初是楓葉尾聲、銀杏落成金黃地毯；水杉路、松坡銀杏路、中央紅松路、百楓密苑都在步行範圍內，可以租腳踏車。",
+          "map_query": "남이섬",
+          "duration": "3h",
+          "priority": "must",
+          "next_transit": "渡輪 5 分回加平碼頭（入島票含回程）",
+          "naver_query": "남이섬",
+          "photo": {
+            "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfWE54GCgOsd0BuZrcIB1MI9GpPPBc8FHX0K61BgM2mUSBwC8-bPL-zc5MnFQAVNg737hvDCAEU2_lIzCFIqrAwnvJwE0TsJngk6yK1l6pGd9EXhL1YhH8tvN54iF8kAl67HLEeAQ=w900-k-no-rw",
+            "alt": "11 月的南怡島銀杏路，整條金黃",
+            "credit": "圖：성옥／Google 地圖（2021/11）"
+          }
+        },
+        {
+          "time": "14:00",
+          "name": "午餐：한옥닭갈비 韓屋辣炒雞排 本店",
+          "type": "餐廳",
+          "note": "碼頭售票處對面，春川鐵板辣炒雞排 ₩16,000／人，辣度三級可選；配蕎麥冷麵（막국수），最後加炒飯。",
+          "booking": {
+            "hours": "平日 09:30–20:00（最後點餐 19:10）"
+          },
+          "map_query": "한옥닭갈비 본점 가평읍 북한강변로 1025",
+          "duration": "1h10m",
+          "priority": "must",
+          "next_transit": "計程車回加平站，京春線＋7 號線回建大入口",
+          "naver_query": "한옥닭갈비 본점",
+          "photo": {
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Ts3usrB2wh6QAYo2y2sIFxvR4P90mol2R3elgxap58EuTqlNLuyGGiO6Y4ygF-PfMlq-36m7sWEy58Z7GDpnPsh8oGqkiW0O6fvH5gmA75q5o7Ez1pyh8XGKC-H7Utwc-4bIihOM_QSv5q=w900-k-no-rw",
+            "alt": "大鐵鍋辣炒雞排加烏龍麵",
+            "credit": "圖：Sunnia／Google 地圖（2026/8）"
+          }
+        },
+        {
+          "time": "16:50",
+          "name": "樂天百貨建大 Star City：Snow Peak（7 樓）",
+          "type": "購物",
+          "note": "從加平回到建大入口站，旁邊樂天百貨 7 樓就是 Snow Peak 專櫃，開到 20:00；逛 30–40 分鐘再去聖水吃晚餐。首爾最大、最好逛的是漢南的나인원한남점，但離這幾天的路線都遠。",
+          "map_query": "롯데백화점 건대스타시티점 서울 광진구 능동로 92",
+          "duration": "40m",
+          "priority": "optional",
+          "next_transit": "2 號線 1 站到聖水，約 15 分",
+          "naver_query": "스노우피크 롯데백화점 건대스타시티점"
+        },
+        {
+          "time": "17:35",
+          "name": "晚餐：海帶湯定食 或 炸醬麵（到時候決定）",
+          "type": "餐廳",
+          "note": "兩家都在聖水站旁、不用訂位，到了再決定。풍조미역是韓國人常去的海帶湯定食，配烤魚和一排小菜；보배반점是老派韓式中華，乾炒炸醬、古早味炸醬，三個人可以加一盤糖醋肉。",
+          "map_query": "풍조미역 성수본점 성수일로8길 60",
+          "duration": "1h",
+          "priority": "must",
+          "next_transit": "步行 3–8 分到 EQL 聖水",
+          "naver_query": "풍조미역 성수본점",
+          "shops": [
+            {
+              "name": "풍조미역 風潮海帶（海帶湯定食）",
+              "info": "聖水站 2 號出口走 1 分，성수일로8길 60・11:00–23:00",
+              "naver_query": "풍조미역 성수본점"
+            },
+            {
+              "name": "보배반점 寶貝飯店（炸醬麵）",
+              "info": "聖水站 4 號出口走約 6 分，성수이로7길 27・11:00–22:00・常排隊但翻桌快",
+              "naver_query": "보배반점 성수점"
+            }
+          ],
+          "photo": {
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q8XnDCXYSCDXC6tv1vYZjmIop8A6IYzbAL5nSNqvj8YUNuoaKwpNyKHVgq_ENGaCaFZZE-RmoJyoGrF6IRXgVROJN1PA77-K0TuvPFGBLKXFSgEyPcvqA2u9nDAiD39auZVHUflWd5E00I=w900-k-no",
+            "alt": "一碗海帶湯，旁邊是白飯、烤魚和一排小菜",
+            "credit": "圖：Chloe Wang／Google 地圖（2026/10）"
+          },
+          "booking": {
+            "hours": "풍조미역 11:00–23:00、보배반점 11:00–22:00（Naver）"
+          }
+        },
+        {
+          "time": "18:40",
+          "name": "聖水・首爾林自由逛",
+          "type": "購物",
+          "note": "吃完走到 EQL 約 3–8 分；首爾林三家跑步店在纛島站一帶（聖水站坐 2 號線 1 站，或走 20 分）。EQL 和 goodrunner 都 20:00 關，先逛這兩家，FILA、Musinsa Run 開到 21:00 放最後。",
+          "map_query": "서울 성동구 서울숲2길",
+          "duration": "2h",
+          "priority": "optional",
+          "next_transit": "纛島站 2 號線 2 站回建大入口",
+          "naver_query": "서울숲2길",
+          "shops": [
+            {
+              "name": "EQL 聖水",
+              "info": "聖水站走 5 分，연무장15길 11・11:00–20:00・影片裡那家，有 AZ 跑步襪",
+              "naver_query": "EQL 성수점"
+            },
+            {
+              "name": "goodrunner 首爾林",
+              "info": "纛島站 8 號出口走 5 分，서울숲길 47・11:30–20:00（週一休）",
+              "naver_query": "굿러너컴퍼니 서울숲점"
+            },
+            {
+              "name": "FILA Running Club",
+              "info": "서울숲2길 8-1・11:00–21:00・2026/9 新開，可以在店裡試跑",
+              "naver_query": "휠라 러닝 클럽"
+            },
+            {
+              "name": "Musinsa Run 首爾林",
+              "info": "서울숲2길 22-1・11:00–21:00",
+              "naver_query": "무신사 런 서울숲"
+            }
+          ],
+          "photo": {
+            "img": "img/p-seongsu.jpg",
+            "alt": "聖水洞街上一排小店",
+            "credit": "圖：CartoonChess／Wikimedia Commons（CC BY-SA 4.0）"
+          }
+        },
+        {
+          "time": "21:00",
+          "name": "回 Airbnb",
+          "type": "住宿",
+          "note": "回去休息，隔天 08:00 出門。",
+          "map_query": "서울 광진구 동일로18길 69",
+          "naver_query": "서울 광진구 동일로18길 69",
+          "status": "confirmed"
+        }
+      ],
+      "weather_area": {
+        "label": "加平（南怡島）",
+        "lat": 37.79,
+        "lon": 127.53
+      },
+      "forecast": {
+        "model": "ECMWF",
+        "text": "陰",
         "tmin": 1,
-        "tmax": 11,
-        "pop": 14,
+        "tmax": 12,
+        "pop": 18,
         "step": 3,
         "hours": [
           {
             "h": "06",
             "t": 8,
-            "p": 4
+            "p": 2
           },
           {
             "h": "09",
-            "t": 8,
+            "t": 9,
             "p": 0
           },
           {
             "h": "12",
+            "t": 12,
+            "p": 2
+          },
+          {
+            "h": "15",
             "t": 10,
             "p": 0
           },
           {
-            "h": "15",
-            "t": 8,
-            "p": 2
-          },
-          {
             "h": "18",
-            "t": 5,
+            "t": 6,
             "p": 0
           },
           {
             "h": "21",
-            "t": 2,
+            "t": 3,
             "p": 0
           }
         ],
-        "updated": "11/01 09:04"
+        "updated": "11/01 17:02"
       }
     },
     {
       "date": "2026-11-07",
       "theme": "安國・北村・漢南洞",
-      "weather": "首爾約 6–15°C",
+      "weather": "首爾約 -2–6°C，這趟最冷；發熱衣、厚外套、毛帽、手套",
       "note": "週六人多，早餐早點到；北村、三清洞坡多，走慢一點。中午搭公車上부암동吃餃子、逛 ODCS RUN，下午逛漢南洞，晚上到新龍山吃烤肉，約 21:00 回到住處",
       "items": [
         {
@@ -962,19 +962,19 @@
       "forecast": {
         "model": "ECMWF",
         "text": "陰",
-        "tmin": -1,
+        "tmin": -2,
         "tmax": 6,
         "pop": 1,
         "step": 3,
         "hours": [
           {
             "h": "06",
-            "t": -1,
+            "t": -2,
             "p": 0
           },
           {
             "h": "09",
-            "t": 0,
+            "t": -1,
             "p": 0
           },
           {
@@ -998,13 +998,18 @@
             "p": 0
           }
         ],
-        "updated": "11/01 09:04"
+        "spread": {
+          "what": "最低溫",
+          "lo": -2,
+          "hi": 2
+        },
+        "updated": "11/01 17:02"
       }
     },
     {
       "date": "2026-11-08",
       "theme": "峨嵯山・狎鷗亭",
-      "weather": "首爾約 6–15°C",
+      "weather": "首爾約 0–8°C，早上爬山接近 0°C",
       "note": "你早上去爬峨嵯山（交通也可以看「峨嵯山」那一頁），另外兩位睡飽自由行動；12:00 在狎鷗亭羅德奧會合（你下山後先去清涼里皮克敏快閃）。晚上早點回去收行李，隔天 10:15 退房",
       "items": [
         {
@@ -1100,15 +1105,15 @@
       },
       "forecast": {
         "model": "ECMWF",
-        "text": "大致晴",
-        "tmin": -1,
-        "tmax": 9,
+        "text": "陰",
+        "tmin": 0,
+        "tmax": 8,
         "pop": 2,
         "step": 3,
         "hours": [
           {
             "h": "06",
-            "t": 0,
+            "t": 1,
             "p": 2
           },
           {
@@ -1118,32 +1123,37 @@
           },
           {
             "h": "12",
-            "t": 6,
+            "t": 5,
             "p": 2
           },
           {
             "h": "15",
-            "t": 9,
+            "t": 8,
             "p": 2
           },
           {
             "h": "18",
-            "t": 7,
+            "t": 8,
             "p": 2
           },
           {
             "h": "21",
-            "t": 4,
+            "t": 7,
             "p": 2
           }
         ],
-        "updated": "11/01 09:04"
+        "spread": {
+          "what": "最低溫",
+          "lo": 0,
+          "hi": 5
+        },
+        "updated": "11/01 17:02"
       }
     },
     {
       "date": "2026-11-09",
       "theme": "回台北",
-      "weather": "首爾約 6–14°C",
+      "weather": "首爾約 0–9°C",
       "note": "16:20 起飛，13:20 前到 T2 報到（起飛前 3 小時）。機場巴士可能客滿，6013 等一班上不去就改走 B 方案，不要一直等",
       "items": [
         {
@@ -1191,44 +1201,49 @@
       },
       "forecast": {
         "model": "ECMWF",
-        "text": "陰",
-        "tmin": 3,
-        "tmax": 12,
+        "text": "大致晴",
+        "tmin": 2,
+        "tmax": 8,
         "pop": 8,
         "step": 3,
         "hours": [
           {
             "h": "06",
-            "t": 3,
+            "t": 2,
             "p": 3
           },
           {
             "h": "09",
-            "t": 4,
+            "t": 2,
             "p": 6
           },
           {
             "h": "12",
-            "t": 9,
+            "t": 6,
             "p": 8
           },
           {
             "h": "15",
-            "t": 12,
+            "t": 8,
             "p": 8
           },
           {
             "h": "18",
-            "t": 9,
+            "t": 6,
             "p": 5
           },
           {
             "h": "21",
-            "t": 5,
+            "t": 3,
             "p": 2
           }
         ],
-        "updated": "11/01 09:04"
+        "spread": {
+          "what": "最低溫",
+          "lo": 2,
+          "hi": 8
+        },
+        "updated": "11/01 17:02"
       }
     }
   ],
@@ -1468,6 +1483,208 @@
     {
       "day": 2,
       "when": "早上",
+      "route": "建大入口 → 弘大入口（홍대입구）・延南洞",
+      "at": "08:30",
+      "options": [
+        {
+          "label": "2 號線直達",
+          "summary": "不用轉車，16 站約 35 分",
+          "mode": "subway",
+          "line": "2 號線 建大入口 → 弘大入口，16 站",
+          "line_color": "#00a84d",
+          "platform": "建大入口站 2 號線（高架），往「聖水（성수）・往十里（왕십리）」方向月台",
+          "time": "地鐵約 35 分＋步行 10 分",
+          "fare": "₩1,550／人",
+          "headway": "約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
+          "minutes": 45,
+          "warn": "延南洞走 3 號出口（京義線林道那側），不要走 9 號出口（那是弘大逛街區）。\n累了或趕時間就用 Kakao T 叫計程車，約 35–50 分、₩20,000 上下",
+          "from": "建大入口站",
+          "to": "弘大入口站",
+          "from_ll": "37.540363,127.069266",
+          "to_ll": "37.557527,126.924191",
+          "steps": [
+            {
+              "text": "走到建大入口站，上 2 號線高架",
+              "img": "img/kondae-exit5.jpg",
+              "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
+            },
+            {
+              "text": "往聖水・往十里方向（성수 · 왕십리 방면）",
+              "img": "img/c-kondae-l2.jpg",
+              "alt": "建大入口站 2 號線高架月台",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+            },
+            {
+              "text": "坐 16 站，弘大入口下車，走 3 號出口",
+              "img": "img/hongik-exit3.jpg",
+              "alt": "弘大入口站 3 號出口（Kakao 로드뷰 2026 年 6–7 月）"
+            }
+          ],
+          "refs": [
+            {
+              "label": "Threads：去弘大不一定要在弘大入口站下車（各出口適合去哪）",
+              "url": "https://www.threads.com/@hanora_kids_trip/post/Da-oYgGiTDw",
+              "note": "2026/7：住首爾的媽媽整理，逛街 9 號出口、延南洞 3 號出口"
+            }
+          ],
+          "last": "00:19",
+          "last_note": "建大入口（平日；最後幾班只到聖水，要換同方向下一班）"
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "when": "中午",
+      "route": "out of all 西橋 → 三角地（pixel per inch）",
+      "at": "13:45",
+      "options": [
+        {
+          "label": "6 號線 5 站",
+          "summary": "走到上水站，6 號線 5 站到三角地，約 25 分",
+          "mode": "subway",
+          "line": "6 號線 上水（상수）→ 三角地（삼각지），5 站",
+          "line_color": "#cd7c2f",
+          "platform": "上水站 6 號線，往「新內（신내）」方向月台",
+          "time": "步行 8 分＋地鐵約 12 分＋步行 3 分",
+          "fare": "₩1,550／人",
+          "headway": "約 7–8 分一班",
+          "minutes": 25,
+          "warn": "上水站很小，進站後找往광흥창・新內方向的月台。\n3 個人搭 Kakao T 約 20 分、₩10,000 上下",
+          "from": "out of all 西橋",
+          "to": "pixel per inch",
+          "from_ll": "37.551082,126.919486",
+          "to_ll": "37.532847,126.972058",
+          "steps": [
+            {
+              "img": "img/c-sangsu-exit1.jpg",
+              "alt": "上水站 1 號出口",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）",
+              "text": "Naver 步行導航到上水站（約 8 分），從最近的出口進站"
+            },
+            {
+              "text": "6 號線往新內方向，坐 5 站到三角地",
+              "sign": {
+                "line": "6",
+                "ko": "광흥창 · 신내 방면",
+                "zh": "往新內方向，坐 5 站"
+              }
+            },
+            {
+              "text": "三角地下車，出站走約 3 分",
+              "img": "img/c-samgakji-l6.jpg",
+              "alt": "三角地站 6 號線站名牌",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+            },
+            {
+              "text": "pixel per inch 在한강대로54길 7 的 3 樓",
+              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfXIa2wYSRU6XRxaTK48ZuBIDv2ijyRkfnsaGSU7CylhBkU-YlHwNIrqMBc_3100xIP3BJ2SOYrsm8HeQ4vczgdlZ9JWsXniQmX7lmAP1YA7-OMIPCLzEr86txKMsVyUaZGZ3LO=w900-k-no",
+              "alt": "pixel per inch 店內",
+              "credit": "圖：아침엔사과／Google 地圖（2023/7）"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "when": "傍晚",
+      "route": "綠莎坪 → 上水（한우다움 弘大）",
+      "at": "17:20",
+      "options": [
+        {
+          "label": "6 號線 6 站",
+          "summary": "綠莎坪 6 號線 6 站到上水，再走 8 分；約 35 分",
+          "mode": "subway",
+          "line": "6 號線 綠莎坪（녹사평）→ 上水（상수），6 站",
+          "line_color": "#cd7c2f",
+          "platform": "綠莎坪站 6 號線，往「應岩（응암）」方向月台",
+          "time": "手扶梯 3 分＋地鐵約 15 分＋步行 8 分",
+          "fare": "₩1,550／人",
+          "headway": "約 7–8 分一班",
+          "minutes": 35,
+          "warn": "訂的是 18:30，17:45 前出發就來得及。\n3 個人搭 Kakao T 約 25 分、₩13,000 上下",
+          "from": "綠莎坪站",
+          "to": "한우다움 弘大本店",
+          "from_ll": "37.534542,126.986595",
+          "to_ll": "37.552885,126.921348",
+          "steps": [
+            {
+              "text": "從天橋走回綠莎坪站，搭手扶梯下到 6 號線",
+              "img": "img/c-noksapyeong-esc.jpg",
+              "alt": "綠莎坪站的長手扶梯",
+              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
+            },
+            {
+              "text": "往應岩方向，坐 6 站到上水",
+              "sign": {
+                "line": "6",
+                "ko": "삼각지 · 응암 방면",
+                "zh": "往應岩方向，坐 6 站"
+              }
+            },
+            {
+              "img": "img/c-sangsu-exit1.jpg",
+              "alt": "上水站 1 號出口",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）",
+              "text": "上水下車出站，Naver 步行導航到한우다움，往北約 8 分"
+            },
+            {
+              "text": "店在 2、3 樓，找招牌「한우다움」",
+              "img": "img/hanwoo-daum.jpg",
+              "alt": "한우다움 弘大本店入口（Kakao 로드뷰 2026 年 6–7 月）"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "when": "晚上",
+      "route": "弘大入口 → 建大入口",
+      "at": "18:30",
+      "options": [
+        {
+          "label": "2 號線直達",
+          "summary": "不用轉車，16 站約 35 分",
+          "mode": "subway",
+          "line": "2 號線 弘大入口 → 建大入口，16 站",
+          "line_color": "#00a84d",
+          "platform": "弘大入口站 2 號線，往「新村（신촌）」方向月台",
+          "time": "步行 8 分＋地鐵約 35 分",
+          "fare": "₩1,550／人",
+          "headway": "約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
+          "minutes": 45,
+          "warn": "週五晚上弘大入口站人很多，往新村方向不要搭錯成往合井（합정）。\n累了或趕時間就用 Kakao T 叫計程車，約 40 分、₩25,000 上下",
+          "from": "弘大入口站",
+          "to": "建大入口站",
+          "from_ll": "37.557527,126.924191",
+          "to_ll": "37.540363,127.069266",
+          "steps": [
+            {
+              "text": "走到弘大入口站 9 號出口，約 5 分",
+              "img": "img/hongik-exit9.jpg",
+              "alt": "弘大入口站 9 號出口，玻璃頂棚上寫著 9（Kakao 로드뷰 2026 年 6–7 月）"
+            },
+            {
+              "text": "進 2 號線，往新村方向（신촌 방면）",
+              "img": "img/c-hongik-l2.jpg",
+              "alt": "弘大入口站 2 號線月台",
+              "credit": "圖：ZKang123／Wikimedia Commons（CC BY-SA 4.0）"
+            },
+            {
+              "text": "坐 16 站，建大入口下車，走回住處約 4 分",
+              "img": "img/kondae-exit5.jpg",
+              "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
+            }
+          ],
+          "last": "00:05",
+          "last_note": "弘大入口（平日；最後幾班只到聖水，要換同方向下一班）"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "when": "早上",
       "route": "建大入口 → 加平（가평）",
       "at": "09:00",
       "options": [
@@ -1548,7 +1765,7 @@
       ]
     },
     {
-      "day": 2,
+      "day": 3,
       "when": "上午",
       "route": "加平站 → 南怡島（남이섬）",
       "at": "10:35",
@@ -1646,7 +1863,7 @@
       ]
     },
     {
-      "day": 2,
+      "day": 3,
       "when": "下午",
       "route": "南怡島碼頭 → 建大入口",
       "at": "14:00",
@@ -1708,7 +1925,7 @@
       ]
     },
     {
-      "day": 2,
+      "day": 3,
       "when": "傍晚",
       "route": "建大入口 → 聖水（晚餐）",
       "at": "16:50",
@@ -1758,7 +1975,7 @@
       ]
     },
     {
-      "day": 2,
+      "day": 3,
       "when": "回程",
       "route": "纛島（뚝섬）→ 建大入口",
       "at": "18:40",
@@ -1797,208 +2014,6 @@
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             }
           ]
-        }
-      ]
-    },
-    {
-      "day": 3,
-      "when": "早上",
-      "route": "建大入口 → 弘大入口（홍대입구）・延南洞",
-      "at": "08:30",
-      "options": [
-        {
-          "label": "2 號線直達",
-          "summary": "不用轉車，16 站約 35 分",
-          "mode": "subway",
-          "line": "2 號線 建大入口 → 弘大入口，16 站",
-          "line_color": "#00a84d",
-          "platform": "建大入口站 2 號線（高架），往「聖水（성수）・往十里（왕십리）」方向月台",
-          "time": "地鐵約 35 分＋步行 10 分",
-          "fare": "₩1,550／人",
-          "headway": "約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
-          "minutes": 45,
-          "warn": "延南洞走 3 號出口（京義線林道那側），不要走 9 號出口（那是弘大逛街區）。\n累了或趕時間就用 Kakao T 叫計程車，約 35–50 分、₩20,000 上下",
-          "from": "建大入口站",
-          "to": "弘大入口站",
-          "from_ll": "37.540363,127.069266",
-          "to_ll": "37.557527,126.924191",
-          "steps": [
-            {
-              "text": "走到建大入口站，上 2 號線高架",
-              "img": "img/kondae-exit5.jpg",
-              "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
-            },
-            {
-              "text": "往聖水・往十里方向（성수 · 왕십리 방면）",
-              "img": "img/c-kondae-l2.jpg",
-              "alt": "建大入口站 2 號線高架月台",
-              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
-            },
-            {
-              "text": "坐 16 站，弘大入口下車，走 3 號出口",
-              "img": "img/hongik-exit3.jpg",
-              "alt": "弘大入口站 3 號出口（Kakao 로드뷰 2026 年 6–7 月）"
-            }
-          ],
-          "refs": [
-            {
-              "label": "Threads：去弘大不一定要在弘大入口站下車（各出口適合去哪）",
-              "url": "https://www.threads.com/@hanora_kids_trip/post/Da-oYgGiTDw",
-              "note": "2026/7：住首爾的媽媽整理，逛街 9 號出口、延南洞 3 號出口"
-            }
-          ],
-          "last": "00:19",
-          "last_note": "建大入口（週五；最後幾班只到聖水，要換同方向下一班）"
-        }
-      ]
-    },
-    {
-      "day": 3,
-      "when": "中午",
-      "route": "out of all 西橋 → 三角地（pixel per inch）",
-      "at": "13:45",
-      "options": [
-        {
-          "label": "6 號線 5 站",
-          "summary": "走到上水站，6 號線 5 站到三角地，約 25 分",
-          "mode": "subway",
-          "line": "6 號線 上水（상수）→ 三角地（삼각지），5 站",
-          "line_color": "#cd7c2f",
-          "platform": "上水站 6 號線，往「新內（신내）」方向月台",
-          "time": "步行 8 分＋地鐵約 12 分＋步行 3 分",
-          "fare": "₩1,550／人",
-          "headway": "約 7–8 分一班",
-          "minutes": 25,
-          "warn": "上水站很小，進站後找往광흥창・新內方向的月台。\n3 個人搭 Kakao T 約 20 分、₩10,000 上下",
-          "from": "out of all 西橋",
-          "to": "pixel per inch",
-          "from_ll": "37.551082,126.919486",
-          "to_ll": "37.532847,126.972058",
-          "steps": [
-            {
-              "img": "img/c-sangsu-exit1.jpg",
-              "alt": "上水站 1 號出口",
-              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）",
-              "text": "Naver 步行導航到上水站（約 8 分），從最近的出口進站"
-            },
-            {
-              "text": "6 號線往新內方向，坐 5 站到三角地",
-              "sign": {
-                "line": "6",
-                "ko": "광흥창 · 신내 방면",
-                "zh": "往新內方向，坐 5 站"
-              }
-            },
-            {
-              "text": "三角地下車，出站走約 3 分",
-              "img": "img/c-samgakji-l6.jpg",
-              "alt": "三角地站 6 號線站名牌",
-              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
-            },
-            {
-              "text": "pixel per inch 在한강대로54길 7 的 3 樓",
-              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfXIa2wYSRU6XRxaTK48ZuBIDv2ijyRkfnsaGSU7CylhBkU-YlHwNIrqMBc_3100xIP3BJ2SOYrsm8HeQ4vczgdlZ9JWsXniQmX7lmAP1YA7-OMIPCLzEr86txKMsVyUaZGZ3LO=w900-k-no",
-              "alt": "pixel per inch 店內",
-              "credit": "圖：아침엔사과／Google 地圖（2023/7）"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "day": 3,
-      "when": "傍晚",
-      "route": "綠莎坪 → 上水（한우다움 弘大）",
-      "at": "17:20",
-      "options": [
-        {
-          "label": "6 號線 6 站",
-          "summary": "綠莎坪 6 號線 6 站到上水，再走 8 分；約 35 分",
-          "mode": "subway",
-          "line": "6 號線 綠莎坪（녹사평）→ 上水（상수），6 站",
-          "line_color": "#cd7c2f",
-          "platform": "綠莎坪站 6 號線，往「應岩（응암）」方向月台",
-          "time": "手扶梯 3 分＋地鐵約 15 分＋步行 8 分",
-          "fare": "₩1,550／人",
-          "headway": "約 7–8 分一班",
-          "minutes": 35,
-          "warn": "訂的是 18:30，17:45 前出發就來得及。\n3 個人搭 Kakao T 約 25 分、₩13,000 上下",
-          "from": "綠莎坪站",
-          "to": "한우다움 弘大本店",
-          "from_ll": "37.534542,126.986595",
-          "to_ll": "37.552885,126.921348",
-          "steps": [
-            {
-              "text": "從天橋走回綠莎坪站，搭手扶梯下到 6 號線",
-              "img": "img/c-noksapyeong-esc.jpg",
-              "alt": "綠莎坪站的長手扶梯",
-              "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
-            },
-            {
-              "text": "往應岩方向，坐 6 站到上水",
-              "sign": {
-                "line": "6",
-                "ko": "삼각지 · 응암 방면",
-                "zh": "往應岩方向，坐 6 站"
-              }
-            },
-            {
-              "img": "img/c-sangsu-exit1.jpg",
-              "alt": "上水站 1 號出口",
-              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）",
-              "text": "上水下車出站，Naver 步行導航到한우다움，往北約 8 分"
-            },
-            {
-              "text": "店在 2、3 樓，找招牌「한우다움」",
-              "img": "img/hanwoo-daum.jpg",
-              "alt": "한우다움 弘大本店入口（Kakao 로드뷰 2026 年 6–7 月）"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "day": 3,
-      "when": "晚上",
-      "route": "弘大入口 → 建大入口",
-      "at": "18:30",
-      "options": [
-        {
-          "label": "2 號線直達",
-          "summary": "不用轉車，16 站約 35 分",
-          "mode": "subway",
-          "line": "2 號線 弘大入口 → 建大入口，16 站",
-          "line_color": "#00a84d",
-          "platform": "弘大入口站 2 號線，往「新村（신촌）」方向月台",
-          "time": "步行 8 分＋地鐵約 35 分",
-          "fare": "₩1,550／人",
-          "headway": "約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
-          "minutes": 45,
-          "warn": "週五晚上弘大入口站人很多，往新村方向不要搭錯成往合井（합정）。\n累了或趕時間就用 Kakao T 叫計程車，約 40 分、₩25,000 上下",
-          "from": "弘大入口站",
-          "to": "建大入口站",
-          "from_ll": "37.557527,126.924191",
-          "to_ll": "37.540363,127.069266",
-          "steps": [
-            {
-              "text": "走到弘大入口站 9 號出口，約 5 分",
-              "img": "img/hongik-exit9.jpg",
-              "alt": "弘大入口站 9 號出口，玻璃頂棚上寫著 9（Kakao 로드뷰 2026 年 6–7 月）"
-            },
-            {
-              "text": "進 2 號線，往新村方向（신촌 방면）",
-              "img": "img/c-hongik-l2.jpg",
-              "alt": "弘大入口站 2 號線月台",
-              "credit": "圖：ZKang123／Wikimedia Commons（CC BY-SA 4.0）"
-            },
-            {
-              "text": "坐 16 站，建大入口下車，走回住處約 4 分",
-              "img": "img/kondae-exit5.jpg",
-              "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
-            }
-          ],
-          "last": "00:05",
-          "last_note": "弘大入口（週五；最後幾班只到聖水，要換同方向下一班）"
         }
       ]
     },
@@ -2943,9 +2958,9 @@
       }
     ],
     "when": [
-      "11/5（四）早上 09:00 才出門，07:00 起跑公園或河邊剛好。",
+      "11/6（五）早上 09:00 才出門，07:00 起跑公園或河邊剛好。",
       "11/5–11/7 每天約 21:00 回住處，換衣服跑河邊，22:00 前回來。",
-      "11/6、11/7 早上 08:30、08:00 就出門，只來得及跑湖邊。",
+      "11/5、11/7 早上 08:30、08:00 就出門，只來得及跑湖邊。",
       "11/8 要爬峨嵯山，不建議再跑。"
     ],
     "credit": "路線用 OpenStreetMap 步行路網算出，距離四捨五入到 0.1 km。地圖 © OpenStreetMap contributors。"
