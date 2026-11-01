@@ -779,7 +779,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </a>
 {% endif %}
 
-{#- 穿著：看最低溫分級（早晚出門那段最冷），地鐵、商場暖氣強，所以裡薄外厚 -#}
+{#- 穿著：看最低溫分級（早晚出門那段最冷），地鐵、商場暖氣強，所以裡薄外厚。
+    「這趟每天」吃 days[].forecast，forecast.yml 每次更新天氣都會重渲染，穿搭跟著變；降雨 ≥50% 加「帶傘」 -#}
 {#- 每級：(最低溫門檻, 溫度帶, 一般穿法, 一般簡稱, 登山裝備穿法, 登山簡稱) -#}
 {%- set WEAR = [(12, "12°C 以上", "薄長袖＋風衣或牛仔外套", "薄外套", "排汗長袖＋防風外套（軟殼或風衣）", "排汗衣＋防風"),
                 (7, "7–11°C", "長袖＋針織或風衣，圍巾帶著", "針織／風衣", "排汗長袖＋防風外套，輕羽絨塞包包，傍晚冷了再加", "防風＋羽絨備著"),
@@ -811,7 +812,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     {%- for d in wdays %}
       {%- set lo = d.forecast.tmin %}
       {%- set band = WEAR | selectattr(0, "le", lo) | first %}
-      <li><b>{{ d.date_short }} {{ d.weekday }}</b><span>{{ lo }}–{{ d.forecast.tmax }}°C</span><div><span class="w-city">{{ band[3] }}</span><span class="w-gear">{{ band[5] }}</span></div></li>
+      {%- set rain = "，帶傘" if d.forecast["pop"] is not none and d.forecast["pop"] >= 50 else "" %}
+      <li><b>{{ d.date_short }} {{ d.weekday }}</b><span>{{ lo }}–{{ d.forecast.tmax }}°C</span><div><span class="w-city">{{ band[3] }}{{ rain }}</span><span class="w-gear">{{ band[5] }}{{ rain }}</span></div></li>
     {%- endfor %}
     </ul>
     {%- endif %}
