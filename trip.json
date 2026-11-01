@@ -122,7 +122,11 @@
     "map_apps": [
       "naver"
     ],
-    "live_api": ""
+    "live_api": "",
+    "wear_personal": {
+      "label": "JOE",
+      "intro": "裡面穿薄，保暖靠外面幾層可以脫、能塞包包的衣服，最冷那天才穿 Snow Peak 羽絨外套。熱了先拿掉毛帽、手套、脖圍，再脫 Asynja，最後把輕羽絨收起來。"
+    }
   },
   "days": [
     {
@@ -378,7 +382,8 @@
           "hi": 10
         },
         "updated": "11/01 17:02"
-      }
+      },
+      "wear_personal": "棉長袖＋Snow Peak 背心＋Asynja，輕羽絨放包包；牛仔褲"
     },
     {
       "date": "2026-11-05",
@@ -604,7 +609,8 @@
           }
         ],
         "updated": "11/01 17:02"
-      }
+      },
+      "wear_personal": "棉長袖＋Mont-bell＋Asynja，晚上冷換帽T；機能褲"
     },
     {
       "date": "2026-11-06",
@@ -803,7 +809,8 @@
           }
         ],
         "updated": "11/01 17:02"
-      }
+      },
+      "wear_personal": "Patagonia＋棉長袖＋輕羽絨＋Asynja，脖圍、手套；牛仔褲＋內搭褲"
     },
     {
       "date": "2026-11-07",
@@ -1004,7 +1011,8 @@
           "hi": 2
         },
         "updated": "11/01 17:02"
-      }
+      },
+      "wear_personal": "發熱衣＋棉長袖＋Snow Peak 羽絨，毛帽、手套、脖圍、暖暖包；牛仔棉＋內搭褲"
     },
     {
       "date": "2026-11-08",
@@ -1148,7 +1156,8 @@
           "hi": 5
         },
         "updated": "11/01 17:02"
-      }
+      },
+      "wear_personal": "爬山：短袖＋Mont-bell＋輕羽絨（開始爬就脫）＋Asynja，機能褲。下午：發熱衣＋棉長袖＋背心＋Asynja，牛仔褲＋內搭褲"
     },
     {
       "date": "2026-11-09",
@@ -1244,7 +1253,8 @@
           "hi": 8
         },
         "updated": "11/01 17:02"
-      }
+      },
+      "wear_personal": "帽T＋Snow Peak 羽絨（穿上飛機）；牛仔褲"
     }
   ],
   "wishlist": [],
