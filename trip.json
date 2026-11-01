@@ -389,7 +389,7 @@
       "date": "2026-11-05",
       "theme": "延南洞・龍山・弘大",
       "weather": "首爾約 8–14°C，上午下雨；大多在室內逛，帶傘或防水外套",
-      "note": "08:30 出門。早上在延南、弘大，下午到龍山・梨泰院，晚上回弘大吃韓牛。13:45 起可以分頭：要逛 ayadz、flots、延禧洞的留在延南（ayadz 14:00 才開）；要逛 LOFA、APMA、kamadeva 的跟去龍山；18:30 在한우다움會合。原本排 11/6，因為 11/5 預報下雨和 11/6 南怡島對調",
+      "note": "08:30 出門。早上在延南、弘大，下午到龍山・梨泰院，晚上到合井吃炭烤排骨。13:45 起可以分頭：要逛 ayadz、flots、延禧洞的留在延南（ayadz 14:00 才開）；要逛 LOFA、APMA、kamadeva 的跟去龍山；18:30 在양화정會合。原本排 11/6，因為 11/5 預報下雨和 11/6 南怡島對調",
       "items": [
         {
           "time": "08:30",
@@ -406,7 +406,7 @@
           "time": "09:15",
           "name": "延南・弘大自由逛",
           "type": "購物",
-          "note": "弘大入口 3 號出口出來就是京義線林道，往北逛延南（연남필름 10:00 開，其他小店多半 11–12 點才開），11:40 往午餐走；吃完往南走 15 分到西橋 out of all。13:45 起分頭：去龍山的從上水站出發，留下的逛 ayadz、延禧洞，18:30 在한우다움會合。",
+          "note": "弘大入口 3 號出口出來就是京義線林道，往北逛延南（연남필름 10:00 開，其他小店多半 11–12 點才開），11:40 往午餐走；吃完往南走 15 分到西橋 out of all。13:45 起分頭：去龍山的從上水站出發，留下的逛 ayadz、延禧洞，18:30 在양화정會合。",
           "map_query": "경의선숲길 연남동",
           "duration": "2h30m",
           "priority": "optional",
@@ -527,7 +527,7 @@
           "map_query": "녹사평 육교",
           "duration": "25m",
           "priority": "must",
-          "next_transit": "綠莎坪站 6 號線 6 站到上水，走 8 分到한우다움，約 35 分",
+          "next_transit": "綠莎坪站 6 號線 7 站到合井，8 號出口走 2 分到양화정，約 30 分",
           "naver_query": "녹사평역",
           "photo": {
             "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfAf9_9fDBIbb4rEsoP79J2cFaXF3wxdDAWeRO0b2Ehr0SRIOb0uj3LLc40Th7HgxqVvGXEHGpIXsyny0JMD0Xwov-UskSsTpgnwnTfCDCRMD-Qtiu-pTWxGUdDpR-HFvjGQ07k=w900-k-no-rw",
@@ -537,21 +537,21 @@
         },
         {
           "time": "18:30",
-          "name": "晚餐：한우다움 弘大本店（1++ 熟成韓牛代烤）",
+          "name": "晚餐：양화정 楊花亭（炭烤排骨）",
           "type": "餐廳",
-          "note": "1++ 熟成韓牛炭烤，店員代烤；先打電話或用 Catch Table 訂 3 人 11/5 18:30（原本訂 11/6 的要改日期）（0507-1391-5144）。",
+          "note": "開了 35 年的合井炭烤排骨老店，店員代烤；招牌韓豚醃烤（250g ₩21,000），想吃牛加一份醃牛排骨，最後點冷麵配排骨。打 02-323-5777 訂 3 人 11/5 18:30（한우다움有訂的要取消）。",
           "booking": {
-            "hours": "12:00–23:00（最後點餐 22:20）"
+            "hours": "11:30–22:30（最後點餐 22:00，DiningCode）"
           },
-          "map_query": "한우다움 홍대본점 양화로16길 34",
+          "map_query": "양화정 서울 마포구 월드컵로1길 17",
           "duration": "1.5h",
           "priority": "must",
-          "next_transit": "步行到弘大入口站 → 2 號線回建大入口",
-          "naver_query": "한우다움 홍대",
+          "next_transit": "走 2 分到合井站 → 2 號線直達建大入口",
+          "naver_query": "양화정 합정",
           "photo": {
-            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TKWFZEFjl-IT6Z-0on3pEh4jQvHdE_MH3mL5BIWQPYXk1PGLrhBpcBHA8PCl_E6t2dT-UpnwZ90-qOTaLFmuIIISXdd3JcHKVLFEvomQSgz8pbvzkjqVm3rMdC1aS3qySvYQ2zmJZk0KkP=w900-k-no-rw",
-            "alt": "熟成韓牛拼盤",
-            "credit": "圖：한우다움 홍대본점（店家）／Google 地圖（2026/8）"
+            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TTYo0M1iiArpROwd7_Xd67W8D0tiNVy037dJoRKt8zV1gmfhAYDLUvjUPhD1yxKrm0cH4jhSOIr8IMREe1C0mlKM1cHPZY-hhbInbNzr1UrHJe0_UFxy9VZA7xx2itguBaS0K7r1Lc1bw=w900-k-no-rw",
+            "alt": "炭火網上烤著厚切醃排骨，旁邊一排小菜",
+            "credit": "圖：박택순／Google 地圖（2026/3）"
           }
         },
         {
@@ -1598,25 +1598,25 @@
     {
       "day": 2,
       "when": "傍晚",
-      "route": "綠莎坪 → 上水（한우다움 弘大）",
+      "route": "綠莎坪 → 合井（양화정）",
       "at": "17:20",
       "options": [
         {
-          "label": "6 號線 6 站",
-          "summary": "綠莎坪 6 號線 6 站到上水，再走 8 分；約 35 分",
+          "label": "6 號線 7 站",
+          "summary": "綠莎坪 6 號線 7 站到合井，8 號出口走 2 分；約 30 分",
           "mode": "subway",
-          "line": "6 號線 綠莎坪（녹사평）→ 上水（상수），6 站",
+          "line": "6 號線 綠莎坪（녹사평）→ 合井（합정），7 站",
           "line_color": "#cd7c2f",
           "platform": "綠莎坪站 6 號線，往「應岩（응암）」方向月台",
-          "time": "手扶梯 3 分＋地鐵約 15 分＋步行 8 分",
+          "time": "手扶梯 3 分＋地鐵約 17 分＋步行 2 分",
           "fare": "₩1,550／人",
           "headway": "約 7–8 分一班",
-          "minutes": 35,
-          "warn": "訂的是 18:30，17:45 前出發就來得及。\n3 個人搭 Kakao T 約 25 分、₩13,000 上下",
+          "minutes": 30,
+          "warn": "訂的是 18:30，17:50 前出發就來得及。\n3 個人搭 Kakao T 約 25 分、₩13,000 上下",
           "from": "綠莎坪站",
-          "to": "한우다움 弘大本店",
+          "to": "양화정 合井",
           "from_ll": "37.534542,126.986595",
-          "to_ll": "37.552885,126.921348",
+          "to_ll": "37.549437,126.912063",
           "steps": [
             {
               "text": "從天橋走回綠莎坪站，搭手扶梯下到 6 號線",
@@ -1625,23 +1625,24 @@
               "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "往應岩方向，坐 6 站到上水",
+              "text": "往應岩方向，坐 7 站到合井",
               "sign": {
                 "line": "6",
                 "ko": "삼각지 · 응암 방면",
-                "zh": "往應岩方向，坐 6 站"
+                "zh": "往應岩方向，坐 7 站"
               }
             },
             {
-              "img": "img/c-sangsu-exit1.jpg",
-              "alt": "上水站 1 號出口",
-              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）",
-              "text": "上水下車出站，Naver 步行導航到한우다움，往北約 8 分"
+              "text": "合井下車，從 8 號出口出站",
+              "img": "img/c-hapjeong-exit8.jpg",
+              "alt": "合井站 8 號出口",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "店在 2、3 樓，找招牌「한우다움」",
-              "img": "img/hanwoo-daum.jpg",
-              "alt": "한우다움 弘大本店入口（Kakao 로드뷰 2026 年 6–7 月）"
+              "text": "Naver 步行導航約 100 公尺，找白底招牌「양화정 숯불갈비」",
+              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfersFJ6_KZxKnX-AMTQ86E0pSMnJmDVQWwUinlGtd4Z0H57Pi1vwcZ--QrT3BCRTDu9uGh1Rj-_7Z0oZu1E8rGwhhifKcPWwzTOHH4PpdlA29qbX2nH38b8L_ERPUnR4ZdHIafXccGlrVL=w900-k-no",
+              "alt": "양화정 店門口，白底黑字招牌寫著양화정 숯불갈비",
+              "credit": "圖：장동진／Google 地圖（2026/2）"
             }
           ]
         }
@@ -1650,45 +1651,46 @@
     {
       "day": 2,
       "when": "晚上",
-      "route": "弘大入口 → 建大入口",
+      "route": "合井 → 建大入口",
       "at": "18:30",
       "options": [
         {
           "label": "2 號線直達",
-          "summary": "不用轉車，16 站約 35 分",
+          "summary": "不用轉車，17 站約 37 分",
           "mode": "subway",
-          "line": "2 號線 弘大入口 → 建大入口，16 站",
+          "line": "2 號線 合井 → 建大入口，17 站",
           "line_color": "#00a84d",
-          "platform": "弘大入口站 2 號線，往「新村（신촌）」方向月台",
-          "time": "步行 8 分＋地鐵約 35 分",
+          "platform": "合井站 2 號線，往「弘大入口（홍대입구）」方向月台",
+          "time": "步行 2 分＋地鐵約 37 分",
           "fare": "₩1,550／人",
           "headway": "約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
           "minutes": 45,
-          "warn": "週五晚上弘大入口站人很多，往新村方向不要搭錯成往合井（합정）。\n累了或趕時間就用 Kakao T 叫計程車，約 40 分、₩25,000 上下",
-          "from": "弘大入口站",
+          "warn": "往弘大入口・新村方向，不要搭到往堂山（당산）。\n累了或趕時間就用 Kakao T 叫計程車，約 40 分、₩25,000 上下",
+          "from": "合井站",
           "to": "建大入口站",
-          "from_ll": "37.557527,126.924191",
+          "from_ll": "37.549463,126.913739",
           "to_ll": "37.540363,127.069266",
           "steps": [
             {
-              "text": "走到弘大入口站 9 號出口，約 5 分",
-              "img": "img/hongik-exit9.jpg",
-              "alt": "弘大入口站 9 號出口，玻璃頂棚上寫著 9（Kakao 로드뷰 2026 年 6–7 月）"
+              "text": "走回合井站 8 號出口，約 2 分",
+              "img": "img/c-hapjeong-exit8.jpg",
+              "alt": "合井站 8 號出口",
+              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "進 2 號線，往新村方向（신촌 방면）",
-              "img": "img/c-hongik-l2.jpg",
-              "alt": "弘大入口站 2 號線月台",
-              "credit": "圖：ZKang123／Wikimedia Commons（CC BY-SA 4.0）"
+              "text": "進 2 號線，往弘大入口方向（홍대입구 방면）",
+              "img": "img/c-hapjeong-l2.jpg",
+              "alt": "合井站 2 號線月台",
+              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
-              "text": "坐 16 站，建大入口下車，走回住處約 4 分",
+              "text": "坐 17 站，建大入口下車，走回住處約 4 分",
               "img": "img/kondae-exit5.jpg",
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             }
           ],
-          "last": "00:05",
-          "last_note": "弘大入口（平日；最後幾班只到聖水，要換同方向下一班）"
+          "last": "00:03",
+          "last_note": "合井（照弘大入口末班往前推一站，約略；最後幾班只到聖水，要換同方向下一班）"
         }
       ]
     },
