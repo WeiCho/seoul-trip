@@ -518,6 +518,9 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .ledger-yen-in input{width:100%;padding-left:34px;font-family:var(--latin);font-variant-numeric:tabular-nums}
 .ledger-yen-in.is-twd input{padding-left:52px}
 .lg-alt{margin-left:8px;font-size:13px;font-weight:400;color:var(--muted)}
+/* 金額框底下的即時換算：打數字就出現，沒打就整列收起來 */
+.ledger-conv{grid-column:2;margin-top:-2px;padding-left:2px;font-family:var(--latin);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ledger-conv:empty{display:none}
 .ledger-go{min-width:46px;min-height:46px;border:0;border-radius:6px;background:var(--sky);color:#0b0b0e;font:inherit;font-size:20px;cursor:pointer;transition:background .3s}
 .ledger-go:hover{background:var(--sky-l)}
 .lg-day{border-top:1px solid var(--line);padding-top:14px;margin-top:12px}
@@ -1299,9 +1302,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <input class="ledger-name-in" name="name" maxlength="40" placeholder="品項" aria-label="品項">
       <span class="ledger-yen-in"><input name="yen" inputmode="numeric" placeholder="金額" aria-label="金額"></span>
       <button class="ledger-go" type="submit" aria-label="新增這筆">＋</button>
+      <span class="ledger-conv" id="ledger-conv" aria-live="polite"></span>
     </form>
     <div id="ledger-list"></div>
-    <p class="ledger-empty" id="ledger-empty">還沒有記錄。輸入品項與金額按「＋」就會記下，依天自動分組；金額左邊的 ₩ 點一下可改記台幣。</p>
+    <p class="ledger-empty" id="ledger-empty">還沒有記錄。輸入品項與金額按「＋」就會記下，依天自動分組；打金額會先顯示台幣換算，只想換算不記也可以；金額左邊的 ₩ 點一下可改記台幣。</p>
   </div>
   <noscript><p class="ledger-empty">記帳需要開啟 JavaScript。</p></noscript>
   </div>
