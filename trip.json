@@ -3049,10 +3049,11 @@
       "where_ko": "올리브영"
     },
     {
-      "name": "RNRN EYE SCOPE 跑步偏光太陽眼鏡（灰色半透明或墨水色）",
+      "name": "RNRN EYE SCOPE 跑步偏光太陽眼鏡（上：灰色半透明／下：水墨）",
       "ko": "알엔알엔 아이스코프 러닝 선글라스（그레이 반투명 / 잉크）",
       "where": "KREAM 或官網網購",
-      "where_ko": "크림 / rnrn 공식몰"
+      "where_ko": "크림 / rnrn 공식몰",
+      "img": "img/shop-rnrn-eye-scope.jpg"
     }
   ]
 }
