@@ -587,6 +587,25 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .em-photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:8px}
 /* 商品圖多半是直的包裝照，整張放進來不裁 */
 .buy-photo img{aspect-ratio:auto;max-height:62vh;object-fit:contain}
+/* ── 韓文卡：韓文在上、中文在下，右邊播放鍵（iPhone 內建韓文語音） ── */
+.ph{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.ph li{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ph-txt{flex:1;min-width:0}
+.ph-ko{margin:0;font-size:17px;font-weight:500;line-height:1.55;word-break:keep-all}
+.ph-zh{margin:2px 0 0;font-size:13px;color:var(--muted);letter-spacing:.04em}
+.ph-var{display:flex;gap:6px;margin-top:8px}
+.ph-var button{
+  padding:3px 11px;border:1px solid var(--line);border-radius:999px;background:none;cursor:pointer;
+  font:inherit;font-size:12.5px;color:var(--muted);
+}
+.ph-var button[aria-pressed="true"]{background:var(--sky-t);border-color:var(--sky);color:var(--ink)}
+.ph-play{
+  flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:0;
+  background:var(--sky);color:#0b0b0e;cursor:pointer;
+}
+.ph-play svg{width:14px;height:14px;margin-left:2px;fill:currentColor}
+.ph-play.on{background:var(--ink);color:var(--paper)}
+.ph-msg{margin-top:10px;font-size:12.5px;color:var(--soft)}
 .buy-ko{margin-top:6px;word-break:keep-all;font-size:18px;font-weight:500;letter-spacing:.02em}
 .em-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:13.5px}
 .em-meta dt{color:var(--muted)}
@@ -749,6 +768,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       {%- if runs.routes %}<a href="#run">跑步</a>{% endif %}
       {%- if wishlist %}<a href="#wishlist">口袋名單</a>{% endif %}
       {%- if shopping %}<a href="#shopping">購買清單</a>{% endif %}
+      {%- if phrases %}<a href="#phrases">韓文卡</a>{% endif %}
       <a href="#budget">花費</a>
       {%- if trip.packing %}<a href="#packing">出發前檢查</a>{% endif %}
       {%- if trip.emergency %}<a class="nav-urgent" href="#emergency">緊急聯絡</a>{% endif %}
@@ -763,6 +783,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           {%- if runs.routes %}<a href="#run">跑步{{ pill() }}</a>{% endif %}
           {%- if wishlist %}<a href="#wishlist">口袋名單{{ pill() }}</a>{% endif %}
           {%- if shopping %}<a href="#shopping">購買清單{{ pill() }}</a>{% endif %}
+          {%- if phrases %}<a href="#phrases">韓文卡{{ pill() }}</a>{% endif %}
           <a href="#budget">花費{{ pill() }}</a>
           {%- if trip.packing %}<a href="#packing">出發前檢查{{ pill() }}</a>{% endif %}
         </div>
@@ -1267,6 +1288,75 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   {%- endfor %}
   </ul>
 </section>
+{% endif %}
+
+{# ── 韓文卡：常用句，韓文＋中文＋播放鍵 ── #}
+{% if phrases %}
+<section class="section" id="phrases">
+  <div class="section-heading">
+    <h2>韓文卡</h2>
+  </div>
+  <ul class="ph">
+  {%- for p in phrases %}
+    <li>
+      <div class="ph-txt">
+        <p class="ph-ko" lang="ko">{{ p.ko }}</p>
+        <p class="ph-zh">{{ p.zh }}</p>
+        {%- if p.variants %}
+        <div class="ph-var" role="group" aria-label="份數">
+          {%- for v in p.variants %}<button type="button" data-ko="{{ v.ko }}" data-zh="{{ v.zh }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ v.label }}</button>{% endfor %}
+        </div>
+        {%- endif %}
+      </div>
+      <button type="button" class="ph-play" aria-label="播放韓文"><svg viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg></button>
+    </li>
+  {%- endfor %}
+  </ul>
+  <p class="ph-msg" id="ph-msg" hidden>這支手機沒有韓文語音，請直接把畫面給店員看。</p>
+</section>
+<script>
+(function(){
+  var list = document.querySelector("#phrases .ph");
+  if (!list) return;
+  var synth = window.speechSynthesis, msg = document.getElementById("ph-msg");
+  if (!synth || !window.SpeechSynthesisUtterance) {
+    list.querySelectorAll(".ph-play").forEach(function(b){ b.hidden = true; });
+    msg.hidden = false;
+  }
+  function koVoice(){
+    var vs = synth.getVoices() || [];
+    for (var i = 0; i < vs.length; i++) if (/^ko/i.test(vs[i].lang)) return vs[i];
+    return null;
+  }
+  if (synth && synth.getVoices) synth.getVoices();
+  var playing = null;
+  list.addEventListener("click", function(e){
+    var v = e.target.closest(".ph-var button");
+    if (v) {
+      var li = v.closest("li");
+      li.querySelectorAll(".ph-var button").forEach(function(b){ b.setAttribute("aria-pressed", b === v ? "true" : "false"); });
+      li.querySelector(".ph-ko").textContent = v.dataset.ko;
+      li.querySelector(".ph-zh").textContent = v.dataset.zh;
+      speak(li.querySelector(".ph-play"));
+      return;
+    }
+    var p = e.target.closest(".ph-play");
+    if (p) speak(p);
+  });
+  function speak(btn){
+    if (!synth) return;
+    synth.cancel();
+    if (playing) playing.classList.remove("on");
+    var u = new SpeechSynthesisUtterance(btn.closest("li").querySelector(".ph-ko").textContent);
+    u.lang = "ko-KR"; u.rate = 0.85;
+    var kv = koVoice(); if (kv) u.voice = kv;
+    u.onend = u.onerror = function(){ btn.classList.remove("on"); if (playing === btn) playing = null; };
+    btn.classList.add("on"); playing = btn;
+    synth.speak(u);
+    if (!kv && synth.getVoices().length) msg.hidden = false;
+  }
+})();
+</script>
 {% endif %}
 
 {# ── 花費＋檢查：天藍漸層大板 ── #}
