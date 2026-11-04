@@ -1311,7 +1311,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <p class="ph-ko" lang="ko">{{ p.ko }}</p>
         <p class="ph-zh">{{ p.zh }}</p>
         {%- if p.variants %}
-        <div class="ph-var" role="group" aria-label="份數">
+        <div class="ph-var" role="group" aria-label="選項">
           {%- for v in p.variants %}<button type="button" data-ko="{{ v.ko }}" data-zh="{{ v.zh }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ v.label }}</button>{% endfor %}
         </div>
         {%- endif %}
