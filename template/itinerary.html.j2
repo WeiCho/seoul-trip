@@ -1336,10 +1336,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     list.querySelectorAll(".ph-play").forEach(function(b){ b.hidden = true; });
     msg.hidden = false;
   }
+  /* 韓文語音挑女聲：iPhone 的 Yuna、Chrome 的 Google 한국의、Windows 的 Heami／SunHi；
+     沒有就避開已知男聲（Minsu、InJoon 等），最後才隨便挑一個韓文聲音 */
+  var FEMALE = /yuna|sora|google|heami|sunhi|yujin|seoyeon|jimin|female|여성|여자/i;
+  var MALE = /minsu|injoon|hyunsu|jun|male|남성|남자/i;
   function koVoice(){
-    var vs = synth.getVoices() || [];
-    for (var i = 0; i < vs.length; i++) if (/^ko/i.test(vs[i].lang)) return vs[i];
-    return null;
+    var ko = (synth.getVoices() || []).filter(function(v){ return /^ko/i.test(v.lang); });
+    return ko.filter(function(v){ return FEMALE.test(v.name) && !/\bmale/i.test(v.name); })[0]
+        || ko.filter(function(v){ return !MALE.test(v.name); })[0]
+        || ko[0] || null;
   }
   if (synth && synth.getVoices) synth.getVoices();
   var playing = null;
