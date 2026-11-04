@@ -1527,7 +1527,7 @@
           "to_ll": "37.540363,127.069266",
           "steps": [
             {
-              "text": "出海關，跟著「機場鐵路」指標下到 B1",
+              "text": "出海關，跟著「機場鐵路 공항철도」指標下到 B1",
               "img": "img/c-t2-arex-a11.jpg",
               "alt": "仁川機場 T2 機場鐵路站的站名牌",
               "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
@@ -1539,19 +1539,19 @@
               "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "坐約 60 分，弘大入口下車",
+              "text": "坐約 60 分，弘大入口（홍대입구）下車",
               "img": "img/c-hongik-arex-sign.jpg",
               "alt": "弘大入口站機場鐵路月台的站名牌",
               "credit": "圖：MNXANL／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "轉 2 號線，往新村方向（신촌 방면）",
+              "text": "跟著「2호선 갈아타는 곳」（2 號線轉乘）走約 10 分，搭 2 號線往新村方向（신촌 방면・내선순환）",
               "img": "img/c-hongik-l2.jpg",
               "alt": "弘大入口站 2 號線月台",
               "credit": "圖：ZKang123／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "坐 16 站到建大入口，走 5 號出口",
+              "text": "坐 16 站到建大入口（건대입구），走 5 號出口（5번 출구）",
               "img": "img/kondae-exit5.jpg",
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             }
