@@ -166,6 +166,10 @@ button.float-tab{border:0;font-family:inherit;cursor:pointer}
 /* 交通只在封面出現、穿著只在行程出現；同一個位置，捲到哪段換哪顆 */
 .js .float-tab{transition:transform .5s var(--out),opacity .3s,visibility .3s}
 .js .float-tab:not(.is-on){opacity:0;visibility:hidden;transform:translateY(12px)}
+/* 花費浮標：每一段都在，疊在交通／穿著上面；點了把記帳面板搬進彈窗，換算隨手用 */
+.float-money{bottom:calc(clamp(14px,3vh,28px) + 104px)}
+.money-dlg{width:min(520px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 32px);overflow:auto}
+.money-dlg .panel{margin:12px 0 0;padding:0;background:none;box-shadow:none;border:0}
 /* 穿著彈窗：依最低溫分四級，下面列這趟每天落在哪一級 */
 .wear-list{list-style:none;margin:14px 0 0;padding:0;font-size:14px}
 .wear-list li{display:grid;grid-template-columns:5.5em minmax(0,1fr);gap:12px;padding:9px 0;border-top:1px solid var(--line)}
@@ -718,6 +722,8 @@ body.editing>#editor{display:block !important}
   .float-tab{width:40px;font-size:12px;padding:10px 0 12px;bottom:calc(14px + var(--nowbar-h,0px) + env(safe-area-inset-bottom))}
   /* 行程右邊是綠色 N，手機上穿著改放左下，壓在時間欄上，不擋導航鈕 */
   .float-wear{right:auto;left:8px}
+  /* 手機右邊有綠色 N，花費也放左邊，疊在穿著上面 */
+  .float-money{right:auto;left:8px;bottom:calc(14px + 92px + var(--nowbar-h,0px) + env(safe-area-inset-bottom))}
   .nav-links a.nav-urgent{height:36px;padding:0 14px;font-size:13px}
   .tr-meta div{grid-template-columns:minmax(0,1fr);gap:0}
 }
@@ -816,6 +822,17 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                 (3, "3–6°C", "發熱衣＋薄長袖＋羽絨外套，圍巾、手套", "羽絨外套"),
                 (-99, "2°C 以下", "發熱衣＋薄長袖＋厚羽絨或大衣，毛帽、手套、圍巾、暖暖包；褲子裡加內搭褲", "厚羽絨＋配件")] %}
 {%- set wp = trip.wear_personal %}
+<button class="float-tab float-money is-on" type="button" id="money-btn" aria-haspopup="dialog" aria-label="花費與匯率換算">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M7 8l2.5 8L12 9l2.5 7L17 8M6 11.5h12"/></svg>
+  <span>花費</span>
+</button>
+<dialog class="em-dlg info-dlg money-dlg" id="money-dlg" aria-labelledby="money-dlg-t">
+  <div class="em-dlg-in">
+    <h3 id="money-dlg-t" tabindex="-1" autofocus>花費・匯率換算</h3>
+    <div class="money-slot"></div>
+    <button type="button" class="em-close" data-em-close>關閉</button>
+  </div>
+</dialog>
 <button class="float-tab float-wear" type="button" data-dlg="wear-dlg" aria-haspopup="dialog" aria-label="看怎麼穿">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 4 6l-1 6 3 1v8h12v-8l3-1-1-6-5-3c0 1.7-1.3 3-3 3S9 4.7 9 3Z"/></svg>
   <span>穿著</span>
@@ -1531,6 +1548,26 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       var m = b.getAttribute("data-wear"); set(m);
       try { localStorage.setItem("wear-mode", m); } catch (e) {}
     });
+  });
+})();
+/* 花費浮標：把 #budget 的記帳面板（含換算、匯率）搬進彈窗，關掉再搬回原位；同一份資料、同一組事件 */
+(function(){
+  var btn = document.getElementById("money-btn"), dlg = document.getElementById("money-dlg");
+  var sec = document.getElementById("budget");
+  var panel = sec && sec.querySelector(".panel"), undo = document.getElementById("ledger-undo");
+  if (!btn || !dlg || !panel) { if (btn) btn.hidden = true; return; }
+  var slot = dlg.querySelector(".money-slot"), home = document.createComment("ledger-home");
+  panel.parentNode.insertBefore(home, panel);
+  btn.addEventListener("click", function(){
+    if (typeof dlg.showModal !== "function") { sec.scrollIntoView(); return; }
+    slot.appendChild(panel); if (undo) slot.appendChild(undo);
+    dlg.showModal();
+    var yenIn = panel.querySelector('input[name="yen"]');
+    if (yenIn) setTimeout(function(){ yenIn.focus(); }, 50);
+  });
+  dlg.addEventListener("close", function(){
+    home.parentNode.insertBefore(panel, home.nextSibling);
+    if (undo) sec.appendChild(undo);
   });
 })();
 /* 右下浮標：畫面中間是封面就出交通，是行程就出穿著 */
