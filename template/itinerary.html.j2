@@ -606,6 +606,14 @@ button.more{background:none;border-width:0 0 1px;border-style:solid;border-color
 .ph-play svg{width:14px;height:14px;margin-left:2px;fill:currentColor}
 .ph-play.on{background:var(--ink);color:var(--paper)}
 .ph-msg{margin-top:10px;font-size:12.5px;color:var(--soft)}
+/* 點韓文卡放大成全螢幕給店員／司機看，點任何地方關閉 */
+.ph-txt{cursor:zoom-in}
+.ph-full{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:max(24px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));border:0;background:var(--paper);color:var(--ink)}
+.ph-full[open]{display:flex;flex-direction:column;justify-content:center;gap:20px}
+.ph-full::backdrop{background:var(--paper)}
+.ph-full-ko{margin:0;font-size:min(11vw,64px);font-weight:600;line-height:1.35;word-break:keep-all}
+.ph-full-zh{margin:0;font-size:16px;color:var(--muted)}
+.ph-full-x{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:13px;color:var(--soft)}
 .buy-ko{margin-top:6px;word-break:keep-all;font-size:18px;font-weight:500;letter-spacing:.02em}
 .em-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:13.5px}
 .em-meta dt{color:var(--muted)}
@@ -1313,6 +1321,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   {%- endfor %}
   </ul>
   <p class="ph-msg" id="ph-msg" hidden>這支手機沒有韓文語音，請直接把畫面給店員看。</p>
+  <dialog class="ph-full" id="ph-full" aria-label="韓文卡全螢幕">
+    <p class="ph-full-ko" lang="ko"></p>
+    <p class="ph-full-zh"></p>
+    <p class="ph-full-x">點一下關閉</p>
+  </dialog>
 </section>
 <script>
 (function(){
@@ -1330,6 +1343,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   }
   if (synth && synth.getVoices) synth.getVoices();
   var playing = null;
+  var full = document.getElementById("ph-full");
+  full.addEventListener("click", function(){ full.close(); });
   list.addEventListener("click", function(e){
     var v = e.target.closest(".ph-var button");
     if (v) {
@@ -1342,6 +1357,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     }
     var p = e.target.closest(".ph-play");
     if (p) speak(p);
+    if (p) return;
+    var t = e.target.closest(".ph-txt");
+    if (t && full.showModal) {
+      full.querySelector(".ph-full-ko").textContent = t.querySelector(".ph-ko").textContent;
+      full.querySelector(".ph-full-zh").textContent = t.querySelector(".ph-zh").textContent;
+      full.showModal();
+    }
   });
   function speak(btn){
     if (!synth) return;
