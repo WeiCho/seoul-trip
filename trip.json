@@ -527,7 +527,7 @@
           "map_query": "녹사평 육교",
           "duration": "25m",
           "priority": "must",
-          "next_transit": "綠莎坪站 6 號線 7 站到合井，8 號出口走 2 分到양화정，約 30 分",
+          "next_transit": "6 號線 1 站到三角地轉 4 號線 1 站到新龍山，走到赤土發酵烤肉，約 25 分",
           "naver_query": "녹사평역",
           "photo": {
             "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfAf9_9fDBIbb4rEsoP79J2cFaXF3wxdDAWeRO0b2Ehr0SRIOb0uj3LLc40Th7HgxqVvGXEHGpIXsyny0JMD0Xwov-UskSsTpgnwnTfCDCRMD-Qtiu-pTWxGUdDpR-HFvjGQ07k=w900-k-no-rw",
@@ -537,22 +537,17 @@
         },
         {
           "time": "18:30",
-          "name": "晚餐：양화정 楊花亭（炭烤排骨）",
+          "name": "晚餐：적토발효구이 赤土發酵烤肉",
           "type": "餐廳",
-          "note": "開了 35 年的合井炭烤排骨老店，店員代烤；招牌韓豚醃烤（250g ₩21,000），想吃牛加一份醃牛排骨，最後點冷麵配排骨。打 02-323-5777 訂 3 人 11/5 18:30（한우다움有訂的要取消）。",
+          "note": "用赤土燒的甕發酵豬肉再烤，已訂 3 人 18:30；訂金每桌 ₩20,000，現場用餐會扣抵。",
           "booking": {
-            "hours": "11:30–22:30（最後點餐 22:00，DiningCode）"
+            "hours": "平日 17:00–22:00（Creatrip）"
           },
-          "map_query": "양화정 서울 마포구 월드컵로1길 17",
+          "map_query": "적토발효구이 용산점",
           "duration": "1.5h",
           "priority": "must",
-          "next_transit": "走 2 分到合井站 → 2 號線直達建大入口",
-          "naver_query": "양화정 합정",
-          "photo": {
-            "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TTYo0M1iiArpROwd7_Xd67W8D0tiNVy037dJoRKt8zV1gmfhAYDLUvjUPhD1yxKrm0cH4jhSOIr8IMREe1C0mlKM1cHPZY-hhbInbNzr1UrHJe0_UFxy9VZA7xx2itguBaS0K7r1Lc1bw=w900-k-no-rw",
-            "alt": "炭火網上烤著厚切醃排骨，旁邊一排小菜",
-            "credit": "圖：박택순／Google 地圖（2026/3）"
-          }
+          "next_transit": "走到新龍山站 → 4 號線到東大門歷史文化公園轉 2 號線到建大入口，約 45 分",
+          "naver_query": "적토발효구이 용산점"
         },
         {
           "time": "20:45",
@@ -1746,25 +1741,24 @@
     {
       "day": 2,
       "when": "傍晚",
-      "route": "綠莎坪 → 合井（양화정）",
-      "at": "17:20",
+      "route": "綠莎坪 → 新龍山（적토발효구이）",
+      "at": "17:45",
       "options": [
         {
-          "label": "6 號線 7 站",
-          "summary": "綠莎坪 6 號線 7 站到合井，8 號出口走 2 分；約 30 分",
+          "label": "6 號線＋4 號線",
+          "summary": "綠莎坪 6 號線 1 站到三角地，轉 4 號線 1 站到新龍山，約 25 分",
           "mode": "subway",
-          "line": "6 號線 綠莎坪（녹사평）→ 合井（합정），7 站",
+          "line": "6 號線 綠莎坪 → 三角地，轉 4 號線 → 新龍山（신용산）",
           "line_color": "#cd7c2f",
           "platform": "綠莎坪站 6 號線，往「應岩（응암）」方向月台",
-          "time": "手扶梯 3 分＋地鐵約 17 分＋步行 2 分",
+          "time": "手扶梯 3 分＋地鐵約 10 分＋轉乘 5 分＋步行約 5 分",
           "fare": "₩1,550／人",
-          "headway": "約 7–8 分一班",
-          "minutes": 30,
-          "warn": "訂的是 18:30，17:50 前出發就來得及。\n3 個人搭 Kakao T 約 25 分、₩13,000 上下",
+          "headway": "6 號線約 7–8 分一班；4 號線約 5 分一班",
+          "minutes": 25,
+          "warn": "訂的是 18:30，17:55 前出發就來得及。\n3 個人搭 Kakao T 約 10 分、₩6,000 上下，比轉車省事",
           "from": "綠莎坪站",
-          "to": "양화정 合井",
+          "to": "적토발효구이 용산점",
           "from_ll": "37.534542,126.986595",
-          "to_ll": "37.549437,126.912063",
           "steps": [
             {
               "text": "從天橋走回綠莎坪站，搭手扶梯下到 6 號線",
@@ -1773,24 +1767,30 @@
               "credit": "圖：Mobius6／Wikimedia Commons（CC BY-SA 4.0）"
             },
             {
-              "text": "往應岩方向，坐 7 站到合井",
+              "text": "往應岩方向坐 1 站，三角地下車",
               "sign": {
                 "line": "6",
                 "ko": "삼각지 · 응암 방면",
-                "zh": "往應岩方向，坐 7 站"
+                "zh": "往應岩方向，坐 1 站"
               }
             },
             {
-              "text": "合井下車，從 8 號出口出站",
-              "img": "img/c-hapjeong-exit8.jpg",
-              "alt": "合井站 8 號出口",
-              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
+              "text": "轉 4 號線，往新龍山方向（신용산 방면）坐 1 站",
+              "sign": {
+                "line": "4",
+                "ko": "신용산 · 사당 방면",
+                "zh": "往新龍山方向，坐 1 站",
+                "color": "#00a5de"
+              }
             },
             {
-              "text": "Naver 步行導航約 100 公尺，找白底招牌「양화정 숯불갈비」",
-              "img": "https://lh3.googleusercontent.com/grass-cs/AABkmLfersFJ6_KZxKnX-AMTQ86E0pSMnJmDVQWwUinlGtd4Z0H57Pi1vwcZ--QrT3BCRTDu9uGh1Rj-_7Z0oZu1E8rGwhhifKcPWwzTOHH4PpdlA29qbX2nH38b8L_ERPUnR4ZdHIafXccGlrVL=w900-k-no",
-              "alt": "양화정 店門口，白底黑字招牌寫著양화정 숯불갈비",
-              "credit": "圖：장동진／Google 地圖（2026/2）"
+              "text": "新龍山下車，Naver 步行導航到적토발효구이，約 5 分",
+              "sign": {
+                "line": "4",
+                "ko": "신용산",
+                "zh": "新龍山下車",
+                "color": "#00a5de"
+              }
             }
           ]
         }
@@ -1799,46 +1799,58 @@
     {
       "day": 2,
       "when": "晚上",
-      "route": "合井 → 建大入口",
-      "at": "18:30",
+      "route": "新龍山 → 建大入口",
+      "at": "20:00",
       "options": [
         {
-          "label": "2 號線直達",
-          "summary": "不用轉車，17 站約 37 分",
+          "label": "4 號線＋2 號線",
+          "summary": "新龍山 4 號線 7 站到東大門歷史文化公園，轉 2 號線 7 站到建大入口，約 45 分",
           "mode": "subway",
-          "line": "2 號線 合井 → 建大入口，17 站",
-          "line_color": "#00a84d",
-          "platform": "合井站 2 號線，往「弘大入口（홍대입구）」方向月台",
-          "time": "步行 2 分＋地鐵約 37 分",
+          "line": "4 號線 新龍山 → 東大門歷史文化公園，轉 2 號線 → 建大入口",
+          "line_color": "#00a5de",
+          "platform": "新龍山站 4 號線，往「首爾站（서울역）・당고개」方向月台",
+          "time": "步行 5 分＋地鐵約 15 分＋轉乘 5 分＋地鐵約 15 分",
           "fare": "₩1,550／人",
-          "headway": "約 5 分一班；首班約 05:30、末班約 23:30（週末略早）",
+          "headway": "4 號線、2 號線都約 5 分一班",
           "minutes": 45,
-          "warn": "往弘大入口・新村方向，不要搭到往堂山（당산）。\n累了或趕時間就用 Kakao T 叫計程車，約 40 分、₩25,000 上下",
-          "from": "合井站",
+          "warn": "東大門歷史文化公園轉 2 號線要搭往聖水方向，不要搭到往乙支路（을지로）。\n累了就用 Kakao T 叫計程車，約 25 分、₩15,000 上下",
+          "from": "新龍山站",
           "to": "建大入口站",
-          "from_ll": "37.549463,126.913739",
           "to_ll": "37.540363,127.069266",
           "steps": [
             {
-              "text": "走回合井站 8 號出口，約 2 分",
-              "img": "img/c-hapjeong-exit8.jpg",
-              "alt": "合井站 8 號出口",
-              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
+              "text": "Naver 步行導航走回新龍山站，約 5 分",
+              "sign": {
+                "line": "4",
+                "ko": "신용산역",
+                "zh": "新龍山站",
+                "color": "#00a5de"
+              }
             },
             {
-              "text": "進 2 號線，往弘大入口方向（홍대입구 방면）",
-              "img": "img/c-hapjeong-l2.jpg",
-              "alt": "合井站 2 號線月台",
-              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
+              "text": "4 號線往首爾站方向，坐 7 站到東大門歷史文化公園",
+              "sign": {
+                "line": "4",
+                "ko": "서울역 · 당고개 방면",
+                "zh": "往首爾站方向，坐 7 站",
+                "color": "#00a5de"
+              }
             },
             {
-              "text": "坐 17 站，建大入口下車，走回住處約 4 分",
+              "text": "轉 2 號線，往聖水方向（신당 · 성수 방면），坐 7 站",
+              "sign": {
+                "line": "2",
+                "ko": "신당 · 성수 방면",
+                "zh": "往聖水方向，坐 7 站",
+                "color": "#00a84d"
+              }
+            },
+            {
+              "text": "建大入口下車，走回住處約 4 分",
               "img": "img/kondae-exit5.jpg",
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             }
-          ],
-          "last": "00:03",
-          "last_note": "合井（照弘大入口末班往前推一站，約略；最後幾班只到聖水，要換同方向下一班）"
+          ]
         }
       ]
     },
