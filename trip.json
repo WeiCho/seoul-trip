@@ -406,9 +406,9 @@
           "time": "09:15",
           "name": "延南・弘大自由逛",
           "type": "購物",
-          "note": "弘大入口 3 號出口出來就是京義線林道，往北逛延南（연남필름 10:00 開，其他小店多半 11–12 點才開），11:40 往午餐走；吃完往南走 15 分到西橋 out of all。13:45 起分頭：去龍山的從上水站出發，留下的逛 ayadz、延禧洞，18:30 在양화정會合。",
+          "note": "弘大入口 3 號出口出來就是京義線林道，往北逛延南（연남필름 10:00 開，其他小店多半 11–12 點才開），12:25 往午餐走；吃完往南走 15 分到西橋 out of all。14:30 起分頭：去龍山的從上水站出發，留下的逛 ayadz、延禧洞，18:30 在적토발효구이會合。",
           "map_query": "경의선숲길 연남동",
-          "duration": "2h30m",
+          "duration": "3h15m",
           "priority": "optional",
           "next_transit": "步行約 5 分到온행",
           "naver_query": "경의선숲길 연남동",
@@ -450,14 +450,14 @@
           }
         },
         {
-          "time": "11:45",
+          "time": "12:30",
           "name": "午餐：온행 溫行（鍋巴雞湯）",
           "type": "餐廳",
           "note": "一人一份的雞湯定食：鍋巴蔘雞白飯（누룽지 삼계백반）、清燉雞湯（닭곰탕）、雞湯刀削麵，湯裡加了店家自己做的鍋巴；加點雞肉手工餃子、涼拌雞。11:30 開。備選：연남그곳 明太子海帶湯。",
           "map_query": "온행 서울 마포구 동교로52길 4-3",
           "duration": "1h",
           "priority": "must",
-          "next_transit": "步行約 15 分到西橋 out of all；13:45 從上水站搭 6 號線 5 站到三角地，約 25 分",
+          "next_transit": "步行約 15 分到西橋 out of all；14:30 從上水站搭 6 號線 5 站到三角地，約 25 分",
           "naver_query": "온행 연남",
           "photo": {
             "img": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rusf0JgRYhFPMZdtXUAbxMUmC_b8grFwB6rD4CSblSzpKCj604rGTMOy0M0veS5xKdqcxX9gGQ_04CjSG1tMPESkjeose0cGLWMaKxhQ9Vkx-9dDbzkn0QqJZvl2sNkoFxrkRuQNz-LW5q=w900-k-no",
@@ -469,12 +469,12 @@
           }
         },
         {
-          "time": "14:10",
+          "time": "14:55",
           "name": "三角地・新龍山自由逛",
           "type": "購物",
           "note": "三角地到新龍山只差 1 站，走路約 10 分。順序：三角地 pixel per inch、EXIT6 → 走用理團路到新龍山 → LOFA Seoul → APMA（有預約再去）；還有時間或下雨就去龍山站 I'Park Mall，18:20 走去吃晚餐。",
           "map_query": "픽셀퍼인치",
-          "duration": "4h10m",
+          "duration": "3h25m",
           "priority": "optional",
           "next_transit": "Naver 步行導航到적토발효구이",
           "naver_query": "픽셀퍼인치",
@@ -1709,7 +1709,7 @@
       "day": 2,
       "when": "中午",
       "route": "out of all 西橋 → 三角地（pixel per inch）",
-      "at": "13:45",
+      "at": "14:30",
       "options": [
         {
           "label": "6 號線 5 站",
