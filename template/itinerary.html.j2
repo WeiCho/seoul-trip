@@ -403,6 +403,7 @@ html:not(.js) .has-opts .tr-card+.tr-card{margin-top:22px;padding-top:18px;borde
 .ride-sign{display:flex;align-items:center;gap:12px;margin-top:8px;padding:12px 14px;border-radius:6px;background:#23272e;color:#fff}
 .ride-sign b{flex:none;display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border-radius:17px;background:var(--c);font-family:var(--latin);font-size:16px;font-weight:600;line-height:1}
 .ride-sign strong{display:block;font-size:16px;font-weight:600;line-height:1.35;letter-spacing:.02em}
+.ride-sign-en{display:block;font-family:var(--latin);font-style:normal;font-size:13px;color:#e3e7ee;line-height:1.4}
 .ride-sign small{display:block;font-size:12.5px;color:#b9c0cc;line-height:1.5}
 .tr-last-note{display:block;font-size:12.5px;color:var(--soft);line-height:1.6}
 /* 即時到站 */
@@ -1160,7 +1161,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                 <li><p>{{ st.text }}</p>
                   {%- if st.img %}<img src="{{ st.img }}" alt="{{ st.alt or st.text }}" loading="lazy" decoding="async">{% if st.credit %}<small class="ride-credit">{{ st.credit }}</small>{% endif %}{% endif %}
                   {#- 找不到實拍照片的步驟，才畫一塊仿首爾地鐵的指標牌：線號圓圈＋方向 -#}
-                  {%- if st.sign and not st.img %}{% set sg = st.sign %}<div class="ride-sign" role="img" aria-label="{{ sg.zh or sg.ko }}"><b style="--c:{{ line_colors[sg.line] | default(sg.color or '#3d5bab') }}">{{ sg.badge or sg.line }}</b><span><strong>{{ sg.ko }}</strong>{% if sg.zh %}<small>{{ sg.zh }}</small>{% endif %}</span></div>{% endif %}
+                  {%- if st.sign and not st.img %}{% set sg = st.sign %}<div class="ride-sign" role="img" aria-label="{{ sg.zh or sg.ko }}"><b style="--c:{{ line_colors[sg.line] | default(sg.color or '#3d5bab') }}">{{ sg.badge or sg.line }}</b><span><strong>{{ sg.ko }}</strong>{% if sg.en %}<em class="ride-sign-en">{{ sg.en }}</em>{% endif %}{% if sg.zh %}<small>{{ sg.zh }}</small>{% endif %}</span></div>{% endif %}
                 </li>
               {%- endfor %}
               </ol>
