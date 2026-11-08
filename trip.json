@@ -1136,36 +1136,31 @@
     },
     {
       "date": "2026-11-08",
-      "theme": "峨嵯山・狎鷗亭",
+      "theme": "聖水・狎鷗亭",
       "weather": "首爾約 0–8°C，早上爬山接近 0°C",
-      "note": "你早上去爬峨嵯山（交通也可以看「峨嵯山」那一頁），另外兩位睡飽自由行動；12:00 在狎鷗亭羅德奧會合（你下山後先去清涼里皮克敏快閃）。晚上早點回去收行李，隔天 10:15 退房",
+      "note": "峨嵯山改成早上逛聖水，10:25 搭車去清涼里皮克敏快閃；12:00 在狎鷗亭羅德奧吃午餐。晚上早點回去收行李，隔天 10:15 退房",
       "items": [
         {
-          "time": "07:30",
+          "time": "08:25",
           "name": "從 Airbnb 出發",
           "type": "住宿",
           "note": "帶 1 公升水、防風外套；另外兩位自由行動。",
           "map_query": "서울 광진구 동일로18길 69",
           "duration": "5m",
           "status": "confirmed",
-          "next_transit": "7 號線＋5 號線到廣渡口，約 35 分",
+          "next_transit": "2 號線 1 站到聖水，約 10 分",
           "naver_query": "서울 광진구 동일로18길 69"
         },
         {
-          "time": "08:10",
-          "name": "峨嵯山（아차산）登山",
-          "type": "景點",
-          "note": "生態公園 → 高句麗亭 → 해맞이광장（看得到漢江和樂天世界塔），體力夠再沿稜線走到頂峰；上下山約 2 小時，從峨嵯山站那側下山。稜線上沒有廁所、沒有水。",
-          "map_query": "아차산생태공원",
-          "duration": "2h15m",
-          "priority": "must",
-          "next_transit": "峨嵯山站 5 號線到往十里，轉水仁盆唐線 1 站到清涼里，約 25 分",
-          "naver_query": "아차산생태공원",
-          "photo": {
-            "img": "img/achasan-view.jpg",
-            "alt": "峨嵯山觀景台，遠方是漢江與樂天世界塔",
-            "credit": "圖：Sadopaul／Wikimedia Commons（CC BY-SA 4.0）"
-          }
+          "time": "09:00",
+          "name": "聖水自由逛",
+          "type": "購物",
+          "note": "峨嵯山改成早上逛聖水；10:25 從聖水站出發去清涼里。",
+          "map_query": "성수역",
+          "duration": "1h25m",
+          "priority": "optional",
+          "next_transit": "2 號線 3 站到往十里，轉水仁盆唐線 1 站到清涼里，約 25 分",
+          "naver_query": "성수역"
         },
         {
           "time": "10:50",
@@ -2464,109 +2459,103 @@
     },
     {
       "when": "早上",
-      "route": "住處 → 峨嵯山登山口（廣渡口站）",
+      "route": "住處 → 聖水（성수 Seongsu）",
       "options": [
         {
-          "label": "7 號線＋5 號線",
-          "summary": "建大入口 7 號線 2 站到君子，轉 5 號線 2 站到廣渡口，1 號出口走到生態公園；約 35 分",
+          "label": "2 號線",
+          "summary": "建大入口 2 號線 1 站到聖水，約 10 分",
           "mode": "subway",
-          "line": "7 號線 建大入口 → 君子（군자）轉 5 號線 → 廣渡口（광나루）",
-          "line_color": "#996cac",
-          "platform": "建大入口站 7 號線，往長岩方向（장암 방면 / Jangam）",
-          "time": "步行到站 5 分＋地鐵約 10 分＋轉乘 5 分＋步行 15 分",
+          "line": "2 號線 建大入口（건대입구 Konkuk Univ.）→ 聖水（성수 Seongsu），1 站",
+          "line_color": "#00a84d",
+          "platform": "建大入口站 2 號線（高架），往聖水方向（성수 방면 / Seongsu）",
+          "time": "步行到站 5 分＋地鐵約 2 分",
           "fare": "₩1,550／人",
-          "headway": "7、5 號線都約 5–8 分一班",
-          "minutes": 35,
-          "warn": "5 號線到君子之後會分岔，往하남검단산或마천的車都會停廣渡口，哪班都可以上",
+          "headway": "約 5 分一班",
+          "minutes": 10,
           "from": "住處",
-          "to": "峨嵯山生態公園",
+          "to": "聖水站",
           "from_ll": "37.540363,127.069266",
-          "to_ll": "37.551190,127.101035",
+          "to_ll": "37.544581,127.055961",
           "steps": [
             {
-              "text": "走到建大入口站 5 號出口，下到地下的 7 號線",
+              "text": "走到建大入口站（건대입구 Konkuk Univ.），上 2 號線高架",
               "img": "img/kondae-exit5.jpg",
               "alt": "建大入口站 5 號出口，在 2 號線高架下的路口（Kakao 로드뷰 2026 年 6–7 月）"
             },
             {
-              "text": "往長岩方向（장암 방면 / Jangam），下一站是兒童大公園；坐 2 站到君子",
-              "img": "img/c-kondae-l7-jangam.jpg",
-              "alt": "建大入口站 7 號線站名牌，箭頭指向 726 어린이대공원（往長岩方向）",
+              "text": "往聖水方向（성수 방면 / Seongsu），坐 1 站",
+              "img": "img/c-kondae-l2.jpg",
+              "alt": "建大入口站 2 號線高架月台",
               "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
             },
             {
-              "text": "在君子站跟著紫色 5 號線指標，往천호 · 하남검단산 · 마천（Cheonho · Hanam Geomdansan · Macheon）方向",
-              "img": "img/c-gunja-l5-transfer.jpg",
-              "alt": "君子站 7 號線月台，上方指標右邊是 5 號線「천호 · 하남검단산 · 마천」",
-              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
-            },
-            {
-              "text": "坐 2 站（經過峨嵯山站），廣渡口下車",
-              "img": "img/c-gwangnaru-sign.jpg",
-              "alt": "廣渡口站 5 號線站名牌（546）",
-              "credit": "圖：Striker9498／Wikimedia Commons（CC0）"
-            },
-            {
-              "text": "走 1 號出口",
-              "img": "img/c-gwangnaru-exit1.jpg",
-              "alt": "廣渡口站 1 號出口",
-              "credit": "圖：LERK／Wikimedia Commons（CC BY-SA 4.0）"
-            },
-            {
-              "text": "出站往北走約 10–15 分到峨嵯山生態公園，上山前先在公園裡上廁所",
-              "img": "img/achasan-stone.jpg",
-              "alt": "峨嵯山登山口的「아차산 峨嵯山」刻石",
-              "credit": "圖：Sadopaul／Wikimedia Commons（CC BY-SA 4.0）"
+              "text": "聖水（성수 Seongsu）下車",
+              "img": "img/c-seongsu-l2.jpg",
+              "alt": "聖水站 2 號線高架月台",
+              "credit": "圖：분당선M／Wikimedia Commons（CC BY-SA 3.0）"
             }
           ]
         }
       ],
       "day": 5,
-      "at": "07:30"
+      "at": "08:25"
     },
     {
       "day": 5,
       "when": "上午",
-      "route": "峨嵯山站 → 清涼里（청량리・皮克敏快閃）",
-      "at": "08:10",
+      "route": "聖水 → 清涼里（청량리 Cheongnyangni・皮克敏快閃）",
+      "at": "10:25",
       "options": [
         {
-          "label": "5 號線＋水仁盆唐線",
-          "summary": "5 號線 5 站到往十里，轉水仁盆唐線 1 站到清涼里；約 25 分",
+          "label": "2 號線＋水仁盆唐線",
+          "summary": "聖水 2 號線 3 站到往十里，轉水仁盆唐線 1 站到清涼里；約 25 分",
           "mode": "subway",
-          "line": "5 號線 峨嵯山 → 往十里（왕십리）轉水仁盆唐線 → 清涼里",
-          "line_color": "#996cac",
-          "platform": "峨嵯山站 5 號線，往君子方向（군자 · 방화 방면 / Gunja · Banghwa）",
-          "time": "地鐵約 15 分＋轉乘 5 分＋走到商場 B1 約 5 分",
+          "line": "2 號線 聖水（성수 Seongsu）→ 往十里（왕십리 Wangsimni）轉水仁盆唐線 → 清涼里（청량리 Cheongnyangni）",
+          "line_color": "#00a84d",
+          "platform": "聖水站 2 號線（高架），往往十里方向（뚝섬 · 왕십리 방면 / Ttukseom · Wangsimni）",
+          "time": "地鐵約 7 分＋轉乘 5 分＋地鐵約 3 分＋走到商場 B1 約 5 分",
           "fare": "₩1,550／人",
-          "headway": "5 號線約 5–8 分一班；水仁盆唐線約 8–10 分一班",
+          "headway": "2 號線約 5 分一班；水仁盆唐線約 8–10 分一班",
           "minutes": 25,
-          "warn": "下山後可以先在峨嵯山站旁的원조할아버지손두부（元祖爺爺手工豆腐）吃點東西，06:00 開。\n往十里也可以改坐京義中央線（청량리 방면 / Cheongnyangni）1 站，哪條先來坐哪條。\n快閃 10:30 才開門",
-          "from": "峨嵯山站",
+          "warn": "往十里也可以改坐京義中央線（청량리 방면 / Cheongnyangni）1 站，哪條先來坐哪條。\n快閃 10:30 才開門",
+          "from": "聖水站",
           "to": "樂天購物中心清涼里店",
-          "from_ll": "37.551709,127.090093",
+          "from_ll": "37.544581,127.055961",
           "to_ll": "37.579891,127.046162",
           "steps": [
-            "從 2 號出口進峨嵯山站",
             {
-              "text": "5 號線往君子方向，坐 5 站到往十里",
+              "text": "聖水站（성수 Seongsu）上 2 號線，往往十里方向（뚝섬 · 왕십리 방면 / Ttukseom · Wangsimni）",
+              "img": "img/c-seongsu-l2.jpg",
+              "alt": "聖水站 2 號線高架月台",
+              "credit": "圖：분당선M／Wikimedia Commons（CC BY-SA 3.0）"
+            },
+            {
+              "text": "坐 3 站，往十里（왕십리 Wangsimni）下車",
               "sign": {
-                "line": "5",
-                "ko": "군자 · 방화 방면",
-                "zh": "往君子方向，坐 5 站到往十里（왕십리）",
-                "en": "Gunja · Banghwa"
+                "line": "2",
+                "ko": "왕십리",
+                "en": "Wangsimni",
+                "zh": "往十里下車（經過뚝섬 Ttukseom、한양대 Hanyang Univ.）"
               }
             },
             {
-              "text": "往十里轉黃色水仁盆唐線，往清涼里方向坐 1 站",
+              "text": "轉黃色水仁盆唐線，往清涼里方向坐 1 站（청량리 방면 / Cheongnyangni）",
               "sign": {
                 "line": "水仁盆唐",
                 "ko": "청량리 방면",
-                "zh": "往清涼里方向，坐 1 站（終點）",
-                "en": "Cheongnyangni"
+                "en": "Cheongnyangni",
+                "zh": "往清涼里方向，坐 1 站（終點）"
               }
             },
-            "清涼里站下車，跟著「롯데몰」指標走，快閃在 B1 的 Link Station（링크 스테이션）"
+            {
+              "text": "清涼里（청량리 Cheongnyangni）下車，跟著「롯데몰」指標走，快閃在 B1 的 Link Station（링크 스테이션）",
+              "sign": {
+                "line": "水仁盆唐",
+                "ko": "청량리 · 롯데몰",
+                "en": "Cheongnyangni · Lotte Mall",
+                "zh": "清涼里下車，往樂天購物中心"
+              }
+            }
           ]
         }
       ]
