@@ -1159,7 +1159,7 @@
           "map_query": "성수역",
           "duration": "1h25m",
           "priority": "optional",
-          "next_transit": "2 號線 3 站到往十里，轉水仁盆唐線 1 站到清涼里，約 25 分",
+          "next_transit": "2 號線 3 站到往十里，轉京義中央線 1 站到清涼里，約 25 分",
           "naver_query": "성수역"
         },
         {
@@ -1171,10 +1171,10 @@
           "naver_query": "롯데몰 청량리점",
           "duration": "40m",
           "priority": "optional",
-          "next_transit": "水仁盆唐線 3 站直達狎鷗亭羅德奧，約 20 分"
+          "next_transit": "京義中央線 3 站到玉水，轉 3 號線 1 站到狎鷗亭，走到羅德奧；約 35 分"
         },
         {
-          "time": "12:00",
+          "time": "12:10",
           "name": "午餐：투아투아 Tour à Tour（狎鷗亭羅德奧，暫定）",
           "type": "餐廳",
           "note": "南法鄉村風的酸種麵包早午餐，麵包隨便點都好吃；狎鷗亭羅德奧站 5 號出口走 6 分。週日營業時間出發前在 Naver 確認。",
@@ -2507,17 +2507,17 @@
       "at": "10:25",
       "options": [
         {
-          "label": "2 號線＋水仁盆唐線",
-          "summary": "聖水 2 號線 3 站到往十里，轉水仁盆唐線 1 站到清涼里；約 25 分",
+          "label": "2 號線＋京義中央線",
+          "summary": "聖水 2 號線 3 站到往十里，轉京義中央線 1 站到清涼里；約 25 分",
           "mode": "subway",
-          "line": "2 號線 聖水（성수 Seongsu）→ 往十里（왕십리 Wangsimni）轉水仁盆唐線 → 清涼里（청량리 Cheongnyangni）",
+          "line": "2 號線 聖水（성수 Seongsu）→ 往十里（왕십리 Wangsimni）轉京義中央線 → 清涼里（청량리 Cheongnyangni）",
           "line_color": "#00a84d",
           "platform": "聖水站 2 號線（高架），往往十里方向（뚝섬 · 왕십리 방면 / Ttukseom · Wangsimni）",
           "time": "地鐵約 7 分＋轉乘 5 分＋地鐵約 3 分＋走到商場 B1 約 5 分",
           "fare": "₩1,550／人",
-          "headway": "2 號線約 5 分一班；水仁盆唐線約 8–10 分一班",
+          "headway": "2 號線約 5 分一班；京義中央線約 10–15 分一班",
           "minutes": 25,
-          "warn": "往十里也可以改坐京義中央線（청량리 방면 / Cheongnyangni）1 站，哪條先來坐哪條。\n快閃 10:30 才開門",
+          "warn": "往十里轉的是青綠色京義中央線（경의중앙선 Gyeongui–Jungang Line），不是黃色的水仁盆唐線。\n快閃 10:30 才開門",
           "from": "聖水站",
           "to": "樂天購物中心清涼里店",
           "from_ll": "37.544581,127.055961",
@@ -2539,21 +2539,23 @@
               }
             },
             {
-              "text": "轉黃色水仁盆唐線，往清涼里方向坐 1 站（청량리 방면 / Cheongnyangni）",
+              "text": "往十里轉青綠色京義中央線（경의중앙선 Gyeongui–Jungang Line），往清涼里方向坐 1 站（청량리 방면 / Cheongnyangni）",
               "sign": {
-                "line": "水仁盆唐",
+                "line": "京義中央",
                 "ko": "청량리 방면",
                 "en": "Cheongnyangni",
-                "zh": "往清涼里方向，坐 1 站（終點）"
+                "zh": "京義中央線往清涼里，坐 1 站",
+                "color": "#77c4a3"
               }
             },
             {
               "text": "清涼里（청량리 Cheongnyangni）下車，跟著「롯데몰」指標走，快閃在 B1 的 Link Station（링크 스테이션）",
               "sign": {
-                "line": "水仁盆唐",
+                "line": "京義中央",
                 "ko": "청량리 · 롯데몰",
                 "en": "Cheongnyangni · Lotte Mall",
-                "zh": "清涼里下車，往樂天購物中心"
+                "zh": "清涼里下車，往樂天購物中心",
+                "color": "#77c4a3"
               }
             }
           ]
@@ -2564,41 +2566,63 @@
       "day": 5,
       "when": "中午",
       "route": "清涼里 → 狎鷗亭羅德奧（압구정로데오）",
-      "at": "10:50",
+      "at": "11:30",
       "options": [
         {
-          "label": "水仁盆唐線直達",
-          "summary": "清涼里坐水仁盆唐線 3 站到狎鷗亭羅德奧，不用轉車；約 20 分",
+          "label": "京義中央線＋3 號線",
+          "summary": "清涼里京義中央線 3 站到玉水，轉 3 號線 1 站到狎鷗亭，走到羅德奧；約 35 分",
           "mode": "subway",
-          "line": "水仁盆唐線 清涼里 → 往十里 → 首爾林 → 狎鷗亭羅德奧",
-          "line_color": "#f5a200",
-          "platform": "清涼里站水仁盆唐線（起點站，往仁川方向 인천 방면 / Incheon）",
-          "time": "走到月台 5 分＋地鐵約 8 分＋步行 6 分",
+          "line": "京義中央線 清涼里（청량리 Cheongnyangni）→ 玉水（옥수 Oksu）轉 3 號線 → 狎鷗亭（압구정 Apgujeong）",
+          "line_color": "#77c4a3",
+          "platform": "清涼里站京義中央線，往往十里・龍山方向（왕십리 · 용산 방면 / Wangsimni · Yongsan）",
+          "time": "走到月台 5 分＋地鐵約 8 分＋轉乘 5 分＋地鐵約 3 分＋步行約 12 分",
           "fare": "₩1,550／人",
-          "headway": "約 8–10 分一班",
-          "minutes": 20,
-          "warn": "清涼里是起點站，有車就上，不會坐錯方向",
+          "headway": "京義中央線約 10–15 分一班；3 號線約 5 分一班",
+          "minutes": 35,
+          "warn": "京義中央線班次少，看到往왕십리・용산方向的車就上。\n3 號線往狎鷗亭要搭往오금（Ogeum）方向，過漢江 1 站就到。\n累了就叫 Kakao T，約 25 分、₩13,000 上下",
           "from": "樂天購物中心清涼里店",
-          "to": "Tour à Tour",
+          "to": "狎鷗亭羅德奧",
           "from_ll": "37.579891,127.046162",
           "to_ll": "37.527381,127.040534",
           "steps": [
-            "從商場 B1 走回清涼里站，找黃色水仁盆唐線",
             {
-              "text": "水仁盆唐線往仁川方向，坐 3 站到狎鷗亭羅德奧",
+              "text": "從商場 B1 走回清涼里站（청량리 Cheongnyangni），找青綠色京義中央線（경의중앙선）",
               "sign": {
-                "line": "水仁盆唐",
-                "ko": "인천 방면",
-                "zh": "坐 3 站到狎鷗亭羅德奧（압구정로데오）",
-                "en": "Incheon"
+                "line": "京義中央",
+                "ko": "경의중앙선",
+                "en": "Gyeongui–Jungang Line",
+                "zh": "找青綠色的京義中央線",
+                "color": "#77c4a3"
               }
             },
             {
-              "text": "狎鷗亭羅德奧下車，走 5 號出口",
-              "img": "img/apgujeong-exit5.jpg",
-              "alt": "狎鷗亭羅德奧站 5 號出口（Kakao 로드뷰 2026 年 6–7 月）"
+              "text": "往往十里・龍山方向（왕십리 · 용산 방면 / Wangsimni · Yongsan），坐 3 站到玉水（옥수 Oksu）",
+              "sign": {
+                "line": "京義中央",
+                "ko": "왕십리 · 용산 방면",
+                "en": "Wangsimni · Yongsan",
+                "zh": "坐 3 站到玉水（옥수 Oksu）",
+                "color": "#77c4a3"
+              }
             },
-            "步行約 6 分到 Tour à Tour"
+            {
+              "text": "玉水轉橘色 3 號線，往梧琴方向（오금 방면 / Ogeum）坐 1 站到狎鷗亭（압구정 Apgujeong）",
+              "sign": {
+                "line": "3",
+                "ko": "오금 방면",
+                "en": "Ogeum",
+                "zh": "坐 1 站到狎鷗亭（압구정 Apgujeong）"
+              }
+            },
+            {
+              "text": "狎鷗亭站出站，Naver 步行導航到羅德奧（압구정로데오 Apgujeong Rodeo）約 12 分",
+              "sign": {
+                "line": "3",
+                "ko": "압구정",
+                "en": "Apgujeong",
+                "zh": "狎鷗亭下車，走到羅德奧約 12 分"
+              }
+            }
           ]
         }
       ]
